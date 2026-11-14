@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hefter-Eintrag · Prozentsatz</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; color: #000; font-family: Arial, Helvetica, sans-serif; }
+  .toolbar { position: sticky; top: 0; z-index: 10; background: #fff; border-bottom: 1px solid #ccc; padding: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .toolbar .sep { width: 1px; background: #ccc; align-self: stretch; margin: 0 6px; }
+  button { font: inherit; font-size: 14px; padding: 6px 10px; border: 1px solid #999; border-radius: 6px; background: #fff; cursor: pointer; }
+  button.tab { min-width: 52px; font-weight: bold; }
+  button.tab.act { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+  button.tool.act { outline: 3px solid #000; outline-offset: 1px; }
+  button.mG { background: rgba(21,101,192,.35); border-color: #1565C0; }
+  button.mW { background: rgba(194,65,12,.35); border-color: #C2410C; }
+  button.mP { background: rgba(46,125,50,.35); border-color: #2e7d32; }
+
+  .sheet { display: none; position: relative; max-width: 940px; margin: 16px auto; padding: 24px; border: 1px solid #ccc; min-height: 860px; }
+  .sheet.act { display: block; }
+  canvas.pen { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: multiply; z-index: 5; }
+  canvas.pen.on { pointer-events: auto; touch-action: none; cursor: crosshair; }
+
+  .title { background: #2e7d32; color: #fff; padding: 10px 14px; font-weight: bold; font-size: 20px; margin: -24px -24px 10px; }
+  .ziel { font-size: 14px; margin-bottom: 14px; }
+  .kasten { border: 2px solid #2e7d32; border-radius: 6px; margin: 14px 0; overflow: hidden; }
+  .kasten .kopf { background: #e8f5e9; padding: 6px 10px; font-weight: bold; }
+  .kasten .inhalt { padding: 10px 12px; }
+  .zeile { margin: 10px 0; font-size: 18px; line-height: 2.3; }
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+  .grid3 .kasten { margin: 0; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+  .grid2 .kasten { margin: 0; }
+  .gruppe { margin: 14px 0; }
+
+  .f { width: 60px; font-size: 18px; border: none; border-bottom: 1.5px solid #888; background: #fff; text-align: center; font-family: inherit; padding: 2px 4px; color: #000; }
+  .f.wide { width: 100%; text-align: left; }
+  .f.cG { color: #1565C0; font-weight: bold; }
+  .f.cW { color: #C2410C; font-weight: bold; }
+  .f.cP { color: #2e7d32; font-weight: bold; }
+  .gG { color: #1565C0; font-weight: bold; }
+  .gW { color: #C2410C; font-weight: bold; }
+  .gP { color: #2e7d32; font-weight: bold; }
+
+  /* Bruch: alle Zeilen gleich hoch, damit alle Bruchstriche auf gleicher Höhe liegen */
+  .frac { display: inline-flex; flex-direction: column; align-items: stretch; vertical-align: middle; margin: 0 6px; font-size: 18px; line-height: 1; }
+  .frac > .f, .frac > span { height: 34px; display: flex; align-items: center; justify-content: center; border-bottom: none; }
+  .frac > .f { width: 70px; }
+  .frac .bar { display: block; width: 100%; height: 2px; background: #000; }
+  .z3 .frac > .f { width: 52px; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 15px; margin-top: 6px; }
+  th, td { border: 1px solid #000; padding: 6px; text-align: center; }
+  th { background: #e5e5e5; }
+  td .frac { margin: 0; }
+  .fuss { text-align: right; font-size: 12px; margin-top: 28px; }
+  .hinweis { font-size: 13px; color: #333; margin: 8px 0 0; }
+  svg.strip { display: block; margin: 4px 0; }
+  @page { size: A4; }
+  @media print {
+    .toolbar { display: none; }
+    .sheet { display: block !important; border: none; margin: 0; max-width: none; page-break-after: always; min-height: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button class="tab act" data-z="1">Z1</button>
+  <button class="tab" data-z="2">Z2</button>
+  <button class="tab" data-z="3">Z3</button>
+  <div class="sep"></div>
+  <button class="tool act" data-t="eingabe">⌨ Tippen</button>
+  <button class="tool mG" data-t="#1565C0">Marker G</button>
+  <button class="tool mW" data-t="#C2410C">Marker W</button>
+  <button class="tool mP" data-t="#2e7d32">Marker p %</button>
+  <button class="tool" data-t="radier">Radierer</button>
+  <div class="sep"></div>
+  <button id="clr-page">Seite leeren</button>
+  <button id="clr-all">Alles löschen</button>
+</div>
+
+<!-- ============ Z1 ============ -->
+<section class="sheet act" id="s1">
+  <div class="title">Prozentsatz mit der Verhältnisgleichung berechnen</div>
+  <div class="ziel"><b>Ziel Z1:</b> Ich kann mit Hilfe der Verhältnisgleichung bei gegebenem Prozentwert W und Grundwert G den Prozentsatz p % berechnen.</div>
+
+  <div class="kasten">
+    <div class="kopf">Merke</div>
+    <div class="inhalt">
+      <div class="zeile">
+        <span class="frac"><input class="f cG"><i class="bar"></i><span>100 %</span></span>
+        =
+        <span class="frac"><input class="f cW"><i class="bar"></i><input class="f cP"></span>
+      </div>
+      <div class="hinweis">Grundwert G zu 100 % ist wie Prozentwert W zu p %.</div>
+    </div>
+  </div>
+
+  <div class="kasten">
+    <div class="kopf">Musterbeispiel 1</div>
+    <div class="inhalt">
+      <div class="zeile">geg.: <span class="gG">G = 240</span> &nbsp;&nbsp; <span class="gW">W = 36</span> &nbsp;&nbsp;&nbsp; ges.: <input class="f cP"></div>
+      <div class="zeile">
+        <span class="frac"><input class="f cG"><i class="bar"></i><span>100 %</span></span>
+        =
+        <span class="frac"><input class="f cW"><i class="bar"></i><span class="gP">x</span></span>
+      </div>
+      <div class="zeile">x = <input class="f"> · <input class="f"> ÷ <input class="f"> = <input class="f"></div>
+      <div class="zeile">p = <input class="f cP"> %</div>
+    </div>
+  </div>
+
+  <div class="kasten">
+    <div class="kopf">Musterbeispiel 2</div>
+    <div class="inhalt">
+      <div class="zeile">geg.: <span class="gG">G = 150</span> &nbsp;&nbsp; <span class="gW">W = 60</span> &nbsp;&nbsp;&nbsp; ges.: <input class="f cP"></div>
+      <div class="zeile">
+        <span class="frac"><input class="f cG"><i class="bar"></i><span>100 %</span></span>
+        =
+        <span class="frac"><input class="f cW"><i class="bar"></i><span class="gP">x</span></span>
+      </div>
+      <div class="zeile">x = <input class="f"> · <input class="f"> ÷ <input class="f"> = <input class="f"></div>
+      <div class="zeile">p = <input class="f cP"> %</div>
+    </div>
+  </div>
+
+  <div class="kasten">
+    <div class="kopf">Jetzt ihr</div>
+    <div class="inhalt">
+      <div class="zeile">geg.: <span class="gG">G = 480</span> &nbsp;&nbsp; <span class="gW">W = 96</span> &nbsp;&nbsp;&nbsp; ges.: <input class="f cP"></div>
+      <div class="zeile">
+        <span class="frac"><input class="f cG"><i class="bar"></i><span>100 %</span></span>
+        =
+        <span class="frac"><input class="f cW"><i class="bar"></i><span class="gP">x</span></span>
+      </div>
+      <div class="zeile">x = <input class="f"> · <input class="f"> ÷ <input class="f"> = <input class="f"></div>
+      <div class="zeile">p = <input class="f cP"> %</div>
+    </div>
+  </div>
+
+  <div class="fuss">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</div>
+  <canvas class="pen"></canvas>
+</section>
+
+<!-- ============ Z2 ============ -->
+<section class="sheet" id="s2">
+  <div class="title">Sachaufgaben: gesuchten Prozentsatz bestimmen</div>
+  <div class="ziel"><b>Ziel Z2:</b> Ich kann Sachaufgaben lösen, in denen der Prozentsatz p % gesucht ist.</div>
+
+  <div class="kasten">
+    <div class="kopf">Musterbeispiel 1</div>
+    <div class="inhalt">
+      <div>In einer Klasse mit 25 Schülern haben 7 Schüler ein Haustier. Wie viel Prozent der Schüler haben ein Haustier?</div>
+      <div class="zeile">geg.: <span class="gG">G =</span> <input class="f cG"> &nbsp;&nbsp; <span class="gW">W =</span> <input class="f cW"> &nbsp;&nbsp;&nbsp; ges.: <input class="f cP"></div>
+      <div class="zeile">
+        <span class="frac"><input class="f cG"><i class="bar"></i><span>100 %</span></span>
+        =
+        <span class="frac"><input class="f cW"><i class="bar"></i><span class="gP">x</span></span>
+      </div>
+      <div class="zeile">x = <input class="f"> · <input class="f"> ÷ <input class="f"> = <input class="f"></div>
+      <div class="zeile">p = <input class="f cP"> %</div>
+      <div class="zeile">Antwort: <input class="f wide"></div>
+    </div>
+  </div>
+
+  <div class="kasten">
+    <div class="kopf">Musterbeispiel 2</div>
+    <div class="inhalt">
+      <div>Ein Bus hat 50 Sitzplätze. 38 Plätze sind besetzt. Wie viel Prozent der Sitzplätze sind besetzt?</div>
+      <div class="zeile">geg.: <span class="gG">G =</span> <input class="f cG"> &nbsp;&nbsp; <span class="gW">W =</span> <input class="f cW"> &nbsp;&nbsp;&nbsp; ges.: <input class="f cP"></div>
+      <div class="zeile">
+        <span class="frac"><input class="f cG"><i class="bar"></i><span>100 %</span></span>
+        =
+        <span class="frac"><input class="f cW"><i class="bar"></i><span class="gP">x</span></span>
+      </div>
+      <div class="zeile">x = <input class="f"> · <input class="f"> ÷ <input class="f"> = <input class="f"></div>
+      <div class="zeile">p = <input class="f cP"> %</div>
+      <div class="zeile">Antwort: <input class="f wide"></div>
+    </div>
+  </div>
+
+  <div class="kasten">
+    <div class="kopf">Jetzt ihr</div>
+    <div class="inhalt">
+      <div>Ein Kino hat 200 Plätze. 130 Plätze sind besetzt. Wie viel Prozent der Plätze sind besetzt?</div>
+      <div class="zeile">geg.: <span class="gG">G =</span> <input class="f cG"> &nbsp;&nbsp; <span class="gW">W =</span> <input class="f cW"> &nbsp;&nbsp;&nbsp; ges.: <input class="f cP"></div>
+      <div class="zeile">
+        <span class="frac"><input class="f cG"><i class="bar"></i><span>100 %</span></span>
+        =
+        <span class="frac"><input class="f cW"><i class="bar"></i><span class="gP">x</span></span>
+      </div>
+      <div class="zeile">x = <input class="f"> · <input class="f"> ÷ <input class="f"> = <input class="f"></div>
+      <div class="zeile">p = <input class="f cP"> %</div>
+      <div class="zeile">Antwort: <input class="f wide"></div>
+    </div>
+  </div>
+
+  <div class="fuss">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</div>
+  <canvas class="pen"></canvas>
+</section>
+
+<!-- ============ Z3 ============ -->
+<section class="sheet z3" id="s3">
+  <div class="title">Prozentsätze erkennen</div>
+  <div class="ziel"><b>Ziel Z3:</b> Ich kann Prozentsätze wie 1 %, 10 %, 20 %, 25 %, 50 %, 100 % und 200 % am gegebenen Grundwert G und Prozentwert W erkennen.</div>
+
+  <div class="kasten">
+    <div class="kopf">Merke</div>
+    <div class="inhalt">
+      <table>
+        <tr><th>Prozentsatz</th><th>1 %</th><th>10 %</th><th>20 %</th><th>25 %</th><th>50 %</th><th>100 %</th><th>200 %</th></tr>
+        <tr>
+          <th>Anteil von G</th>
+          <td><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span></td>
+          <td><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span></td>
+          <td><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span></td>
+          <td><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span></td>
+          <td><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span></td>
+          <td><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span></td>
+          <td><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid3 gruppe">
+    <div class="kasten">
+      <div class="kopf">Musterbeispiel 1</div>
+      <div class="inhalt">
+        <svg class="strip" viewBox="0 0 220 56" width="100%" aria-hidden="true">
+          <rect x="2" y="2" width="216" height="22" fill="#1565C0"/>
+          <rect x="2" y="28" width="108" height="22" fill="#C2410C"/>
+        </svg>
+        <div class="zeile"><span class="gW">30 km</span> sind <span class="frac"><input class="f"><i class="bar"></i><input class="f"></span> von <span class="gG">60 km</span>.</div>
+        <div class="zeile"><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span> entspricht <input class="f cP"> %</div>
+        <div class="zeile"><span class="gW">30 km</span> sind <input class="f cP"> % von <span class="gG">60 km</span>.</div>
+      </div>
+    </div>
+    <div class="kasten">
+      <div class="kopf">Musterbeispiel 2</div>
+      <div class="inhalt">
+        <svg class="strip" viewBox="0 0 220 56" width="100%" aria-hidden="true">
+          <rect x="2" y="2" width="216" height="22" fill="#1565C0"/>
+          <rect x="2" y="28" width="54" height="22" fill="#C2410C"/>
+        </svg>
+        <div class="zeile"><span class="gW">15 €</span> sind <span class="frac"><input class="f"><i class="bar"></i><input class="f"></span> von <span class="gG">60 €</span>.</div>
+        <div class="zeile"><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span> entspricht <input class="f cP"> %</div>
+        <div class="zeile"><span class="gW">15 €</span> sind <input class="f cP"> % von <span class="gG">60 €</span>.</div>
+      </div>
+    </div>
+    <div class="kasten">
+      <div class="kopf">Musterbeispiel 3</div>
+      <div class="inhalt">
+        <svg class="strip" viewBox="0 0 220 56" width="100%" aria-hidden="true">
+          <rect x="2" y="2" width="216" height="22" fill="#1565C0"/>
+          <rect x="2" y="28" width="21.6" height="22" fill="#C2410C"/>
+        </svg>
+        <div class="zeile"><span class="gW">6 €</span> sind <span class="frac"><input class="f"><i class="bar"></i><input class="f"></span> von <span class="gG">60 €</span>.</div>
+        <div class="zeile"><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span> entspricht <input class="f cP"> %</div>
+        <div class="zeile"><span class="gW">6 €</span> sind <input class="f cP"> % von <span class="gG">60 €</span>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2 gruppe">
+    <div class="kasten">
+      <div class="kopf">Jetzt ihr 1</div>
+      <div class="inhalt">
+        <div class="zeile"><span class="gW">16 Kinder</span> sind <span class="frac"><input class="f"><i class="bar"></i><input class="f"></span> von <span class="gG">80 Kindern</span>.</div>
+        <div class="zeile"><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span> entspricht <input class="f cP"> %</div>
+        <div class="zeile"><span class="gW">16 Kinder</span> sind <input class="f cP"> % von <span class="gG">80 Kindern</span>.</div>
+      </div>
+    </div>
+    <div class="kasten">
+      <div class="kopf">Jetzt ihr 2</div>
+      <div class="inhalt">
+        <div class="zeile"><span class="gW">3 €</span> sind <span class="frac"><input class="f"><i class="bar"></i><input class="f"></span> von <span class="gG">300 €</span>.</div>
+        <div class="zeile"><span class="frac"><input class="f"><i class="bar"></i><input class="f"></span> entspricht <input class="f cP"> %</div>
+        <div class="zeile"><span class="gW">3 €</span> sind <input class="f cP"> % von <span class="gG">300 €</span>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fuss">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</div>
+  <canvas class="pen"></canvas>
+</section>
+
+<script>
+  let tool = 'eingabe';
+  const sheets = [...document.querySelectorAll('.sheet')];
+  sheets.forEach(s => { s._strokes = []; });
+  const active = () => document.querySelector('.sheet.act');
+
+  /* ---------- Reiter ---------- */
+  document.querySelectorAll('button.tab').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('button.tab').forEach(x => x.classList.toggle('act', x === b));
+    sheets.forEach(s => s.classList.toggle('act', s.id === 's' + b.dataset.z));
+    redraw(active());
+  }));
+
+  /* ---------- Werkzeuge ---------- */
+  function setTool(t) {
+    tool = t;
+    document.querySelectorAll('button.tool').forEach(b => b.classList.toggle('act', b.dataset.t === t));
+    document.querySelectorAll('canvas.pen').forEach(c => c.classList.toggle('on', t !== 'eingabe'));
+  }
+  document.querySelectorAll('button.tool').forEach(b => b.addEventListener('click', () => setTool(b.dataset.t)));
+
+  /* ---------- Textmarker ---------- */
+  function redraw(sheet) {
+    const c = sheet.querySelector('canvas.pen');
+    const w = sheet.clientWidth, h = sheet.clientHeight;
+    if (!w || !h) return;
+    const dpr = window.devicePixelRatio || 1;
+    if (c.width !== Math.round(w * dpr) || c.height !== Math.round(h * dpr)) {
+      c.width = Math.round(w * dpr);
+      c.height = Math.round(h * dpr);
+    }
+    const ctx = c.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    ctx.globalAlpha = 0.38;
+    ctx.lineWidth = 22;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    sheet._strokes.forEach(s => {
+      ctx.strokeStyle = s.color;
+      ctx.beginPath();
+      ctx.moveTo(s.pts[0].x, s.pts[0].y);
+      s.pts.forEach(p => ctx.lineTo(p.x, p.y));
+      ctx.stroke();
+    });
+  }
+
+  sheets.forEach(sheet => {
+    const c = sheet.querySelector('canvas.pen');
+    let cur = null;
+    const pos = e => {
+      const r = c.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    };
+    const erase = p => {
+      const before = sheet._strokes.length;
+      sheet._strokes = sheet._strokes.filter(s => !s.pts.some(q => Math.hypot(q.x - p.x, q.y - p.y) < 18));
+      if (sheet._strokes.length !== before) redraw(sheet);
+    };
+    c.addEventListener('pointerdown', e => {
+      if (tool === 'eingabe') return;
+      c.setPointerCapture(e.pointerId);
+      const p = pos(e);
+      if (tool === 'radier') { cur = 'erase'; erase(p); return; }
+      cur = { color: tool, pts: [p] };
+      sheet._strokes.push(cur);
+      redraw(sheet);
+    });
+    c.addEventListener('pointermove', e => {
+      if (!cur) return;
+      const p = pos(e);
+      if (cur === 'erase') { erase(p); return; }
+      cur.pts.push(p);
+      redraw(sheet);
+    });
+    const stop = () => { cur = null; };
+    c.addEventListener('pointerup', stop);
+    c.addEventListener('pointercancel', stop);
+    new ResizeObserver(() => redraw(sheet)).observe(sheet);
+  });
+
+  /* ---------- Löschen mit Sicherheitsklick ---------- */
+  function arm(btn, fn) {
+    if (btn._armed) {
+      btn._armed = false;
+      btn.textContent = btn._label;
+      fn();
+    } else {
+      btn._label = btn._label || btn.textContent;
+      btn._armed = true;
+      btn.textContent = 'Sicher? Nochmal tippen';
+      setTimeout(() => {
+        if (btn._armed) { btn._armed = false; btn.textContent = btn._label; }
+      }, 3000);
+    }
+  }
+  function clearSheet(sheet) {
+    sheet.querySelectorAll('input.f').forEach(i => i.value = '');
+    sheet._strokes = [];
+    redraw(sheet);
+  }
+  document.getElementById('clr-page').addEventListener('click', e => arm(e.currentTarget, () => clearSheet(active())));
+  document.getElementById('clr-all').addEventListener('click', e => arm(e.currentTarget, () => sheets.forEach(clearSheet)));
+
+  /* ---------- Enter springt zum nächsten Feld ---------- */
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || !e.target.matches('input.f')) return;
+    e.preventDefault();
+    const list = [...e.target.closest('.sheet').querySelectorAll('input.f')];
+    const i = list.indexOf(e.target);
+    if (i >= 0 && i < list.length - 1) list[i + 1].focus();
+  });
+</script>
+</body>
+</html>
