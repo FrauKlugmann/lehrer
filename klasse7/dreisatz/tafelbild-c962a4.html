@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hefteintrag Der Dreisatz</title><style>
+:root{--papier:#fff;--tinte:#000;--grau:#F2F2F2;--leise:#6F6F6F;--smaragd:#00805F;--smaragd-hell:#D3F2E5;
+ --prop:#1565C0;--prop-hell:#E8EFFB;--anti:#C2410C;--anti-hell:#FBEADF;--rot:#B3261E;
+ --schrift:Arial,Helvetica,"Liberation Sans",sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+html{background:#fff}
+body{margin:0;background:#fff;color:#000;font-family:var(--schrift);font-size:clamp(15px,1.45vw,22px);line-height:1.3;padding:18px 16px 24px;
+ -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.blatt{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:.8em}
+.titel{background:var(--smaragd);color:#fff;font-weight:700;text-align:center;font-size:1.5em;padding:.35em .5em;margin:0}
+.kopf{display:flex;justify-content:space-between;align-items:center;gap:1em;flex-wrap:wrap}
+.ziel{margin:0;font-weight:700;color:var(--smaragd);font-size:1.05em}
+.kasten{border:2px solid var(--c);break-inside:avoid}
+.kasten>h2{margin:0;font-size:1em;background:var(--ch);border-bottom:2px solid var(--c);padding:.3em .7em;color:var(--c)}
+.innen{padding:.55em .8em .7em;display:flex;flex-direction:column;gap:.55em}
+.aufgabe{margin:0;font-size:1.05em}
+.zeile{margin:0;display:flex;align-items:baseline;flex-wrap:wrap;gap:.3em}
+.zeile b{color:var(--c)}
+input{font:inherit;color:#000;background:transparent;border:0;border-bottom:1.5px solid #9a9a9a;padding:0 .2em;text-align:center;outline:none;border-radius:0}
+input:focus{background:#FFF8D6}
+input.ix{color:var(--rot);font-weight:700}
+input.w1{width:7em}input.w2{width:9em}input.wz{width:3.6em}
+input.lang{flex:1;min-width:12em;text-align:left}
+.schema{position:relative;align-self:center}
+.schema svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.feld{position:absolute}
+.feld input{width:100%;height:100%;font-size:1.5em;border:1.5px dashed #b9b9b9;text-align:center;padding:0}
+.feld.etikett input{font-size:.8em;border:0;border-bottom:1.5px solid #b9b9b9;color:#555}
+.feld.op input{font-size:1.15em;font-weight:700;color:var(--c);border-color:var(--c);border-style:dashed}
+.feld.kopfz input{font-size:.95em;font-weight:700;border:0}
+.feld.kreis::after{content:"";position:absolute;inset:-.45em -.55em;border:2.5px dashed #000;border-radius:50%;pointer-events:none}
+.feld.gross input{font-size:1.3em;border:0}
+.merk{border:2px dashed var(--c);background:#fff;padding:.3em .7em;font-weight:700;color:var(--c);display:flex;flex-wrap:wrap;gap:.3em;align-items:baseline}
+.merk input{color:var(--c);font-weight:700;border-bottom-color:var(--c)}
+.rechen{display:flex;align-items:baseline;gap:.35em;flex-wrap:wrap;font-size:1.2em;align-self:center;border:2px solid #000;background:#fafafa;padding:.2em .8em}
+.rechen input{width:3.4em}
+.werkzeuge{display:flex;gap:.5em;flex-wrap:wrap}
+button{font:inherit;font-size:.85em;background:#fff;color:#000;border:2px solid var(--c,var(--smaragd));padding:.3em .8em;cursor:pointer}
+button.an{background:var(--c);color:#fff;font-weight:700}
+button.warn{background:var(--rot);border-color:var(--rot);color:#fff;font-weight:700}
+button:focus-visible{outline:3px solid var(--smaragd);outline-offset:2px}
+.kreuz{display:none}.kreuz.an{display:inline}
+.fuss{text-align:right;font-style:italic;color:var(--leise);font-size:.65em;margin:0}
+@page{size:A4;margin:12mm 15mm 12mm 25mm}
+@media print{
+ body{font-size:11.5pt;padding:0}
+ .schema{font-size:1.3em;margin:1mm 0}
+ .schema.breit{font-size:1.08em}
+ .innen{gap:3.2mm}
+ .blatt{max-width:none;gap:4mm}
+ .werkzeuge,.knopf-oben{display:none!important}
+ input:focus{background:transparent}
+ .fuss{margin-top:2mm}
+}
+</style></head>
+<body><main class="blatt">
+<h1 class="titel">Der Dreisatz</h1>
+<div class="kopf"><p class="ziel">Z1 · Zuordnungen mit dem Dreisatz lösen</p><button type="button" id="leeren" class="knopf-oben">Seite leeren</button></div>
+<section class="kasten" style="--c:var(--prop);--ch:var(--prop-hell)">
+<h2>Proportionale Zuordnung · Musterbeispiel</h2><div class="innen">
+<p class="aufgabe">4 Hefte kosten 6 €. Wie viel kosten 7 Hefte?</p>
+<p class="zeile"><b>Je mehr</b><input class="w1" aria-label="Lücke"><b>, desto</b><input class="w2" aria-label="Lücke"><b>.</b></p>
+<div class="schema" style="width:30.0em;height:10.3em"><svg viewBox="0 0 300.0 103.0"><defs><marker id="mtprop" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1565C0"/></marker></defs><rect x="80.0" y="0" width="140.0" height="22.0" fill="#F2F2F2" stroke="#000" stroke-width="2"/><rect x="80.0" y="22.0" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><rect x="150.0" y="22.0" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><rect x="80.0" y="48.00000000000001" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><rect x="150.0" y="48.00000000000001" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><rect x="80.0" y="74.0" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><rect x="150.0" y="74.0" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><line x1="150.0" y1="0" x2="150.0" y2="22.0" stroke="#000" stroke-width="2"/><path d="M76.0,37.5 C38.0,37.5 38.0,58.50000000000001 70.0,58.50000000000001" fill="none" stroke="#1565C0" stroke-width="3" stroke-linecap="round" marker-end="url(#mtprop)"/><path d="M224.0,37.5 C262.0,37.5 262.0,58.50000000000001 230.0,58.50000000000001" fill="none" stroke="#1565C0" stroke-width="3" stroke-linecap="round" marker-end="url(#mtprop)"/><path d="M76.0,63.50000000000001 C38.0,63.50000000000001 38.0,84.50000000000001 70.0,84.50000000000001" fill="none" stroke="#1565C0" stroke-width="3" stroke-linecap="round" marker-end="url(#mtprop)"/><path d="M224.0,63.50000000000001 C262.0,63.50000000000001 262.0,84.50000000000001 230.0,84.50000000000001" fill="none" stroke="#1565C0" stroke-width="3" stroke-linecap="round" marker-end="url(#mtprop)"/></svg><div class="feld kopfz" style="left:8.3em;top:0.3em;width:6.4em;height:1.6em"><input aria-label="Feld"></div><div class="feld kopfz" style="left:15.3em;top:0.3em;width:6.4em;height:1.6em"><input aria-label="Feld"></div><div class="feld num gross" style="left:9.0em;top:2.5500000000000003em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld num gross" style="left:16.0em;top:2.5500000000000003em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld num gross" style="left:9.0em;top:5.15em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld num gross" style="left:16.0em;top:5.15em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld num gross" style="left:9.0em;top:7.75em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld num gross" style="left:16.0em;top:7.75em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld op" style="left:1.3em;top:4.0em;width:3.0em;height:1.6em"><input aria-label="Feld"></div><div class="feld op" style="left:25.7em;top:4.0em;width:3.0em;height:1.6em"><input aria-label="Feld"></div><div class="feld op" style="left:1.3em;top:6.600000000000001em;width:3.0em;height:1.6em"><input aria-label="Feld"></div><div class="feld op" style="left:25.7em;top:6.600000000000001em;width:3.0em;height:1.6em"><input aria-label="Feld"></div></div>
+<div class="merk">Merke: Proportional – rechts <input class="w2" aria-label="Lücke"> rechnen wie links.</div>
+<p class="zeile"><b>Antwort:</b><input class="lang" aria-label="Antwortsatz"></p>
+</div></section>
+<section class="kasten" style="--c:var(--anti);--ch:var(--anti-hell)">
+<h2>Antiproportionale Zuordnung · Musterbeispiel</h2><div class="innen">
+<p class="aufgabe">3 Bagger brauchen 12 Tage. Wie lange brauchen 4 Bagger?</p>
+<p class="zeile"><b>Je mehr</b><input class="w1" aria-label="Lücke"><b>, desto</b><input class="w2" aria-label="Lücke"><b>.</b></p>
+<div class="schema" style="width:30.0em;height:10.3em"><svg viewBox="0 0 300.0 103.0"><defs><marker id="mtanti" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C2410C"/></marker></defs><rect x="80.0" y="0" width="140.0" height="22.0" fill="#F2F2F2" stroke="#000" stroke-width="2"/><rect x="80.0" y="22.0" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><rect x="150.0" y="22.0" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><rect x="80.0" y="48.00000000000001" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><rect x="150.0" y="48.00000000000001" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><rect x="80.0" y="74.0" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><rect x="150.0" y="74.0" width="70.0" height="26.0" fill="none" stroke="#000" stroke-width="2"/><line x1="150.0" y1="0" x2="150.0" y2="22.0" stroke="#000" stroke-width="2"/><path d="M76.0,37.5 C38.0,37.5 38.0,58.50000000000001 70.0,58.50000000000001" fill="none" stroke="#C2410C" stroke-width="3" stroke-linecap="round" marker-end="url(#mtanti)"/><path d="M224.0,37.5 C262.0,37.5 262.0,58.50000000000001 230.0,58.50000000000001" fill="none" stroke="#C2410C" stroke-width="3" stroke-linecap="round" marker-end="url(#mtanti)"/><path d="M76.0,63.50000000000001 C38.0,63.50000000000001 38.0,84.50000000000001 70.0,84.50000000000001" fill="none" stroke="#C2410C" stroke-width="3" stroke-linecap="round" marker-end="url(#mtanti)"/><path d="M224.0,63.50000000000001 C262.0,63.50000000000001 262.0,84.50000000000001 230.0,84.50000000000001" fill="none" stroke="#C2410C" stroke-width="3" stroke-linecap="round" marker-end="url(#mtanti)"/></svg><div class="feld kopfz" style="left:8.3em;top:0.3em;width:6.4em;height:1.6em"><input aria-label="Feld"></div><div class="feld kopfz" style="left:15.3em;top:0.3em;width:6.4em;height:1.6em"><input aria-label="Feld"></div><div class="feld num gross" style="left:9.0em;top:2.5500000000000003em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld num gross" style="left:16.0em;top:2.5500000000000003em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld num gross" style="left:9.0em;top:5.15em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld num gross" style="left:16.0em;top:5.15em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld num gross" style="left:9.0em;top:7.75em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld num gross" style="left:16.0em;top:7.75em;width:5.0em;height:1.9000000000000001em"><input aria-label="Feld"></div><div class="feld op" style="left:1.3em;top:4.0em;width:3.0em;height:1.6em"><input aria-label="Feld"></div><div class="feld op" style="left:25.7em;top:4.0em;width:3.0em;height:1.6em"><input aria-label="Feld"></div><div class="feld op" style="left:1.3em;top:6.600000000000001em;width:3.0em;height:1.6em"><input aria-label="Feld"></div><div class="feld op" style="left:25.7em;top:6.600000000000001em;width:3.0em;height:1.6em"><input aria-label="Feld"></div></div>
+<div class="merk">Merke: Antiproportional – rechts die <input class="w2" aria-label="Lücke">.</div>
+<p class="zeile"><b>Antwort:</b><input class="lang" aria-label="Antwortsatz"></p>
+</div></section>
+<p class="fuss">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</p>
+</main><script>
+(function(){
+ const alle=()=>[...document.querySelectorAll('input')];
+ document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'||e.target.tagName!=='INPUT')return;
+  e.preventDefault();const l=alle(),i=l.indexOf(e.target);if(l[i+1])l[i+1].focus();else e.target.blur();});
+ document.addEventListener('input',e=>{const t=e.target;if(t.tagName==='INPUT')t.classList.toggle('ix',t.value.trim().toLowerCase()==='x');});
+ // Kreuzpfeil
+ document.querySelectorAll('[data-kreuz]').forEach(b=>b.onclick=()=>{
+  const g=document.getElementById(b.dataset.kreuz);const an=!g.classList.contains('an');
+  g.classList.toggle('an',an);b.classList.toggle('an',an);});
+ // Einkreisen: Knopf an, dann ein Zahlenfeld antippen
+ let modus=null;
+ document.querySelectorAll('[data-kreis]').forEach(b=>b.onclick=()=>{
+  if(modus===b){modus=null;b.classList.remove('an');return;}
+  if(modus)modus.classList.remove('an');modus=b;b.classList.add('an');});
+ document.addEventListener('pointerdown',e=>{
+  if(!modus)return;const f=e.target.closest('.feld.num');if(!f)return;
+  const box=modus.closest('.kasten');if(!box.contains(f))return;
+  e.preventDefault();f.classList.toggle('kreis');modus.classList.remove('an');modus=null;},true);
+ // Seite leeren mit Sicherheitsklick
+ const r=document.getElementById('leeren');let t=null;
+ r.onclick=()=>{
+  if(!r.classList.contains('warn')){r.classList.add('warn');r.textContent='Wirklich leeren? Nochmal tippen';t=setTimeout(()=>{r.classList.remove('warn');r.textContent='Seite leeren';},3000);return;}
+  clearTimeout(t);alle().forEach(i=>{i.value='';i.classList.remove('ix');});
+  document.querySelectorAll('.kreis').forEach(f=>f.classList.remove('kreis'));
+  document.querySelectorAll('.kreuz.an').forEach(g=>g.classList.remove('an'));
+  document.querySelectorAll('button.an').forEach(b=>b.classList.remove('an'));modus=null;
+  r.classList.remove('warn');r.textContent='Seite leeren';};
+})();
+</script></body></html>

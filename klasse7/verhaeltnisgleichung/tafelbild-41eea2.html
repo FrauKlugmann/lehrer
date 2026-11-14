@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hefteintrag Die Verhältnisgleichung</title><style>
+:root{--papier:#fff;--tinte:#000;--grau:#F2F2F2;--leise:#6F6F6F;--smaragd:#00805F;--smaragd-hell:#D3F2E5;
+ --prop:#1565C0;--prop-hell:#E8EFFB;--anti:#C2410C;--anti-hell:#FBEADF;--rot:#B3261E;
+ --schrift:Arial,Helvetica,"Liberation Sans",sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+html{background:#fff}
+body{margin:0;background:#fff;color:#000;font-family:var(--schrift);font-size:clamp(15px,1.45vw,22px);line-height:1.3;padding:18px 16px 24px;
+ -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.blatt{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:.8em}
+.titel{background:var(--smaragd);color:#fff;font-weight:700;text-align:center;font-size:1.5em;padding:.35em .5em;margin:0}
+.kopf{display:flex;justify-content:space-between;align-items:center;gap:1em;flex-wrap:wrap}
+.ziel{margin:0;font-weight:700;color:var(--smaragd);font-size:1.05em}
+.kasten{border:2px solid var(--c);break-inside:avoid}
+.kasten>h2{margin:0;font-size:1em;background:var(--ch);border-bottom:2px solid var(--c);padding:.3em .7em;color:var(--c)}
+.innen{padding:.55em .8em .7em;display:flex;flex-direction:column;gap:.55em}
+.aufgabe{margin:0;font-size:1.05em}
+.zeile{margin:0;display:flex;align-items:baseline;flex-wrap:wrap;gap:.3em}
+.zeile b{color:var(--c)}
+input{font:inherit;color:#000;background:transparent;border:0;border-bottom:1.5px solid #9a9a9a;padding:0 .2em;text-align:center;outline:none;border-radius:0}
+input:focus{background:#FFF8D6}
+input.ix{color:var(--rot);font-weight:700}
+input.w1{width:7em}input.w2{width:9em}input.wz{width:3.6em}
+input.lang{flex:1;min-width:12em;text-align:left}
+.schema{position:relative;align-self:center}
+.schema svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.feld{position:absolute}
+.feld input{width:100%;height:100%;font-size:1.5em;border:1.5px dashed #b9b9b9;text-align:center;padding:0}
+.feld.etikett input{font-size:.8em;border:0;border-bottom:1.5px solid #b9b9b9;color:#555}
+.feld.op input{font-size:1.15em;font-weight:700;color:var(--c);border-color:var(--c);border-style:dashed}
+.feld.kopfz input{font-size:.95em;font-weight:700;border:0}
+.feld.kreis::after{content:"";position:absolute;inset:-.45em -.55em;border:2.5px dashed #000;border-radius:50%;pointer-events:none}
+.feld.gross input{font-size:1.3em;border:0}
+.merk{border:2px dashed var(--c);background:#fff;padding:.3em .7em;font-weight:700;color:var(--c);display:flex;flex-wrap:wrap;gap:.3em;align-items:baseline}
+.merk input{color:var(--c);font-weight:700;border-bottom-color:var(--c)}
+.rechen{display:flex;align-items:baseline;gap:.35em;flex-wrap:wrap;font-size:1.2em;align-self:center;border:2px solid #000;background:#fafafa;padding:.2em .8em}
+.rechen input{width:3.4em}
+.werkzeuge{display:flex;gap:.5em;flex-wrap:wrap}
+button{font:inherit;font-size:.85em;background:#fff;color:#000;border:2px solid var(--c,var(--smaragd));padding:.3em .8em;cursor:pointer}
+button.an{background:var(--c);color:#fff;font-weight:700}
+button.warn{background:var(--rot);border-color:var(--rot);color:#fff;font-weight:700}
+button:focus-visible{outline:3px solid var(--smaragd);outline-offset:2px}
+.feld.rz,.feld.rn{transition:transform .6s ease-in-out}
+.feld.rz.tausch{transform:translateY(2.8em)}.feld.rn.tausch{transform:translateY(-2.8em)}
+.feld.ohne{transition:none}
+.tauschpfeil{transform-box:fill-box;transform-origin:center}
+.tauschpfeil.puls{animation:puls .6s ease-in-out}
+@keyframes puls{50%{transform:scale(1.15)}}
+.kreuz{display:none}.kreuz.an{display:inline}
+.fuss{text-align:right;font-style:italic;color:var(--leise);font-size:.65em;margin:0}
+@page{size:A4;margin:12mm 15mm 12mm 25mm}
+@media print{
+ body{font-size:11.5pt;padding:0}
+ .schema{font-size:1.3em;margin:1mm 0}
+ .schema.breit{font-size:1.08em}
+ .innen{gap:3.2mm}
+ .blatt{max-width:none;gap:4mm}
+ .werkzeuge,.knopf-oben{display:none!important}
+ input:focus{background:transparent}
+ .fuss{margin-top:2mm}
+}
+</style></head>
+<body><main class="blatt">
+<h1 class="titel">Die Verhältnisgleichung</h1>
+<div class="kopf"><p class="ziel">Z1 · Zuordnungen mit der Verhältnisgleichung lösen</p><button type="button" id="leeren" class="knopf-oben">Seite leeren</button></div>
+<section class="kasten" style="--c:var(--prop);--ch:var(--prop-hell)">
+<h2>Proportionale Zuordnung · Musterbeispiel</h2><div class="innen">
+<p class="aufgabe">3 kg Äpfel kosten 4,50 €. Wie viel kosten 5 kg Äpfel?</p>
+<p class="zeile"><b>Je mehr</b><input class="w1" aria-label="Lücke"><b>, desto</b><input class="w2" aria-label="Lücke"><b>.</b></p>
+<div class="schema" style="width:15.6em;height:7.2em"><svg viewBox="0 0 156.0 72"><defs><marker id="mkp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1565C0"/></marker></defs><line x1="6.0" y1="26.5" x2="50.0" y2="26.5" stroke="#000" stroke-width="3"/><line x1="100.0" y1="26.5" x2="144.0" y2="26.5" stroke="#000" stroke-width="3"/><g id="kp" class="kreuz"><line x1="37.68" y1="43.0" x2="112.32" y2="11.0" stroke="#1565C0" stroke-width="4" marker-start="url(#mkp)" marker-end="url(#mkp)"/></g><text x="75.0" y="37" font-size="38" text-anchor="middle" font-family="Arial" stroke="#fff" stroke-width="5" paint-order="stroke">=</text></svg><div class="feld num" style="left:0.6em;top:0.2em;width:4.4em;height:2.1em"><input aria-label="Feld"></div><div class="feld num" style="left:0.6em;top:3.0em;width:4.4em;height:2.1em"><input aria-label="Feld"></div><div class="feld etikett" style="left:0.0em;top:5.6em;width:5.6000000000000005em;height:1.5em"><input aria-label="Feld"></div><div class="feld num" style="left:10.0em;top:0.2em;width:4.4em;height:2.1em"><input aria-label="Feld"></div><div class="feld num" style="left:10.0em;top:3.0em;width:4.4em;height:2.1em"><input aria-label="Feld"></div><div class="feld etikett" style="left:9.4em;top:5.6em;width:5.6000000000000005em;height:1.5em"><input aria-label="Feld"></div></div>
+<div class="werkzeuge"><button type="button" data-kreuz="kp">Kreuzpfeil</button><button type="button" data-kreis="1">Divisor einkreisen</button></div>
+<div class="merk">Merke: Proportional – beide Brüche in <input class="w2" aria-label="Lücke"> Reihenfolge.</div>
+<p class="zeile">Kreuzmultiplikation:</p>
+<div class="rechen"><i style="color:var(--rot);font-weight:700;font-style:normal">x</i> = <input aria-label="Zahl"> · <input aria-label="Zahl"> ÷ <input aria-label="Zahl"> = <input aria-label="Ergebnis"></div>
+<p class="zeile"><b>Antwort:</b><input class="lang" aria-label="Antwortsatz"></p>
+</div></section>
+<section class="kasten" style="--c:var(--anti);--ch:var(--anti-hell)">
+<h2>Antiproportionale Zuordnung · Musterbeispiel</h2><div class="innen">
+<p class="aufgabe">Ein Futtervorrat reicht für 5 Pferde 12 Tage. Wie lange reicht er für 6 Pferde?</p>
+<p class="zeile"><b>Je mehr</b><input class="w1" aria-label="Lücke"><b>, desto</b><input class="w2" aria-label="Lücke"><b>.</b></p>
+<div class="schema" style="width:23.0em;height:7.2em"><svg viewBox="0 0 230.0 72"><defs><marker id="mka" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#C2410C"/></marker></defs><defs><marker id="mrot" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#B3261E"/></marker></defs><line x1="6.0" y1="26.5" x2="50.0" y2="26.5" stroke="#000" stroke-width="3"/><line x1="100.0" y1="26.5" x2="144.0" y2="26.5" stroke="#000" stroke-width="3"/><g id="ka" class="kreuz"><line x1="37.68" y1="11.0" x2="112.32" y2="43.0" stroke="#C2410C" stroke-width="4" marker-start="url(#mka)" marker-end="url(#mka)"/></g><text x="75.0" y="37" font-size="38" text-anchor="middle" font-family="Arial" stroke="#fff" stroke-width="5" paint-order="stroke">=</text><g class="tauschpfeil"><line x1="162" y1="4" x2="162" y2="49" stroke="#B3261E" stroke-width="3.5" marker-start="url(#mrot)" marker-end="url(#mrot)"/><text x="174" y="24" font-size="13" font-weight="700" fill="#B3261E" font-family="Arial">Kehrwert</text><text x="174" y="40" font-size="13" font-weight="700" fill="#B3261E" font-family="Arial">bilden</text></g></svg><div class="feld num" style="left:0.6em;top:0.2em;width:4.4em;height:2.1em"><input aria-label="Feld"></div><div class="feld num" style="left:0.6em;top:3.0em;width:4.4em;height:2.1em"><input aria-label="Feld"></div><div class="feld etikett" style="left:0.0em;top:5.6em;width:5.6000000000000005em;height:1.5em"><input aria-label="Feld"></div><div class="feld num rz" style="left:10.0em;top:0.2em;width:4.4em;height:2.1em"><input aria-label="Feld"></div><div class="feld num rn" style="left:10.0em;top:3.0em;width:4.4em;height:2.1em"><input aria-label="Feld"></div><div class="feld etikett" style="left:9.4em;top:5.6em;width:5.6000000000000005em;height:1.5em"><input aria-label="Feld"></div></div>
+<div class="werkzeuge"><button type="button" data-kreuz="ka">Kreuzpfeil</button><button type="button" data-kreis="1">Divisor einkreisen</button><button type="button" class="kehr">Kehrwert bilden</button></div>
+<div class="merk">Merke: Antiproportional – den rechten Bruch <input class="w2" aria-label="Lücke"> (Kehrwert).</div>
+<p class="zeile">Kreuzmultiplikation:</p>
+<div class="rechen"><i style="color:var(--rot);font-weight:700;font-style:normal">x</i> = <input aria-label="Zahl"> · <input aria-label="Zahl"> ÷ <input aria-label="Zahl"> = <input aria-label="Ergebnis"></div>
+<p class="zeile"><b>Antwort:</b><input class="lang" aria-label="Antwortsatz"></p>
+</div></section>
+<p class="fuss">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</p>
+</main><script>
+(function(){
+ const alle=()=>[...document.querySelectorAll('input')];
+ document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'||e.target.tagName!=='INPUT')return;
+  e.preventDefault();const l=alle(),i=l.indexOf(e.target);if(l[i+1])l[i+1].focus();else e.target.blur();});
+ document.addEventListener('input',e=>{const t=e.target;if(t.tagName==='INPUT')t.classList.toggle('ix',t.value.trim().toLowerCase()==='x');});
+ // Kreuzpfeil
+ document.querySelectorAll('[data-kreuz]').forEach(b=>b.onclick=()=>{
+  const g=document.getElementById(b.dataset.kreuz);const an=!g.classList.contains('an');
+  g.classList.toggle('an',an);b.classList.toggle('an',an);});
+ // Einkreisen: Knopf an, dann ein Zahlenfeld antippen
+ let modus=null;
+ document.querySelectorAll('[data-kreis]').forEach(b=>b.onclick=()=>{
+  if(modus===b){modus=null;b.classList.remove('an');return;}
+  if(modus)modus.classList.remove('an');modus=b;b.classList.add('an');});
+ document.addEventListener('pointerdown',e=>{
+  if(!modus)return;const f=e.target.closest('.feld.num');if(!f)return;
+  const box=modus.closest('.kasten');if(!box.contains(f))return;
+  e.preventDefault();f.classList.toggle('kreis');modus.classList.remove('an');modus=null;},true);
+ // Kehrwert bilden: rechter Bruch springt sichtbar um
+ document.querySelectorAll('.kehr').forEach(b=>b.onclick=()=>{
+  const box=b.closest('.kasten'),z=box.querySelector('.feld.rz'),n=box.querySelector('.feld.rn'),p=box.querySelector('.tauschpfeil');
+  if(z.classList.contains('tausch'))return;
+  z.classList.add('tausch');n.classList.add('tausch');p.classList.remove('puls');void p.getBBox();p.classList.add('puls');
+  setTimeout(()=>{const a=z.querySelector('input'),c=n.querySelector('input');[a.value,c.value]=[c.value,a.value];
+   a.classList.toggle('ix',a.value.trim().toLowerCase()==='x');c.classList.toggle('ix',c.value.trim().toLowerCase()==='x');
+   const kz=z.classList.contains('kreis'),kn=n.classList.contains('kreis');z.classList.toggle('kreis',kn);n.classList.toggle('kreis',kz);
+   [z,n].forEach(f=>{f.classList.add('ohne');f.classList.remove('tausch');});void z.offsetWidth;[z,n].forEach(f=>f.classList.remove('ohne'));},620);});
+ // Seite leeren mit Sicherheitsklick
+ const r=document.getElementById('leeren');let t=null;
+ r.onclick=()=>{
+  if(!r.classList.contains('warn')){r.classList.add('warn');r.textContent='Wirklich leeren? Nochmal tippen';t=setTimeout(()=>{r.classList.remove('warn');r.textContent='Seite leeren';},3000);return;}
+  clearTimeout(t);alle().forEach(i=>{i.value='';i.classList.remove('ix');});
+  document.querySelectorAll('.kreis').forEach(f=>f.classList.remove('kreis'));
+  document.querySelectorAll('.kreuz.an').forEach(g=>g.classList.remove('an'));
+  document.querySelectorAll('button.an').forEach(b=>b.classList.remove('an'));modus=null;
+  r.classList.remove('warn');r.textContent='Seite leeren';};
+})();
+</script></body></html>
