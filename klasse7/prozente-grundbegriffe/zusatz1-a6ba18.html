@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Was gehört zusammen? Das Klebespiel</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { font-family: Arial, Helvetica, sans-serif; color: #111;
+    background: linear-gradient(160deg, #eef7ee 0%, #f7fbff 55%, #fff8ec 100%); overflow: hidden; }
+  .app { height: 100vh; height: 100dvh; max-width: 1400px; margin: 0 auto; padding: 10px 12px 6px;
+    display: flex; flex-direction: column; gap: 8px; }
+
+  header { background: linear-gradient(120deg, #1B5E20, #2E7D32 45%, #43A047); color: #fff; border-radius: 16px;
+    padding: 8px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    box-shadow: 0 4px 14px rgba(27,94,32,.25); position: relative; overflow: hidden; }
+  header::after { content: ""; position: absolute; right: -40px; top: -60px; width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,255,255,.08); pointer-events: none; }
+  .logo { font-size: 30px; width: 46px; height: 46px; border-radius: 12px; background: rgba(255,255,255,.18);
+    display: flex; align-items: center; justify-content: center; flex: none; }
+  .titel { flex: 1 1 260px; }
+  .titel .schule { font-size: 12px; opacity: .85; letter-spacing: .5px; }
+  .titel h1 { margin: 1px 0 0; font-size: clamp(18px, 2.3vw, 26px); }
+  .chips { display: flex; gap: 6px; align-items: center; }
+  .chip { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: bold; background: rgba(255,255,255,.18); border: 2px solid rgba(255,255,255,.45); font-size: 16px; }
+  .chip.aktiv { background: #fff; color: #1B5E20; border-color: #fff; transform: scale(1.12); }
+  .chip.fertig { background: #FFD54F; color: #5D4037; border-color: #FFD54F; }
+  .uhr { background: rgba(0,0,0,.22); border-radius: 999px; padding: 6px 14px; font-size: 20px; font-weight: bold;
+    font-variant-numeric: tabular-nums; min-width: 104px; text-align: center; }
+
+  .leiste { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .info { font-size: 16px; flex: 1 1 300px; }
+  #feedback { font-size: 16px; font-weight: bold; min-height: 20px; }
+  #feedback.gut { color: #2E7D32; } #feedback.schlecht { color: #C62828; }
+  .stand { display: flex; gap: 8px; font-size: 15px; }
+  .pill { background: #fff; border: 2px solid #ddd; border-radius: 999px; padding: 4px 12px; white-space: nowrap; }
+  .pill b.rot { color: #C62828; }
+  button { font: inherit; font-weight: bold; border: none; border-radius: 999px; cursor: pointer; color: #fff;
+    background: linear-gradient(180deg, #43A047, #2E7D32); box-shadow: 0 3px 0 #1B5E20, 0 6px 12px rgba(0,0,0,.15);
+    padding: 9px 26px; font-size: 18px; transition: transform .1s; }
+  button:active { transform: translateY(2px); box-shadow: 0 1px 0 #1B5E20; }
+  button:disabled { opacity: .45; cursor: default; }
+  button.blau { background: linear-gradient(180deg, #1E88E5, #1565C0); box-shadow: 0 3px 0 #0D47A1, 0 6px 12px rgba(0,0,0,.15); }
+
+  #board { flex: 1; min-height: 0; position: relative; border-radius: 18px; overflow: hidden;
+    border: 2px solid #d9e2d9; box-shadow: inset 0 2px 10px rgba(0,0,0,.06);
+    background-color: #fffdf7;
+    background-image: radial-gradient(#e3dccb 1.2px, transparent 1.2px); background-size: 24px 24px; }
+
+  .group { position: absolute; display: flex; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none;
+    transition: rotate .25s; }
+  .group.drag { cursor: grabbing; filter: drop-shadow(0 12px 14px rgba(0,0,0,.28)); rotate: 0deg !important; }
+  .group.spring { transition: left .65s cubic-bezier(.34,1.56,.64,1), top .65s cubic-bezier(.34,1.56,.64,1), rotate .25s; }
+  .card { width: var(--cw); height: var(--ch); border: 2px solid #37474F; border-radius: 12px;
+    background: linear-gradient(180deg, #ffffff 0%, #f2f5fa 100%);
+    display: flex; align-items: center; justify-content: center; font-size: var(--fs); font-weight: bold;
+    box-shadow: 0 3px 0 #cfd8dc, 0 5px 10px rgba(0,0,0,.12); white-space: nowrap; position: relative; }
+  .card.lang { font-size: var(--fsl); }
+  .group.voll .card { border-color: #2E7D32; background: linear-gradient(180deg, #F1F8E9, #DCEDC8); box-shadow: 0 3px 0 #A5D6A7, 0 5px 10px rgba(0,0,0,.1); }
+  .group.voll { animation: pop .4s; }
+  @keyframes pop { 50% { scale: 1.06; } }
+  .frac { display: inline-flex; flex-direction: column; align-items: center; line-height: 1.05; font-size: .9em; }
+  .frac > span:first-child { border-bottom: 2.5px solid #111; padding: 0 4px 2px; }
+  .frac > span:last-child { padding: 2px 4px 0; }
+  .g { color: #1565C0; }          /* Grundwert G blau */
+  .pz { color: #2E7D32; }         /* Prozentsatz grün */
+
+  .tape { position: absolute; top: 50%; width: var(--tw); height: calc(var(--ch) * .5); margin-top: calc(var(--ch) * -.25);
+    transform: rotate(-10deg); background: rgba(245, 232, 180, .88); color: #3a3a3a;
+    display: flex; align-items: center; justify-content: center; font-size: calc(var(--ch) * .36); font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: background .35s, color .35s; z-index: 2;
+    clip-path: polygon(0 0, 100% 0, 95% 14%, 100% 28%, 95% 42%, 100% 56%, 95% 70%, 100% 84%, 100% 100%, 0 100%, 5% 86%, 0 72%, 5% 58%, 0 44%, 5% 30%, 0 16%); }
+  .tape::before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%); }
+  .tape.neu { cursor: pointer; }
+  .tape.pfeil { font-size: calc(var(--ch) * .5); }
+  .tape.stick { animation: stick .35s ease-out; }
+  @keyframes stick { from { transform: rotate(-10deg) scaleX(0); } to { transform: rotate(-10deg) scaleX(1); } }
+  .tape.ok { background: rgba(46, 125, 50, .92); color: #fff; }
+  .tape.bad { background: rgba(211, 47, 47, .94); color: #fff; }
+  .tape.dissolve, .tape.weg { animation: dissolve .8s ease-in forwards; }
+  .tape.weg { animation-duration: .45s; }
+  @keyframes dissolve {
+    0% { opacity: 1; filter: blur(0); transform: rotate(-10deg) scale(1); }
+    40% { opacity: .8; transform: rotate(-16deg) scale(1.1); }
+    100% { opacity: 0; filter: blur(8px); transform: rotate(-28deg) scale(1.5) translateY(-24px); }
+  }
+  .shake { animation: shake .4s; }
+  @keyframes shake { 0%,100% { translate: 0; } 25% { translate: -8px; } 50% { translate: 8px; } 75% { translate: -5px; } }
+
+  footer { text-align: right; font-size: 12px; color: #333; }
+
+  #overlay { position: fixed; inset: 0; background: rgba(20,40,20,.35); display: none; align-items: center; justify-content: center; z-index: 50;
+    backdrop-filter: blur(2px); }
+  #overlay.zeigen { display: flex; }
+  .modal { background: #fff; border-radius: 22px; padding: 22px 30px 24px; min-width: 300px; max-width: 92vw; text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,.3); border-top: 8px solid #2E7D32; animation: rein .45s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes rein { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal h2 { margin: 0 0 10px; font-size: 28px; color: #1B5E20; }
+  .modal .zeile { font-size: 20px; margin: 6px 0; }
+  .modal .gross { font-size: 24px; font-weight: bold; margin: 12px 0 4px; }
+  .modal .stern { color: #F9A825; }
+  .modal button { margin-top: 14px; }
+  #konfetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo">🧩</div>
+    <div class="titel">
+      <div class="schule">Emil-Petri-Schule Arnstadt</div>
+      <h1>Was gehört zusammen? Das Klebespiel</h1>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="uhr" id="uhr">⏱ 00:00</div>
+  </header>
+
+  <div class="leiste">
+    <div class="info" id="info"></div>
+    <div id="feedback"></div>
+    <div class="stand" id="stand"></div>
+    <button id="pruefen">✔ Prüfen</button>
+  </div>
+
+  <div id="board"></div>
+
+  <footer>Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</footer>
+</div>
+<div id="overlay"><div class="modal" id="modal"></div></div>
+<canvas id="konfetti"></canvas>
+
+<script>
+const F = (z, n) => `<span class="frac"><span>${z}</span><span>${n}</span></span>`;
+const P = '&#8239;%', PM = '&#8239;‰';
+const G = '<span class="g">G</span>';
+const pz = z => ({ html: `<span class="pz">${z}&#8239;%</span>`, p: true });
+const term = t => ({ html: t, lang: true });
+
+const RUNDEN = [
+  { groesse: 3, zeichen: '=',
+    text: '<b>Runde 1:</b> Klebe immer <b>drei</b> Karten mit demselben Wert nebeneinander.',
+    sets: [
+      [F(1,100), '1' + P, '0,01'],
+      [F(1,10), '0,1', '10' + P],
+      ['1' + PM, F(1,1000), '0,001'],
+      [F(15,100), '15' + P, '0,15'],
+      [F(15,1000), '15' + PM, '0,015']
+    ] },
+  { groesse: 2, zeichen: '=',
+    text: '<b>Runde 2:</b> Klebe immer <b>zwei</b> Karten mit demselben Wert nebeneinander.',
+    sets: [
+      ['50' + P, F(1,2)], ['20' + P, F(1,5)], ['25' + P, F(1,4)], ['75' + P, F(3,4)],
+      ['200' + P, '2'], [F(2,5), '40' + P], [F(3,5), '60' + P], [F(4,5), '80' + P]
+    ] },
+  { groesse: 2, zeichen: '→',
+    text: '<b>Runde 3:</b> Welche Rechnung gehört zum Prozentsatz? Klebe <b>zwei</b> Karten zusammen.',
+    sets: [
+      [pz(50),  term(`${G}&nbsp;:&nbsp;2`)],
+      [pz(25),  term(`${G}&nbsp;:&nbsp;4`)],
+      [pz(10),  term(`${G}&nbsp;:&nbsp;10`)],
+      [pz(1),   term(`${G}&nbsp;:&nbsp;100`)],
+      [pz(20),  term(`${G}&nbsp;:&nbsp;5`)],
+      [pz(75),  term(`${G}&nbsp;:&nbsp;4&nbsp;·&nbsp;3`)],
+      [pz(200), term(`${G}&nbsp;·&nbsp;2`)],
+      [pz(40),  term(`${G}&nbsp;:&nbsp;5&nbsp;·&nbsp;2`)]
+    ] }
+];
+
+const board = document.getElementById('board');
+const btnPruefen = document.getElementById('pruefen');
+const fb = document.getElementById('feedback');
+
+let runde = 0, groups = [], fehler = 0, punkte = [], busy = false, gid = 0, zTop = 10;
+let W = 0, H = 0, cw = 110, ch = 74, tw = 40, gap = 20, anzahl = 0;
+let t0 = null, tEnde = null;
+
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const maxVerb = r => RUNDEN[r].sets.length * (RUNDEN[r].groesse - 1);
+const gW = g => g.cards.length * cw;
+const mmss = ms => { const s = Math.floor(ms / 1000); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+
+/* ---------- Uhr ---------- */
+setInterval(() => {
+  const ms = t0 ? ((tEnde || Date.now()) - t0) : 0;
+  document.getElementById('uhr').textContent = '⏱ ' + mmss(ms);
+}, 250);
+
+/* ---------- Größen so wählen, dass alles ohne Scrollen passt ---------- */
+function masse() {
+  W = board.clientWidth; H = board.clientHeight;
+  for (cw = 128; cw >= 60; cw -= 2) {
+    ch = Math.round(cw * .64); gap = Math.round(cw * .2);
+    const cols = Math.floor((W - gap) / (cw + gap));
+    if (cols < 3) continue;
+    const rows = Math.ceil(anzahl / cols);
+    if (gap + rows * (ch + gap) <= H * .6 && 3 * cw <= W - 10) break;
+  }
+  tw = Math.round(cw * .36);
+  const s = board.style;
+  s.setProperty('--cw', cw + 'px'); s.setProperty('--ch', ch + 'px'); s.setProperty('--tw', tw + 'px');
+  s.setProperty('--fs', Math.round(cw * .22) + 'px'); s.setProperty('--fsl', Math.round(cw * .165) + 'px');
+}
+
+function starteRunde(r) {
+  runde = r; fehler = 0; busy = false; groups = [];
+  document.getElementById('overlay').classList.remove('zeigen');
+  fb.textContent = ''; fb.className = '';
+  btnPruefen.disabled = false;
+  const R = RUNDEN[r];
+  const karten = [];
+  R.sets.forEach((s, si) => s.forEach(h => {
+    const k = typeof h === 'string' ? { html: h } : { ...h };
+    k.set = si; k.rot = (Math.random() * 7 - 3.5).toFixed(1);
+    karten.push(k);
+  }));
+  shuffle(karten);
+  anzahl = karten.length;
+  masse();
+  const cols = Math.floor((W - gap) / (cw + gap));
+  const cellW = (W - gap) / cols;
+  karten.forEach((k, i) => {
+    const c = i % cols, z = Math.floor(i / cols);
+    const x = gap / 2 + c * cellW + (cellW - cw) / 2 + (Math.random() * 8 - 4);
+    const y = gap * .7 + z * (ch + gap) + (Math.random() * 6 - 3);
+    groups.push({ id: ++gid, cards: [k], seams: [], x, y });
+  });
+  groups.forEach(klemmen);
+  document.getElementById('info').innerHTML = R.text + ' Dann tippe auf „Prüfen“. <span style="color:#666">Trennen: Doppeltipp auf den Klebestreifen.</span>';
+  document.getElementById('chips').innerHTML = RUNDEN.map((_, i) =>
+    `<div class="chip ${i < r ? 'fertig' : ''} ${i === r ? 'aktiv' : ''}">${i < r ? '✓' : i + 1}</div>`).join('');
+  zeigeStand();
+  render();
+}
+
+function zeigeStand() {
+  let h = `<span class="pill">Fehler: <b class="rot">${fehler}</b></span>`;
+  if (runde > 0) {
+    const p = punkte.slice(0, runde).reduce((a, b) => a + b, 0);
+    let m = 0; for (let i = 0; i < runde; i++) m += maxVerb(i);
+    h = `<span class="pill">bisher: <b>${p}/${m}</b> richtig</span>` + h;
+  }
+  document.getElementById('stand').innerHTML = h;
+}
+
+function klemmen(g) {
+  g.x = Math.max(0, Math.min(W - gW(g), g.x));
+  g.y = Math.max(0, Math.min(H - ch, g.y));
+}
+const istVoll = g => g.cards.length === RUNDEN[runde].groesse && g.seams.every(s => s.st === 'ok');
+
+function render() {
+  board.innerHTML = '';
+  groups.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'group' + (istVoll(g) ? ' voll' : '');
+    el.dataset.id = g.id;
+    el.style.left = g.x + 'px'; el.style.top = g.y + 'px';
+    el.style.width = gW(g) + 'px'; el.style.height = ch + 'px';
+    if (g.cards.length === 1) el.style.rotate = g.cards[0].rot + 'deg';
+    g.cards.forEach(k => {
+      const c = document.createElement('div');
+      c.className = 'card' + (k.lang ? ' lang' : ''); c.innerHTML = k.html;
+      el.appendChild(c);
+    });
+    g.seams.forEach((s, i) => {
+      const t = document.createElement('div');
+      t.className = 'tape' + (s.st === 'ok' ? ' ok' : ' neu') + (s.fresh ? ' stick' : '') + (RUNDEN[runde].zeichen === '→' ? ' pfeil' : '');
+      s.fresh = false;
+      t.dataset.i = i;
+      t.style.left = ((i + 1) * cw - tw / 2) + 'px';
+      t.textContent = RUNDEN[runde].zeichen;
+      el.appendChild(t);
+    });
+    el.addEventListener('pointerdown', down);
+    board.appendChild(el);
+  });
+}
+
+/* ---------- Ziehen und Doppeltipp ---------- */
+let drag = null, letzterTipp = { key: null, t: 0 };
+function down(e) {
+  if (busy) return;
+  if (!t0) t0 = Date.now();
+  const el = e.currentTarget;
+  const g = groups.find(x => x.id == el.dataset.id);
+  const br = board.getBoundingClientRect();
+  const tape = e.target.closest('.tape');
+  drag = { g, el, dx: e.clientX - br.left - g.x, dy: e.clientY - br.top - g.y, sx: e.clientX, sy: e.clientY,
+           naht: tape ? +tape.dataset.i : null };
+  el.setPointerCapture(e.pointerId);
+  el.style.zIndex = ++zTop;
+  el.addEventListener('pointermove', move);
+  el.addEventListener('pointerup', up);
+  el.addEventListener('pointercancel', up);
+  e.preventDefault();
+}
+function move(e) {
+  if (!drag) return;
+  if (Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 6) drag.el.classList.add('drag');
+  const br = board.getBoundingClientRect();
+  drag.g.x = e.clientX - br.left - drag.dx;
+  drag.g.y = e.clientY - br.top - drag.dy;
+  klemmen(drag.g);
+  drag.el.style.left = drag.g.x + 'px'; drag.el.style.top = drag.g.y + 'px';
+}
+function ueberlapp(a, b) {
+  const ox = Math.min(a.x + gW(a), b.x + gW(b)) - Math.max(a.x, b.x);
+  const oy = Math.min(a.y + ch, b.y + ch) - Math.max(a.y, b.y);
+  return (ox > 0 && oy > 0) ? ox * oy : 0;
+}
+function up(e) {
+  if (!drag) return;
+  const { g, el, sx, sy, naht } = drag; drag = null;
+  el.classList.remove('drag');
+  el.removeEventListener('pointermove', move);
+  el.removeEventListener('pointerup', up);
+  el.removeEventListener('pointercancel', up);
+
+  /* Tippen statt Ziehen */
+  if (Math.hypot(e.clientX - sx, e.clientY - sy) <= 6) {
+    if (naht !== null) {
+      const key = g.id + '-' + naht, jetzt = Date.now();
+      if (letzterTipp.key === key && jetzt - letzterTipp.t < 450) {
+        letzterTipp = { key: null, t: 0 };
+        trenneNaht(g, naht);
+      } else letzterTipp = { key, t: jetzt };
+    }
+    return;
+  }
+
+  let ziel = null, best = cw * ch * .18;
+  groups.forEach(o => { if (o !== g) { const a = ueberlapp(g, o); if (a > best) { best = a; ziel = o; } } });
+  if (!ziel) { aufraeumen(g); return; }
+
+  if (g.cards.length + ziel.cards.length > RUNDEN[runde].groesse) {
+    el.classList.add('shake');
+    fb.className = 'schlecht';
+    fb.textContent = RUNDEN[runde].groesse === 3 ? 'Es passen nur drei Karten zusammen.' : 'Es passen nur zwei Karten zusammen.';
+    setTimeout(() => el.classList.remove('shake'), 400);
+    aufraeumen(g);
+    return;
+  }
+  const links = (g.x + gW(g) / 2) < (ziel.x + gW(ziel) / 2);
+  const L = links ? g : ziel, Rr = links ? ziel : g;
+  ziel.x = links ? ziel.x - gW(g) : ziel.x;
+  ziel.cards = L.cards.concat(Rr.cards);
+  ziel.seams = L.seams.concat([{ st: 'neu', fresh: true }], Rr.seams);
+  /* Runde 3: Prozentkarte immer links, damit der Pfeil passt */
+  if (runde === 2 && ziel.cards.length === 2 && !ziel.cards[0].p && ziel.cards[1].p) ziel.cards.reverse();
+  groups = groups.filter(x => x !== g);
+  klemmen(ziel);
+  fb.textContent = ''; fb.className = '';
+  render();
+  const zel = board.querySelector(`[data-id="${ziel.id}"]`);
+  if (zel) zel.style.zIndex = ++zTop;
+  aufraeumen(ziel);
+}
+
+function trenneNaht(g, i) {
+  if (busy) return;
+  const s = g.seams[i];
+  if (s.st === 'ok') {
+    fb.className = 'gut';
+    fb.textContent = 'Grüne Streifen sind richtig und bleiben kleben.';
+    return;
+  }
+  busy = true;
+  const t = board.querySelector(`[data-id="${g.id}"] .tape[data-i="${i}"]`);
+  if (t) t.classList.add('weg');
+  setTimeout(() => {
+    const rechts = { id: ++gid, cards: g.cards.slice(i + 1), seams: g.seams.slice(i + 1), x: g.x + (i + 1) * cw, y: g.y };
+    g.cards = g.cards.slice(0, i + 1); g.seams = g.seams.slice(0, i);
+    groups.push(rechts);
+    render();
+    void board.offsetWidth;
+    rechts.x += cw * .4; rechts.y += ch * .25; klemmen(rechts);
+    const el = board.querySelector(`[data-id="${rechts.id}"]`);
+    if (el) { el.classList.add('spring'); el.style.left = rechts.x + 'px'; el.style.top = rechts.y + 'px'; }
+    setTimeout(() => { if (el) el.classList.remove('spring'); aufraeumen(rechts); busy = false; }, 650);
+    fb.textContent = ''; fb.className = '';
+  }, 420);
+}
+
+/* Karten, die unter einer Gruppe liegen, rutschen zur Seite */
+function aufraeumen(fest) {
+  const weg = groups.filter(o => o !== fest && ueberlapp(o, fest) > 0);
+  if (!weg.length) return;
+  const belegt = groups.filter(o => !weg.includes(o)).map(o => ({ x: o.x, y: o.y, w: gW(o) }));
+  weg.forEach(o => {
+    const p = freierPlatz(gW(o), o.x, o.y, belegt);
+    belegt.push({ x: p.x, y: p.y, w: gW(o) });
+    o.x = p.x; o.y = p.y;
+    const el = board.querySelector(`[data-id="${o.id}"]`);
+    if (el) { el.classList.add('spring'); el.style.left = o.x + 'px'; el.style.top = o.y + 'px';
+      setTimeout(() => el.classList.remove('spring'), 700); }
+  });
+}
+
+function freierPlatz(w, x0, y0, belegt) {
+  let best = null, bd = Infinity;
+  const m = Math.round(gap * .5);
+  for (let y = 6; y <= H - ch - 6; y += 10) {
+    for (let x = 6; x <= W - w - 6; x += 10) {
+      const frei = belegt.every(r => x + w + m <= r.x || r.x + r.w + m <= x || y + ch + m <= r.y || r.y + ch + m <= y);
+      if (!frei) continue;
+      const d = (x - x0) ** 2 + (y - y0) ** 2;
+      if (d < bd) { bd = d; best = { x, y }; }
+    }
+  }
+  return best || { x: Math.max(0, Math.min(W - w, x0 + 30)), y: Math.max(0, Math.min(H - ch, y0 + 40)) };
+}
+
+/* ---------- Prüfen ---------- */
+btnPruefen.addEventListener('click', pruefen);
+function pruefen() {
+  if (busy) return;
+  let neu = 0, ok = 0, bad = 0;
+  groups.forEach(g => g.seams.forEach((s, i) => {
+    if (s.st !== 'neu') return;
+    neu++;
+    const richtig = g.cards[i].set === g.cards[i + 1].set;
+    s.st = richtig ? 'ok' : 'bad';
+    richtig ? ok++ : bad++;
+    const t = board.querySelector(`[data-id="${g.id}"] .tape[data-i="${i}"]`);
+    if (t) { t.classList.remove('neu'); t.classList.add(richtig ? 'ok' : 'bad'); }
+  }));
+  if (neu === 0) {
+    fb.className = 'schlecht';
+    fb.textContent = 'Klebe zuerst Karten zusammen.';
+    return;
+  }
+  busy = true; btnPruefen.disabled = true;
+  fehler += bad; zeigeStand();
+  fb.className = bad ? 'schlecht' : 'gut';
+  fb.textContent = bad
+    ? `${ok} richtig, ${bad} falsch.`
+    : `Super! ${ok} richtige Verbindung${ok === 1 ? '' : 'en'}.`;
+  if (bad) {
+    setTimeout(() => board.querySelectorAll('.tape.bad').forEach(t => t.classList.add('dissolve')), 900);
+    setTimeout(trennen, 1750);
+  } else {
+    setTimeout(() => { render(); fertig(); }, 400);
+  }
+}
+
+function trennen() {
+  const neu = [], bewegen = [];
+  groups.forEach(g => {
+    if (!g.seams.some(s => s.st === 'bad')) { neu.push(g); return; }
+    let start = 0, erstes = true;
+    const teil = (a, b) => {
+      const ng = { id: erstes ? g.id : ++gid, cards: g.cards.slice(a, b + 1), seams: g.seams.slice(a, b), x: g.x + a * cw, y: g.y };
+      neu.push(ng);
+      if (!erstes) bewegen.push(ng);
+      erstes = false;
+    };
+    g.seams.forEach((s, i) => { if (s.st === 'bad') { teil(start, i); start = i + 1; } });
+    teil(start, g.cards.length - 1);
+  });
+  groups = neu;
+  const belegt = groups.filter(g => !bewegen.includes(g)).map(g => ({ x: g.x, y: g.y, w: gW(g) }));
+  const ziele = bewegen.map(g => {
+    const p = freierPlatz(gW(g), g.x, g.y + ch * .6, belegt);
+    belegt.push({ x: p.x, y: p.y, w: gW(g) });
+    return p;
+  });
+  render();
+  void board.offsetWidth;
+  bewegen.forEach((g, k) => {
+    const el = board.querySelector(`[data-id="${g.id}"]`);
+    g.x = ziele[k].x; g.y = ziele[k].y;
+    if (el) { el.classList.add('spring'); el.style.left = g.x + 'px'; el.style.top = g.y + 'px'; }
+  });
+  setTimeout(() => { board.querySelectorAll('.spring').forEach(e => e.classList.remove('spring')); fertig(); }, 700);
+}
+
+function fertig() {
+  busy = false; btnPruefen.disabled = false;
+  if (!groups.every(istVoll)) return;
+  btnPruefen.disabled = true;
+  const p = Math.max(0, maxVerb(runde) - fehler);
+  punkte[runde] = p;
+  fb.className = 'gut'; fb.textContent = 'Alles richtig verklebt!';
+  const stern = p === maxVerb(runde) ? ' <span class="stern">★ fehlerfrei</span>' : '';
+  let h;
+  if (runde < 2) {
+    h = `<h2>Runde ${runde + 1} geschafft!</h2>
+      <div class="gross">${p}/${maxVerb(runde)} richtig${stern}</div>
+      <button class="blau" id="weiter">Nächste Runde ➜</button>`;
+  } else {
+    tEnde = Date.now();
+    const ges = punkte.reduce((a, b) => a + b, 0), max = maxVerb(0) + maxVerb(1) + maxVerb(2);
+    h = `<h2>Geschafft! 🎉</h2>
+      ${punkte.map((q, i) => `<div class="zeile">Runde ${i + 1}: <b>${q}/${maxVerb(i)}</b> richtig${q === maxVerb(i) ? ' <span class="stern">★</span>' : ''}</div>`).join('')}
+      <div class="gross">Gesamt: ${ges}/${max} richtig</div>
+      <div class="gross">⏱ Zeit: ${mmss(tEnde - t0)}</div>
+      <button class="blau" id="nochmal">Nochmal spielen</button>`;
+  }
+  setTimeout(() => {
+    document.getElementById('modal').innerHTML = h;
+    document.getElementById('overlay').classList.add('zeigen');
+    konfetti();
+    const w = document.getElementById('weiter');
+    if (w) w.onclick = () => starteRunde(runde + 1);
+    const n = document.getElementById('nochmal');
+    if (n) n.onclick = () => { punkte = []; t0 = null; tEnde = null; starteRunde(0); };
+  }, 500);
+}
+
+/* ---------- Konfetti ---------- */
+function konfetti() {
+  const cv = document.getElementById('konfetti'), cx = cv.getContext('2d');
+  cv.width = innerWidth; cv.height = innerHeight;
+  const farben = ['#FFD54F', '#4FC3F7', '#81C784', '#F06292', '#BA68C8', '#FF8A65'];
+  const teile = Array.from({ length: 140 }, () => ({
+    x: innerWidth / 2 + (Math.random() - .5) * 200, y: innerHeight * .4,
+    vx: (Math.random() - .5) * 16, vy: -Math.random() * 14 - 4, r: Math.random() * 6 + 4,
+    f: farben[Math.floor(Math.random() * farben.length)], a: Math.random() * 6, va: (Math.random() - .5) * .3 }));
+  let n = 0;
+  (function schritt() {
+    cx.clearRect(0, 0, cv.width, cv.height);
+    teile.forEach(t => {
+      t.vy += .35; t.x += t.vx; t.y += t.vy; t.vx *= .99; t.a += t.va;
+      cx.save(); cx.translate(t.x, t.y); cx.rotate(t.a); cx.fillStyle = t.f;
+      cx.fillRect(-t.r, -t.r / 2, t.r * 2, t.r); cx.restore();
+    });
+    if (++n < 160) requestAnimationFrame(schritt); else cx.clearRect(0, 0, cv.width, cv.height);
+  })();
+}
+
+/* ---------- Fenstergröße ändern ---------- */
+window.addEventListener('resize', () => {
+  const aw = W, ah = H;
+  masse();
+  if (Math.abs(aw - W) < 2 && Math.abs(ah - H) < 2) return;
+  groups.forEach(g => { g.x = g.x * W / aw; g.y = g.y * H / ah; klemmen(g); });
+  render();
+});
+
+starteRunde(0);
+</script>
+</body>
+</html>
