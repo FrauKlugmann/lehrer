@@ -1,0 +1,207 @@
+<title>Einkaufen oder Tüte teilen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: links „Wie Einkaufen“, Mitte Kartenstapel, rechts „Wie Tüte teilen“; weißes Blatt im Stil der Arbeitsblattvorlage, bewusst nur heller Look */
+:root{
+  --papier:#ffffff; --tinte:#000000; --grau:#F4F6F5; --rand:#B9C4BF;
+  --smaragd:#00805F; --smaragd-hell:#D3F2E5;
+  --prop:#1565C0; --prop-hell:#E3EEFB;     /* Einkaufen */
+  --anti:#C2410C; --anti-hell:#FCEDE4;     /* Tüte teilen */
+  --ok:#00805F; --falsch:#CC0000; --wahl:#FFE873; --leise:#6F6F6F;
+  --schrift:Arial,Helvetica,"Liberation Sans",sans-serif;
+  color-scheme:light;
+}
+html{background:var(--papier)}
+body{background:var(--papier);color:var(--tinte);font-family:var(--schrift);font-size:clamp(14px,1.15vw,20px);line-height:1.3;
+  padding-block:18px 24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.blatt{max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:1em}
+.titel{background:var(--smaragd);color:#fff;font-weight:700;text-align:center;font-size:1.6em;padding:.4em .5em;margin:0;text-wrap:balance}
+.frage{text-align:center;font-size:1.15em;margin:0}
+.frage b{white-space:nowrap}
+
+.feld{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,1fr);gap:1em;align-items:start}
+@media (max-width:900px){.feld{grid-template-columns:1fr}.stapel{order:-1}}
+
+.kasten{border:2px solid var(--smaragd);display:flex;flex-direction:column;min-width:0}
+.kasten>h2{margin:0;font-size:1em;font-weight:700;padding:.35em .6em;border-bottom:2px solid var(--smaragd);background:var(--smaragd-hell)}
+.ziel.prop{border-color:var(--prop)} .ziel.prop>.kopf{background:var(--prop-hell);border-bottom-color:var(--prop)}
+.ziel.anti{border-color:var(--anti)} .ziel.anti>.kopf{background:var(--anti-hell);border-bottom-color:var(--anti)}
+.kopf{display:flex;align-items:center;gap:.7em;padding:.5em .7em;border-bottom:2px solid}
+.kopf svg{width:2.8em;height:2.8em;flex:none}
+.kopf h2{margin:0;font-size:1.25em;line-height:1.1}
+.kopf p{margin:.15em 0 0;font-size:.95em}
+.pfeile{margin-left:auto;font-size:1.9em;font-weight:700;letter-spacing:.05em;white-space:nowrap}
+.prop .pfeile{color:var(--prop)} .anti .pfeile{color:var(--anti)}
+
+.ablage{display:flex;flex-direction:column;gap:.5em;padding:.6em;min-height:14em;flex:1}
+.stapel .ablage{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start}
+@media (max-width:520px){.stapel .ablage{grid-template-columns:1fr}}
+.ablage.ueber{background:var(--grau);outline:3px dashed var(--smaragd);outline-offset:-6px}
+.leer{color:var(--leise);font-style:italic;text-align:center;margin:auto;padding:1em}
+.ablage:not(:empty)>.leer{display:none}
+.ablage>.leer:only-child{display:block}
+
+.karte{position:relative;background:var(--papier);border:1.5px solid var(--rand);padding:.45em .6em .45em .6em;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.karte:focus-visible{outline:3px solid var(--smaragd);outline-offset:2px}
+.karte .t{display:block}
+.karte .g{display:block;margin-top:.3em;font-size:.82em;color:var(--leise)}
+.karte.gewaehlt{background:var(--wahl);border-color:#B89A00}
+.karte.richtig{border:3px solid var(--ok)}
+.karte.falsch{border:3px solid var(--falsch)}
+.karte .m{position:absolute;top:-.55em;right:-.45em;width:1.5em;height:1.5em;border-radius:50%;color:#fff;font-weight:700;display:none;place-items:center;font-size:.9em}
+.karte.richtig .m{display:grid;background:var(--ok)}
+.karte.falsch .m{display:grid;background:var(--falsch)}
+.geist{position:fixed;pointer-events:none;z-index:50;opacity:.92;box-shadow:0 8px 20px rgba(0,0,0,.25);transform:rotate(-1.5deg)}
+
+.leiste{display:flex;flex-wrap:wrap;gap:.6em;align-items:center;justify-content:center}
+button{font:inherit;background:var(--papier);color:var(--tinte);border:2px solid var(--smaragd);padding:.4em 1em;cursor:pointer}
+button.haupt{background:var(--smaragd);color:#fff;font-weight:700}
+button:hover{filter:brightness(.95)}
+button:focus-visible{outline:3px solid var(--smaragd);outline-offset:2px}
+#ergebnis{font-weight:700;min-width:12em;text-align:center}
+.hinweis{text-align:center;color:var(--leise);font-size:.85em;margin:0}
+.fuss{text-align:right;font-style:italic;color:var(--leise);font-size:.65em;margin:0}
+@media (prefers-reduced-motion:reduce){.geist{transform:none}}
+</style>
+
+<main class="blatt">
+  <h1 class="titel">Proportional oder antiproportional?</h1>
+  <p class="frage">Wenn das eine <b>mehr</b> wird – wird das andere <b>mehr</b> oder <b>weniger</b>?</p>
+
+  <div class="feld">
+    <section class="kasten ziel prop" aria-labelledby="h-prop">
+      <div class="kopf">
+        <svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#1565C0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 8h6l5 24h24l5-16H13"/><circle cx="19" cy="40" r="3" fill="#1565C0"/><circle cx="35" cy="40" r="3" fill="#1565C0"/>
+        </svg>
+        <div><h2 id="h-prop">Wie Einkaufen</h2><p>proportional</p></div>
+        <div class="pfeile" aria-label="mehr – mehr">↑ ↑</div>
+      </div>
+      <div class="ablage" data-ziel="p"><p class="leer">mehr → mehr<br>Karten hierher ziehen</p></div>
+    </section>
+
+    <section class="kasten stapel" aria-labelledby="h-stapel">
+      <h2 id="h-stapel">Situationen</h2>
+      <div class="ablage" data-ziel="stapel" id="stapel"><p class="leer">Alle Karten sind sortiert.</p></div>
+    </section>
+
+    <section class="kasten ziel anti" aria-labelledby="h-anti">
+      <div class="kopf">
+        <svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#C2410C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 16h28l-3 26H13z"/><path d="M17 16c0-6 3-9 7-9s7 3 7 9"/><path d="M24 22v14M17 29h14" stroke-width="2.5"/>
+        </svg>
+        <div><h2 id="h-anti">Wie Tüte teilen</h2><p>antiproportional</p></div>
+        <div class="pfeile" aria-label="mehr – weniger">↑ ↓</div>
+      </div>
+      <div class="ablage" data-ziel="a"><p class="leer">mehr → weniger<br>Karten hierher ziehen</p></div>
+    </section>
+  </div>
+
+  <div class="leiste">
+    <button type="button" class="haupt" id="pruefen">Prüfen</button>
+    <span id="ergebnis" aria-live="polite"></span>
+    <button type="button" id="neu">Neu mischen</button>
+  </div>
+  <p class="hinweis">Karte ziehen – oder Karte antippen und dann den Kasten antippen.</p>
+
+  <p class="fuss">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</p>
+</main>
+
+<script>
+(function(){
+  const KARTEN=[
+    ['p','Ein Brötchen kostet 40 ct. Lisa kauft mehrere Brötchen.','Anzahl Brötchen ↔ Preis'],
+    ['p','Ein Auto fährt immer gleich schnell.','Fahrzeit ↔ gefahrene Strecke'],
+    ['p','Für einen Kuchen braucht man 3 Eier. Oma backt mehrere Kuchen.','Anzahl Kuchen ↔ Anzahl Eier'],
+    ['p','Tom tankt. 1 Liter Benzin kostet 1,80 €.','Liter ↔ Preis'],
+    ['p','Ein Eimer wird unter dem Wasserhahn gefüllt. Es läuft immer gleich viel Wasser.','Zeit ↔ Wasser im Eimer'],
+    ['p','Eine Kinokarte kostet 9 €. Die Klasse kauft Karten.','Anzahl Karten ↔ Gesamtpreis'],
+    ['p','Ein Drucker druckt 20 Seiten pro Minute.','Zeit ↔ gedruckte Seiten'],
+    ['p','Mia passt auf ein Baby auf. Sie bekommt 8 € pro Stunde.','Stunden ↔ Geld'],
+    ['a','24 Gummibärchen werden gerecht an Kinder verteilt.','Anzahl Kinder ↔ Gummibärchen pro Kind'],
+    ['a','Eine Pizza wird in gleich große Stücke geschnitten.','Anzahl Stücke ↔ Größe eines Stücks'],
+    ['a','Mehrere Maler streichen eine Wand. Alle arbeiten gleich schnell.','Anzahl Maler ↔ Zeit'],
+    ['a','Ein Schwimmbecken wird mit Pumpen leer gepumpt.','Anzahl Pumpen ↔ Zeit'],
+    ['a','Die Busfahrt kostet 300 €. Alle Schüler zahlen gleich viel.','Anzahl Schüler ↔ Preis pro Schüler'],
+    ['a','Familie Weber fährt 200 km in den Urlaub.','Geschwindigkeit ↔ Fahrzeit'],
+    ['a','Ein Sack Futter reicht für 1 Kaninchen 30 Tage. Es kommen Kaninchen dazu.','Anzahl Kaninchen ↔ Anzahl Tage'],
+    ['a','Lena liest ein Buch mit 120 Seiten. Sie liest jeden Tag gleich viele Seiten.','Seiten pro Tag ↔ Anzahl Tage'],
+  ];
+  const stapel=document.getElementById('stapel');
+  const ablagen=[...document.querySelectorAll('.ablage')];
+  const erg=document.getElementById('ergebnis');
+  let gewaehlt=null;
+
+  function mischen(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+  function markeWeg(k){k.classList.remove('richtig','falsch');erg.textContent='';}
+  function waehle(k){if(gewaehlt)gewaehlt.classList.remove('gewaehlt');gewaehlt=(gewaehlt===k)?null:k;if(gewaehlt)gewaehlt.classList.add('gewaehlt');}
+  function lege(k,ablage){if(!k||!ablage)return;ablage.appendChild(k);markeWeg(k);if(gewaehlt){gewaehlt.classList.remove('gewaehlt');gewaehlt=null;}}
+
+  function aufbauen(){
+    ablagen.forEach(a=>a.querySelectorAll('.karte').forEach(k=>k.remove()));
+    mischen(KARTEN.map((d,i)=>({d,i}))).forEach(({d,i})=>{
+      const k=document.createElement('div');k.className='karte';k.tabIndex=0;k.dataset.typ=d[0];k.id='karte-'+i;
+      k.setAttribute('role','button');
+      k.innerHTML='<span class="t"></span><span class="g"></span><span class="m" aria-hidden="true"></span>';
+      k.querySelector('.t').textContent=d[1];k.querySelector('.g').textContent=d[2];
+      stapel.appendChild(k);
+    });
+    gewaehlt=null;erg.textContent='';
+  }
+
+  // Ziehen mit Maus, Stift oder Finger; kurzes Antippen = auswählen
+  let zug=null;
+  document.addEventListener('pointerdown',e=>{
+    const k=e.target.closest('.karte');if(!k||e.button>0)return;
+    zug={k,x:e.clientX,y:e.clientY,geist:null,dx:0,dy:0,id:e.pointerId};
+  });
+  document.addEventListener('pointermove',e=>{
+    if(!zug||e.pointerId!==zug.id)return;
+    if(!zug.geist){
+      if(Math.hypot(e.clientX-zug.x,e.clientY-zug.y)<6)return;
+      const r=zug.k.getBoundingClientRect();
+      zug.geist=zug.k.cloneNode(true);zug.geist.classList.add('geist');zug.geist.classList.remove('gewaehlt','richtig','falsch');
+      zug.geist.style.width=r.width+'px';zug.dx=zug.x-r.left;zug.dy=zug.y-r.top;
+      document.body.appendChild(zug.geist);zug.k.style.opacity='.35';
+    }
+    zug.geist.style.left=(e.clientX-zug.dx)+'px';zug.geist.style.top=(e.clientY-zug.dy)+'px';
+    ablagen.forEach(a=>a.classList.remove('ueber'));
+    const ziel=unter(e);if(ziel)ziel.classList.add('ueber');
+  });
+  function unter(e){const el=document.elementFromPoint(e.clientX,e.clientY);return el&&el.closest('.ablage, .kasten')?(el.closest('.ablage')||el.closest('.kasten').querySelector('.ablage')):null;}
+  function ende(e){
+    if(!zug||e.pointerId!==zug.id)return;
+    if(zug.geist){const ziel=unter(e);zug.geist.remove();zug.k.style.opacity='';ablagen.forEach(a=>a.classList.remove('ueber'));if(ziel)lege(zug.k,ziel);}
+    else waehle(zug.k);
+    zug=null;
+  }
+  document.addEventListener('pointerup',ende);
+  document.addEventListener('pointercancel',e=>{if(zug&&zug.geist){zug.geist.remove();zug.k.style.opacity='';ablagen.forEach(a=>a.classList.remove('ueber'));}zug=null;});
+
+  // Antippen eines Kastens legt die gewählte Karte hinein
+  document.querySelectorAll('.kasten').forEach(kasten=>kasten.addEventListener('click',e=>{
+    if(!gewaehlt||e.target.closest('.karte'))return;
+    lege(gewaehlt,kasten.querySelector('.ablage'));
+  }));
+  // Tastatur: Enter wählt, dann 1 = Einkaufen, 2 = Tüte teilen, 0 = zurück
+  document.addEventListener('keydown',e=>{
+    const k=document.activeElement&&document.activeElement.closest('.karte');
+    if(k&&(e.key==='Enter'||e.key===' ')){e.preventDefault();waehle(k);return;}
+    if(!gewaehlt)return;
+    const z={'1':'p','2':'a','0':'stapel'}[e.key];
+    if(z){const k2=gewaehlt;lege(k2,document.querySelector('.ablage[data-ziel="'+z+'"]'));k2.focus();}
+  });
+
+  document.getElementById('pruefen').addEventListener('click',()=>{
+    let r=0,n=0;
+    document.querySelectorAll('.ablage[data-ziel="p"] .karte, .ablage[data-ziel="a"] .karte').forEach(k=>{
+      const ok=k.dataset.typ===k.parentElement.dataset.ziel;n++;if(ok)r++;
+      k.classList.toggle('richtig',ok);k.classList.toggle('falsch',!ok);k.querySelector('.m').textContent=ok?'✓':'✗';
+    });
+    const rest=stapel.querySelectorAll('.karte').length;
+    erg.textContent=n?`${r} von ${n} richtig`+(rest?` · ${rest} noch nicht sortiert`:(r===16?' – super!':'')):'Noch keine Karte sortiert';
+  });
+  document.getElementById('neu').addEventListener('click',aufbauen);
+  aufbauen();
+})();
+</script>
