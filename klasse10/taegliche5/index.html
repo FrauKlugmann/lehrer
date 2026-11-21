@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Die täglichen 5 – Klasse 10</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#000;font-family:Arial,Helvetica,sans-serif;font-size:clamp(16px,1.35vw,22px);line-height:1.4}
+.wrap{max-width:1500px;margin:0 auto;padding:14px 22px}
+header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;border-bottom:4px solid #0E9AA7;padding-bottom:8px}
+h1{margin:0;font-size:2em;line-height:1.1}
+h1 small{display:block;font-size:.45em;font-weight:normal;color:#333;margin-top:4px}
+.date{font-size:1.05em;font-weight:bold;color:#076f78}
+.zur{display:inline-block;text-decoration:none;font-size:.7em;font-weight:bold;color:#076f78;border:2px solid #0E9AA7;border-radius:999px;padding:4px 14px;margin-bottom:8px;background:#fff}
+.zur:hover{background:#effafb}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.bar .lab{font-weight:bold;margin-right:4px}
+button{font:inherit;font-weight:bold;cursor:pointer;border-radius:8px;border:2px solid #0E9AA7;background:#fff;color:#076f78;padding:6px 14px}
+button.on{background:#0E9AA7;color:#fff}
+button.main{background:#0E9AA7;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+@media(max-width:1100px){.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.card{border:2px solid #000;border-radius:10px;display:flex;flex-direction:column;min-height:16em;cursor:pointer;position:relative}
+.card .h{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;border-bottom:2px solid #000;font-weight:bold}
+.card .nr{display:inline-grid;place-items:center;width:1.8em;height:1.8em;border-radius:50%;background:#0E9AA7;color:#fff;font-size:1.1em}
+.card .topic{font-size:.85em;color:#333}
+.card .q{padding:12px;font-size:1.25em;flex:1}
+.card .sol{display:none;border-top:2px dashed #0E9AA7;padding:10px 12px;background:#effafb}
+.card.show .sol{display:block}
+.card .sol b{font-size:1.15em}
+.card .hint{position:absolute;bottom:6px;right:10px;font-size:.75em;color:#888}
+.card.show .hint{display:none}
+.new{position:absolute;top:-10px;right:-8px;background:#C2410C;color:#fff;font-size:.65em;padding:2px 7px;border-radius:10px;font-weight:bold}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;margin:0 2px}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px}.fr>span:last-child{padding:0 3px}
+.timer{font-size:1.4em;font-weight:bold;font-variant-numeric:tabular-nums;min-width:4.2em;text-align:center;border:2px solid #000;border-radius:8px;padding:2px 8px}
+.timer.end{color:#fff;background:#C62828;border-color:#C62828;animation:blink .6s ease-in-out 8}
+@keyframes blink{50%{transform:scale(1.18)}}
+.zeit{position:fixed;left:50%;top:38%;transform:translate(-50%,-50%);background:#0E9AA7;color:#fff;border:4px solid #000;border-radius:18px;padding:28px 48px;text-align:center;z-index:99;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.35);animation:pop .5s ease-out}
+.zeit div{font-size:3em;font-weight:bold}.zeit small{font-size:1.1em}
+@keyframes pop{from{transform:translate(-50%,-50%) scale(.5);opacity:0}}
+table.v{border-collapse:collapse;margin:6px 0;font-size:.85em}table.v td{border:1px solid #000;padding:2px 8px;text-align:center}table.v tr:first-child td,table.v td:first-child{background:#e6e6e6;font-weight:bold}
+.info{font-size:.85em;color:#333;margin-top:12px}
+footer{text-align:right;font-size:.85em;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><a class="zur" href="../">← 10. Klasse</a><h1>Die täglichen 5<small>BLF-Wiederholung ohne Taschenrechner – Emil-Petri-Schule Arnstadt</small></h1></div>
+  <div class="date" id="date"></div>
+</header>
+<div class="bar"><span class="lab">Stoffstand:</span>
+  <button data-c="1">1 – ohne Trigonometrie</button><button data-c="2">2 – mit Trigonometrie im Dreieck</button><button data-c="3">3 – mit Winkelfunktionen</button><button data-c="4">4 – alles</button></div>
+<div class="bar">
+  <button class="main" id="today">Aufgaben des Tages</button><button id="newset">Neue Aufgaben</button><button id="all">Alle Lösungen zeigen</button>
+  <span style="flex:1"></span><button id="snd">🔔 Ton an</button><button id="tstart">5-Minuten-Uhr starten</button><span class="timer" id="timer">5:00</span>
+</div>
+<div class="grid" id="grid"></div>
+<div class="info">Tippen auf eine Karte zeigt ihre Lösung. „Aufgaben des Tages“ ist an einem Tag immer gleich – so passen die Aufgaben auch in Parallelklassen zusammen. <span style="color:#C2410C;font-weight:bold">NEU</span> markiert Aufgaben aus dem zuletzt dazugekommenen Stoffgebiet.</div>
+<footer>Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</footer>
+</div>
+<script>
+"use strict";
+/* ---------- Zufall (mit Startwert für „Aufgaben des Tages“) ---------- */
+let R=Math.random;
+function seeded(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}
+  return function(){h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return (h>>>0)/4294967296}}
+const ri=(a,b)=>a+Math.floor(R()*(b-a+1)),pick=a=>a[Math.floor(R()*a.length)],nz=(a,b)=>{let x;do{x=ri(a,b)}while(!x);return x};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b)[a,b]=[b,a%b];return a||1};
+const de=x=>{let s=String(Math.round(x*1e6)/1e6).replace(".",",");return s[0]==="-"?"−"+s.slice(1):s};
+const fr=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const frS=(n,d)=>{const g=gcd(n,d);n/=g;d/=g;if(d<0){n=-n;d=-d}return d===1?de(n):(n<0?"−":"")+fr(Math.abs(n),d)};
+const sg=n=>n<0?` − ${de(-n)}`:` + ${de(n)}`;
+const co=(a,v="x")=>a===1?v:a===-1?"−"+v:de(a)+v;
+const xm=d=>d===0?"x":`(x ${d>0?"−":"+"} ${Math.abs(d)})`;
+const T=(topic,q,a,s)=>({topic,q,a,s});
+const N=x=>`<span style="white-space:nowrap">${x}</span>`;
+
+/* ---------- Bereich 1: Zahlen, Terme, Potenzen ---------- */
+const Z=[
+ [1,()=>{const b=pick([3,4,5,6,8]),d=pick([2,3,4,6]);const a=ri(1,b-1),c=ri(1,d+1);const op=pick(["+",":"]);let n,m;if(op==="+"){n=a*d+c*b;m=b*d}else{n=a*d;m=b*c}
+   return T("Bruchrechnung",`Berechne: ${N(fr(a,b)+" "+op+" "+fr(c,d))}`,frS(n,m),op==="+"?"Auf einen gemeinsamen Nenner bringen, dann Zähler addieren.":"Mit dem Kehrwert multiplizieren.")}],
+ [1,()=>{const t=pick([0,1,2]);if(t===0){const p=pick([10,20,25,50,75]),G=pick([40,80,120,200,360]);return T("Prozentwert",`Wie viel sind ${p} % von ${G} €?`,`${de(G*p/100)} €`,`${G} € · ${fr(p,100)}`)}
+   if(t===1){const p=pick([20,25,40,50]),G=pick([60,80,120,200]),W=G*p/100;return T("Grundwert",`${W} € sind ${p} % des Preises. Wie hoch ist der Preis?`,`${G} €`,`${W} € : ${p} · 100`)}
+   const p=pick([10,20,25]),G=pick([40,60,80,120]);return T("Rabatt",`Ein Pulli kostet ${G} €. Er wird um ${p} % reduziert. Neuer Preis?`,`${de(G*(1-p/100))} €`,`${G} € · ${de(1-p/100)}`)}],
+ [1,()=>{const t=pick([0,1,2]);if(t===0){const m=ri(2,7),n=ri(2,6),k=ri(1,5);return T("Potenzgesetze",`Vereinfache: ${fr(`a<sup>${m}</sup> · a<sup>${n}</sup>`,`a<sup>${k}</sup>`)}`,`a<sup>${m+n-k}</sup>`,`${m} + ${n} − ${k} = ${m+n-k}`)}
+   if(t===1){const [b,k]=pick([[2,3],[2,4],[5,2],[10,3],[3,2]]);return T("Negative Exponenten",`Berechne ${b}<sup>−${k}</sup>.`,fr(1,b**k),`${b}<sup>−${k}</sup> = 1 : ${b}<sup>${k}</sup>`)}
+   const c=pick([2.5,3.4,6,7.2]),k=-ri(3,5);return T("Zehnerpotenzen",`Schreibe ${de(c*10**k)} in wissenschaftlicher Schreibweise.`,`${de(c)} · 10<sup>${de(k)}</sup>`,"Komma so verschieben, dass eine Ziffer vor dem Komma steht.")}],
+ [1,()=>{const t=pick([0,1,2]);if(t===0){const [a,b]=pick([[2,18],[3,12],[2,50],[5,20],[3,27]]);return T("Wurzeln",`Berechne √${a} · √${b}.`,de(Math.sqrt(a*b)),`√${a*b}`)}
+   if(t===1){const [b,e,r]=pick([[27,"⅓",3],[16,"¼",2],[49,"0,5",7],[8,"⅔",4],[100,"½",10]]);return T("Rationale Exponenten",`Berechne ${b}<sup>${e}</sup>.`,r,"Hochzahl ⅓ bedeutet dritte Wurzel usw.")}
+   const k=ri(2,7),m=pick([2,3,5]);return T("Teilweise Wurzel ziehen",`Vereinfache √${k*k*m}.`,`${k} · √${m}`,`√(${k*k} · ${m})`)}],
+ [1,()=>{const a=ri(2,9),t=pick([0,1,2]);if(t===0)return T("Binomische Formeln",`Multipliziere aus: ${N(`(x + ${a})²`)}`,`x² + ${2*a}x + ${a*a}`,"(a + b)² = a² + 2ab + b²");
+   if(t===1)return T("Binomische Formeln",`Multipliziere aus: ${N(`(2x − ${a})²`)}`,`4x² − ${4*a}x + ${a*a}`,"(a − b)² = a² − 2ab + b²");
+   return T("Faktorisieren",`Faktorisiere: ${N(`x² − ${a*a}`)}`,`(x + ${a})(x − ${a})`,"dritte binomische Formel")}],
+ [4,()=>{const L=pick([[2,8,3],[10,1000,3],[3,81,4],[2,"⅛",-3],[10,"0,01",-2],[5,25,2]]);return T("Logarithmus",`Berechne log<sub>${L[0]}</sub>(${L[1]}).`,de(L[2]),`${L[0]}<sup>${de(L[2])}</sup> = ${L[1]}`)}],
+];
+/* ---------- Bereich 2: Gleichungen ---------- */
+const G=[
+ [1,()=>{const x=nz(-6,6);let a,c;do{a=nz(-5,9);c=nz(-5,9)}while(a===c);const b=nz(-9,9),e=a*x+b-c*x;return T("Lineare Gleichung",`Löse: ${N(`${co(a)}${sg(b)} = ${co(c)}${e?sg(e):""}`)}`,`x = ${de(x)}`,`${de(a-c)}x = ${de(e-b)}`)}],
+ [1,()=>{const t=pick([0,1,2]);if(t===0){const k=ri(2,12);return T("Quadratische Gleichung",`Löse: ${N(`x² = ${k*k}`)}`,`x = ${k} oder x = −${k}`,"Zwei Lösungen!")}
+   if(t===1){const a=nz(-7,7);return T("Quadratische Gleichung",`Löse: ${N(`x² ${a>0?"−":"+"} ${Math.abs(a)}x = 0`)}`,`x = 0 oder x = ${de(a)}`,`x ausklammern: x(x ${a>0?"−":"+"} ${Math.abs(a)}) = 0`)}
+   let r1,r2;do{r1=nz(-6,6);r2=nz(-6,6)}while(r1===r2);const p=-(r1+r2),q=r1*r2;return T("Quadratische Gleichung",`Löse: ${N(`x²${p?(p<0?" − ":" + ")+(Math.abs(p)===1?"":Math.abs(p))+"x":""}${sg(q)} = 0`)}`,`x = ${de(Math.max(r1,r2))} oder x = ${de(Math.min(r1,r2))}`,"Lösungsformel oder Zerlegen in Linearfaktoren")}],
+ [1,()=>{const x=ri(-4,5),y=ri(-4,5);let m1,m2;do{m1=nz(-3,3);m2=nz(-3,3)}while(m1===m2);return T("Gleichungssystem",`Löse:<br>(I) y = ${co(m1)}${y-m1*x?sg(y-m1*x):""}<br>(II) y = ${co(m2)}${y-m2*x?sg(y-m2*x):""}`,`x = ${de(x)}, y = ${de(y)}`,"Gleichsetzungsverfahren")}],
+ [1,()=>{const b=ri(2,8),a=nz(-9,9);return T("Wurzelgleichung",`Löse: ${N(`√(x${sg(a)}) = ${b}`)}`,`x = ${de(b*b-a)}`,"Quadrieren, dann die Probe machen.")}],
+ [4,()=>{const t=pick([0,1]);if(t===0){const [b,k]=pick([[2,5],[3,4],[2,6],[5,3],[10,4]]);const c=pick([1,1,2,3]);return T("Exponentialgleichung",`Löse: ${c===1?"":c+" · "}${b}<sup>x</sup> = ${c*b**k}`,`x = ${k}`,`${b}<sup>x</sup> = ${b**k} = ${b}<sup>${k}</sup>`)}
+   const k=ri(2,5);return T("Exponentialgleichung",`Löse: 5<sup>${k}x − ${k}</sup> = 1`,"x = 1","5⁰ = 1, also Exponent = 0")}],
+];
+/* ---------- Bereich 3: Funktionen ---------- */
+const F=[
+ [1,()=>{const m=nz(-4,4),n=ri(-5,5),x1=ri(-3,1),x2=x1+ri(1,4);return T("Lineare Funktion",`Eine Gerade geht durch P(${de(x1)} | ${de(m*x1+n)}) und Q(${de(x2)} | ${de(m*x2+n)}). Bestimme ihren Anstieg.`,`m = ${de(m)}`,`m = ${fr("y₂ − y₁","x₂ − x₁")}`)}],
+ [1,()=>{const d=nz(-4,4),e=ri(-5,5),a=pick([1,-1,2,-2,0.5]);return T("Scheitelpunkt",`Gib den Scheitelpunkt von ${N(`f(x) = ${a===1?"":a===-1?"−":de(a)}${xm(d)}²${e?sg(e):""}`)} an. Ist die Parabel nach oben oder unten geöffnet?`,`S(${de(d)} | ${de(e)}), nach ${a>0?"oben":"unten"} geöffnet`,`a(x − d)² + e → S(d | e)`)}],
+ [1,()=>{let r1,r2;do{r1=ri(-6,6);r2=ri(-6,6)}while(r1===r2);return T("Nullstellen",`Gib die Nullstellen von ${N(`f(x) = ${xm(r1)} · ${xm(r2)}`)} an.`,`x = ${de(r1)} und x = ${de(r2)}`,"Satz vom Nullprodukt")}],
+ [1,()=>{const n=pick([2,3,4,5,-1,-2]);const ev=n%2===0;return T("Potenzfunktionen",`Welche Symmetrie hat der Graph von f(x) = x<sup>${de(n)}</sup>?`,ev?"achsensymmetrisch zur y-Achse":"punktsymmetrisch zum Ursprung",`Exponent ${de(n)} ist ${ev?"gerade":"ungerade"}.`)}],
+ [1,()=>{const c=nz(-3,3),e=nz(-3,3);return T("Verschieben",`Gib die Asymptoten des Graphen von f(x) = ${fr(1,xm(c))}${sg(e)} an.`,`x = ${de(c)} und y = ${de(e)}`,"Verschiebung von 1/x")}],
+ [3,()=>{const t=pick([0,1,2]);const a=pick([2,3,4]),b=pick([2,3,4]);if(t===0)return T("Sinusfunktion",`Gib Amplitude und kleinste Periode von f(x) = ${a} · sin(${b}x) an.`,`Amplitude ${a}, Periode ${b===2?"π":frS(2,b)+"π"}`,"Periode = 2π : b");
+   if(t===1){const d=nz(-3,3);return T("Wertebereich",`Gib den Wertebereich von ${N(`f(x) = ${a} · sin(x)${sg(d)}`)} an.`,`[${de(d-a)}; ${de(d+a)}]`,"sin x liegt zwischen −1 und 1.")}
+   return T("Sinusfunktion",`Gib alle Nullstellen von f(x) = sin(x) im Intervall [0; 2π] an.`,"x = 0, x = π, x = 2π","Sinuskurve schneidet die x-Achse bei Vielfachen von π.")}],
+ [3,()=>{const L=[[180,"π"],[90,fr("π",2)],[60,fr("π",3)],[45,fr("π",4)],[270,fr("3π",2)],[120,fr("2π",3)]];const [g,b]=pick(L);return R()<.5?T("Bogenmaß",`Gib ${g}° im Bogenmaß an.`,b,"180° entsprechen π."):T("Gradmaß",`Gib ${b} im Gradmaß an.`,`${g}°`,"π entspricht 180°.")}],
+ [4,()=>{const t=pick([0,1,2]);if(t===0){const p=pick([3,5,8,20]),up=R()<.5;return T("Wachstumsfaktor",`Ein Bestand ${up?"wächst":"nimmt"} jährlich um ${p} % ${up?"":"ab"}. Wachstumsfaktor?`,`q = ${de(up?1+p/100:1-p/100)}`,"q = 1 ± p/100")}
+   if(t===1){const B=pick([50,100,200]),n=ri(2,4);return T("Exponentielles Wachstum",`Bakterien verdoppeln sich stündlich. Start: ${B}. Wie viele sind es nach ${n} Stunden?`,de(B*2**n),`${B} · 2<sup>${n}</sup>`)}
+   const m=pick([2,4,0.5,-2]),n=nz(-6,6);return T("Umkehrfunktion",`Bestimme die Umkehrfunktion von ${N(`f(x) = ${co(m)}${sg(n)}`)}.`,`f<sup>−1</sup>(x) = ${co(1/m)}${sg(-n/m)}`,"Nach x umstellen, x und y tauschen.")}],
+];
+/* ---------- Bereich 4: Geometrie ---------- */
+const TR=[[3,4,5],[6,8,10],[5,12,13],[8,15,17],[9,12,15]];
+const Ge=[
+ [1,()=>{const [a,b,c]=pick(TR);return R()<.5?T("Pythagoras",`Rechtwinkliges Dreieck, Katheten ${a} cm und ${b} cm. Hypotenuse?`,`${c} cm`,`√(${a*a} + ${b*b}) = √${c*c}`):T("Pythagoras",`Rechtwinkliges Dreieck, Hypotenuse ${c} cm, eine Kathete ${a} cm. Andere Kathete?`,`${b} cm`,`√(${c*c} − ${a*a}) = √${b*b}`)}],
+ [1,()=>{const k=pick([2,3,4]),A=ri(2,9);return T("Zentrische Streckung",`Ein Dreieck mit ${A} cm² Flächeninhalt wird mit k = ${k} gestreckt. Neuer Flächeninhalt?`,`${A*k*k} cm²`,"Flächen mal k²")}],
+ [1,()=>{const t=pick([0,1,2,3]);if(t===0){const a=pick([3,6,9]),h=pick([4,5,10]);return T("Pyramide",`Quadratische Pyramide: a = ${a} cm, h = ${h} cm. Volumen?`,`${a*a*h/3} cm³`,"V = ⅓ · a² · h")}
+   if(t===1){const r=ri(2,5),h=ri(2,10);return T("Zylinder",`Zylinder: r = ${r} cm, h = ${h} cm. Volumen (als Vielfaches von π)?`,`${r*r*h}π cm³`,"V = π · r² · h")}
+   if(t===2){const r=ri(2,9);return T("Kreis",`Kreis mit r = ${r} cm. Umfang und Flächeninhalt (mit π)?`,`u = ${2*r}π cm, A = ${r*r}π cm²`,"u = 2πr, A = πr²")}
+   const l=pick([20,30,40,50]),b=pick([10,20,30]),h=pick([10,20,30]);return T("Volumen",`Aquarium ${l} cm × ${b} cm × ${h} cm. Wie viele Liter?`,`${l*b*h/1000} Liter`,"1 Liter = 1000 cm³")}],
+ [1,()=>{const s=pick([1.5,2]),sch=pick([2,3]),B=pick([6,9,12]);return T("Strahlensatz",`Ein ${de(s)} m langer Stab wirft einen ${sch} m langen Schatten, ein Baum einen ${B} m langen. Wie hoch ist der Baum?`,`${de(s*B/sch)} m`,`h : ${B} = ${de(s)} : ${sch}`)}],
+ [2,()=>{const t=pick([0,1,2,3]);if(t===0){const [f,w,v]=pick([["sin",30,fr(1,2)],["cos",60,fr(1,2)],["tan",45,"1"],["sin",90,"1"],["cos",0,"1"],["sin",60,fr("√3",2)],["cos",45,fr("√2",2)]]);return T("Besondere Werte",`Gib ${f} ${w}° an.`,v,"Merkhilfe: ½√0, ½√1, ½√2, ½√3, ½√4")}
+   if(t===1){const c=pick([6,8,10,14,20]);return T("Trigonometrie",`Rechtwinkliges Dreieck: Hypotenuse ${c} cm, α = 30°. Gegenkathete von α?`,`${c/2} cm`,"sin 30° = ½")}
+   if(t===2){const a=pick([4,6,8]),b=pick([5,10]);return T("Flächeninhalt",`Dreieck mit a = ${a} cm, b = ${b} cm, γ = 30°. Flächeninhalt?`,`${a*b/4} cm²`,"A = ½ · a · b · sin γ, sin 30° = ½")}
+   return T("Trigonometrie",`Im rechtwinkligen Dreieck sind Gegenkathete und Ankathete von α gleich lang. Wie groß ist α?`,"45°","tan α = 1")}],
+];
+/* ---------- Bereich 5: Stochastik ---------- */
+const St=[
+ [1,()=>{const e=pick([["eine gerade Zahl",3],["eine Primzahl",3],["eine Zahl größer als 4",2],["eine Sechs",1]]);return T("Laplace",`Ein Würfel wird geworfen. Wahrscheinlichkeit für ${e[0]}?`,frS(e[1],6),"günstige : mögliche Ergebnisse")}],
+ [1,()=>{const p=pick([15,30,35,62,85]);return T("Gegenereignis",`P(Regen) = ${p} %. Wie groß ist P(kein Regen)?`,`${100-p} %`,"1 − P(A)")}],
+ [1,()=>{const r=ri(2,5),b=ri(2,5),n=r+b;return R()<.5?T("Mit Zurücklegen",`${r} rote, ${b} blaue Kugeln. Zweimal mit Zurücklegen: P(rot, rot)?`,frS(r*r,n*n),`${fr(r,n)} · ${fr(r,n)}`):T("Ohne Zurücklegen",`${r} rote, ${b} blaue Kugeln. Zweimal ohne Zurücklegen: P(rot, rot)?`,frS(r*(r-1),n*(n-1)),`${fr(r,n)} · ${fr(r-1,n-1)}`)}],
+ [1,()=>{const k=ri(2,4);return T("Mindestens einmal",`Eine Münze wird ${k}-mal geworfen. P(mindestens einmal Zahl)?`,frS(2**k-1,2**k),`1 − (½)<sup>${k}</sup>`)}],
+ [1,()=>{let a;do{a=Array.from({length:5},()=>ri(1,9))}while(a.reduce((s,x)=>s+x,0)%5);const b=a.slice().sort((x,y)=>x-y);return T("Mittelwert und Median",`Daten: ${a.join("; ")}. Mittelwert und Median?`,`Mittelwert ${a.reduce((s,x)=>s+x,0)/5}, Median ${b[2]}`,`geordnet: ${b.join("; ")}`)}],
+ [1,()=>{const N=pick([100,200]),A=pick([40,60]),AB=pick([10,20,30]),B=pick([50,70]);const tbl=`<table class="v"><tr><td></td><td>B</td><td>nicht B</td><td>Σ</td></tr><tr><td>A</td><td>${AB}</td><td>?</td><td>${A}</td></tr><tr><td>nicht A</td><td>${B-AB}</td><td></td><td>${N-A}</td></tr><tr><td>Σ</td><td>${B}</td><td></td><td>${N}</td></tr></table>`;
+   return T("Vierfeldertafel",`Ergänze das Feld „?“.${tbl}`,`${A-AB}`,`${A} − ${AB}`)}],
+ [1,()=>{const pA=pick([0.2,0.4,0.5]),pB=pick([0.3,0.5]),u=R()<.5,pAB=u?pA*pB:pA*pB+0.05;return T("Unabhängigkeit",`P(A) = ${de(pA)}, P(B) = ${de(pB)}, P(A ∩ B) = ${de(pAB)}. Unabhängig?`,u?"ja":"nein",`P(A) · P(B) = ${de(pA*pB)}`)}],
+];
+const AREAS=[["Zahlen und Terme",Z],["Gleichungen",G],["Funktionen",F],["Geometrie",Ge],["Stochastik",St]];
+
+let charge=1;try{charge=+localStorage.getItem("taeglicheFuenf.charge")||1}catch(e){}
+function make(seedStr){
+  R=seedStr?seeded(seedStr):Math.random;
+  return AREAS.map(([name,pool])=>{
+    const avail=pool.filter(([c])=>c<=charge);
+    const fresh=avail.filter(([c])=>c===charge&&charge>1);
+    const pickFrom=fresh.length&&R()<.5?fresh:avail;
+    const [c,g]=pick(pickFrom);const t=g();t.area=name;t.isNew=c===charge&&charge>1;return t});
+}
+function render(tasks){
+  document.getElementById("grid").innerHTML=tasks.map((t,i)=>`<div class="card" data-i="${i}">${t.isNew?'<span class="new">NEU</span>':""}
+    <div class="h"><span class="nr">${i+1}</span><span class="topic">${t.topic}</span></div><div class="q">${t.q}</div>
+    <div class="sol"><b>${t.a}</b><br><span style="font-size:.85em">${t.s}</span></div><span class="hint">Tippen für Lösung</span></div>`).join("");
+  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>c.classList.toggle("show"));
+}
+const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+function setCharge(c){charge=c;try{localStorage.setItem("taeglicheFuenf.charge",c)}catch(e){}document.querySelectorAll("[data-c]").forEach(b=>b.classList.toggle("on",+b.dataset.c===c));render(make(todayStr()+"#"+c))}
+document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>setCharge(+b.dataset.c));
+document.getElementById("today").onclick=()=>render(make(todayStr()+"#"+charge));
+document.getElementById("newset").onclick=()=>render(make(null));
+let allShown=false;document.getElementById("all").onclick=e=>{allShown=!document.querySelector(".card:not(.show)")?false:true;document.querySelectorAll(".card").forEach(c=>c.classList.toggle("show",allShown));e.target.textContent=allShown?"Lösungen verbergen":"Alle Lösungen zeigen"};
+document.getElementById("date").textContent=new Date().toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+/* Klingelton */
+let ac=null,soundOn=true;try{soundOn=localStorage.getItem("tf.sound")!=="0"}catch(e){}
+function unlock(){try{if(!ac){const C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C()}if(ac&&ac.state==="suspended")ac.resume()}catch(e){}}
+function bell(t,f,len,vol){const g=ac.createGain();g.connect(ac.destination);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+len);
+  [[1,1],[2.76,.25],[5.4,.08]].forEach(([m,v])=>{const o=ac.createOscillator(),h=ac.createGain();o.type="sine";o.frequency.value=f*m;h.gain.value=v;o.connect(h);h.connect(g);o.start(t);o.stop(t+len+.05)})}
+function chime(){if(!soundOn)return;unlock();if(!ac)return;try{const t=ac.currentTime+.05;
+  [[784,0],[988,.22],[1175,.44],[1568,.66],[1175,1.1],[1568,1.32],[1976,1.54]].forEach(([f,d])=>bell(t+d,f,1.2,.22));
+  [1568,1175,988].forEach(f=>bell(t+2.1,f,2.4,.16))}catch(e){}}
+let bn=null,bt=null;
+function hideB(){if(bn){bn.remove();bn=null}clearTimeout(bt)}
+function showB(){hideB();bn=document.createElement("div");bn.className="zeit";bn.innerHTML="<div>⏰ Zeit ist um!</div><small>Stifte hinlegen – wir besprechen die Lösungen.</small>";bn.onclick=hideB;document.body.appendChild(bn);bt=setTimeout(hideB,8000)}
+function finish(){chime();showB()}
+const sb=document.getElementById("snd");const showS=()=>{sb.textContent=soundOn?"🔔 Ton an":"🔕 Ton aus"};showS();
+sb.onclick=()=>{soundOn=!soundOn;try{localStorage.setItem("tf.sound",soundOn?"1":"0")}catch(e){}showS();if(soundOn){unlock();chime()}};
+/* 5-Minuten-Uhr */
+let tm=null,left=300;const tEl=document.getElementById("timer");const showT=()=>{tEl.textContent=Math.floor(left/60)+":"+String(left%60).padStart(2,"0");tEl.classList.toggle("end",left<=0)};
+document.getElementById("tstart").onclick=e=>{unlock();hideB();if(tm){clearInterval(tm);tm=null;left=300;showT();e.target.textContent="5-Minuten-Uhr starten";return}
+  left=300;showT();e.target.textContent="Uhr zurücksetzen";tm=setInterval(()=>{if(left>0){left--;showT();if(left===0)finish()}},1000)};
+setCharge(charge);
+</script>
+</body>
+</html>
