@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Die täglichen 5 – Klasse 7</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#000;font-family:Arial,Helvetica,sans-serif;font-size:clamp(16px,1.35vw,22px);line-height:1.4}
+.wrap{max-width:1500px;margin:0 auto;padding:14px 22px}
+header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;border-bottom:4px solid #0E9AA7;padding-bottom:8px}
+h1{margin:0;font-size:2em;line-height:1.1}
+h1 small{display:block;font-size:.45em;font-weight:normal;color:#333;margin-top:4px}
+.date{font-size:1.05em;font-weight:bold;color:#076f78}
+.zur{display:inline-block;text-decoration:none;font-size:.7em;font-weight:bold;color:#076f78;border:2px solid #0E9AA7;border-radius:999px;padding:4px 14px;margin-bottom:8px;background:#fff}
+.zur:hover{background:#effafb}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.bar .lab{font-weight:bold;margin-right:4px}
+.sep{width:18px}
+button{font:inherit;font-weight:bold;cursor:pointer;border-radius:8px;border:2px solid #0E9AA7;background:#fff;color:#076f78;padding:6px 14px}
+button.on{background:#0E9AA7;color:#fff}
+button.main{background:#0E9AA7;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+@media(max-width:1100px){.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.card{border:2px solid #000;border-radius:10px;display:flex;flex-direction:column;min-height:16em;cursor:pointer;position:relative}
+.card .h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 12px;border-bottom:2px solid #000;font-weight:bold}
+.card .nr{display:inline-grid;place-items:center;width:1.8em;height:1.8em;border-radius:50%;background:#0E9AA7;color:#fff;font-size:1.1em;flex:none}
+.card .topic{font-size:.85em;color:#333;text-align:right}
+.card .q{padding:12px;font-size:1.25em;flex:1}
+.card .sol{display:none;border-top:2px dashed #0E9AA7;padding:10px 12px;background:#effafb}
+.card.show .sol{display:block}
+.card .sol b{font-size:1.15em}
+.card .hint{position:absolute;bottom:6px;right:10px;font-size:.75em;color:#888}
+.card.show .hint{display:none}
+.new{position:absolute;top:-10px;right:-8px;background:#C2410C;color:#fff;font-size:.65em;padding:2px 7px;border-radius:10px;font-weight:bold}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;margin:0 2px}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px}.fr>span:last-child{padding:0 3px}
+.timer{font-size:1.4em;font-weight:bold;font-variant-numeric:tabular-nums;min-width:4.2em;text-align:center;border:2px solid #000;border-radius:8px;padding:2px 8px}
+.timer.end{color:#fff;background:#C62828;border-color:#C62828;animation:blink .6s ease-in-out 8}
+@keyframes blink{50%{transform:scale(1.18)}}
+.zeit{position:fixed;left:50%;top:38%;transform:translate(-50%,-50%);background:#0E9AA7;color:#fff;border:4px solid #000;border-radius:18px;padding:28px 48px;text-align:center;z-index:99;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.35);animation:pop .5s ease-out}
+.zeit div{font-size:3em;font-weight:bold}.zeit small{font-size:1.1em}
+@keyframes pop{from{transform:translate(-50%,-50%) scale(.5);opacity:0}}
+table.v{border-collapse:collapse;margin:6px 0;font-size:.85em}table.v td{border:1px solid #000;padding:2px 10px;text-align:center}table.v td:first-child{background:#e6e6e6;font-weight:bold}
+.pr{color:#1565C0;font-weight:bold}.an{color:#C2410C;font-weight:bold}.we{color:#555555;font-weight:bold}
+.G{color:#1565C0;font-weight:bold}.W{color:#C2410C;font-weight:bold}.P{color:#2E7D32;font-weight:bold}
+.info{font-size:.85em;color:#333;margin-top:12px}
+footer{text-align:right;font-size:.85em;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><a class="zur" href="../">← 7. Klasse</a><h1>Die täglichen 5<small>Klasse 7 · Wiederholung ohne Taschenrechner – Emil-Petri-Schule Arnstadt</small></h1></div>
+  <div class="date" id="date"></div>
+</header>
+<div class="bar"><span class="lab">Stoffstand:</span>
+  <button data-c="1">1 – Grundwissen, rationale Zahlen, Zuordnungen</button><button data-c="2">2 – mit Prozentrechnung</button><button data-c="3">3 – mit Grundwert</button>
+  <span class="sep"></span><span class="lab">Niveau:</span><button data-l="0">leicht</button><button data-l="1">schwer</button></div>
+<div class="bar">
+  <button class="main" id="today">Aufgaben des Tages</button><button id="newset">Neue Aufgaben</button><button id="all">Alle Lösungen zeigen</button>
+  <span style="flex:1"></span><button id="snd">🔔 Ton an</button><button id="tstart">5-Minuten-Uhr starten</button><span class="timer" id="timer">5:00</span>
+</div>
+<div class="grid" id="grid"></div>
+<div class="info">Tippen auf eine Karte zeigt ihre Lösung. „Aufgaben des Tages“ ist an einem Tag immer gleich (je Stoffstand und Niveau). So passen die Aufgaben auch in Parallelklassen zusammen. <span style="color:#C2410C;font-weight:bold">NEU</span> markiert Aufgaben aus dem zuletzt dazugekommenen Stoffgebiet.</div>
+<footer>Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</footer>
+</div>
+<script>
+"use strict";
+/* ---------- Zufall (mit Startwert für „Aufgaben des Tages“) ---------- */
+let R=Math.random;
+function seeded(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}
+  return function(){h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return (h>>>0)/4294967296}}
+const ri=(a,b)=>a+Math.floor(R()*(b-a+1)),pick=a=>a[Math.floor(R()*a.length)],nz=(a,b)=>{let x;do{x=ri(a,b)}while(!x);return x};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b)[a,b]=[b,a%b];return a||1};
+const de=x=>{let s=String(Math.round(x*1e6)/1e6).replace(".",",");if(/^-?\d{5,}$/.test(s)){const neg=s[0]==="-";s=(neg?s.slice(1):s).replace(/\B(?=(\d{3})+(?!\d))/g,".");if(neg)s="-"+s}return s[0]==="-"?"−"+s.slice(1):s};
+const fr=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const frS=(n,d)=>{const g=gcd(n,d);n/=g;d/=g;if(d<0){n=-n;d=-d}return d===1?de(n):(n<0?"−":"")+fr(Math.abs(n),d)};
+const par=n=>n<0?`(${de(n)})`:de(n);
+const T=(topic,q,a,s)=>({topic,q,a,s});
+const N=x=>`<span style="white-space:nowrap">${x}</span>`;
+const PR='<span class="pr">proportional</span>',AN='<span class="an">antiproportional</span>',WE='<span class="we">weder noch</span>';
+const tab=(xs,ys,lx="x",ly="y")=>`<table class="v"><tr><td>${lx}</td>${xs.map(v=>`<td>${v}</td>`).join("")}</tr><tr><td>${ly}</td>${ys.map(v=>`<td>${v}</td>`).join("")}</tr></table>`;
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* ---------- Bereich 1: Rechnen (Kl. 5/6) ---------- */
+const RE=[
+ [1,L=>{if(!L){const a=ri(12,19),b=ri(3,9);return T("Kopfrechnen",`Berechne: ${a} · ${b}`,de(a*b),`${Math.floor(a/10)*10} · ${b} + ${a%10} · ${b} = ${10*b} + ${(a%10)*b}`)}
+   const [a,b,h]=pick([[25,16,"25 · 4 · 4 = 100 · 4"],[125,8,"125 · 8 = 1000"],[48,25,"12 · 4 · 25 = 12 · 100"],[15,12,"15 · 12 = 15 · 10 + 15 · 2"],[35,14,"35 · 2 · 7 = 70 · 7"],[250,24,"250 · 4 · 6 = 1000 · 6"],[99,7,"100 · 7 − 7"]]);
+   return T("Geschickt rechnen",`Berechne geschickt: ${a} · ${b}`,de(a*b),h)}],
+ [1,L=>{if(!L){const b=ri(3,9),q=ri(4,12);return T("Dividieren",`Berechne: ${b*q} : ${b}`,de(q),`Probe: ${q} · ${b} = ${b*q}`)}
+   const b=ri(12,25),q=ri(21,48);return T("Schriftlich dividieren",`Berechne: ${de(b*q)} : ${b}`,de(q),`Probe: ${q} · ${b} = ${de(b*q)}`)}],
+ [1,L=>{if(!L){const a=ri(2,20),b=ri(2,9),c=ri(2,9);return R()<.5?T("Vorrangregeln",`Berechne: ${N(`${a} + ${b} · ${c}`)}`,de(a+b*c),`Punkt vor Strich: ${b} · ${c} = ${b*c}`):T("Vorrangregeln",`Berechne: ${N(`${b*c+a} − ${b*c} : ${c}`)}`,de(b*c+a-b),`Punkt vor Strich: ${b*c} : ${c} = ${b}`)}
+   const a=ri(2,9),b=ri(2,9),c=ri(2,6),e=ri(2,9),d=ri(2,Math.min(9,Math.floor((a+b)*c/e)));return T("Vorrangregeln",`Berechne: ${N(`(${a} + ${b}) · ${c} − ${d*e} : ${e}`)}`,de((a+b)*c-d),`Klammer zuerst, dann Punkt vor Strich: ${(a+b)*c} − ${d}`)}],
+ [1,L=>{const d=L?pick([3,9,4,6]):pick([2,5,10]);const yes=R()<.5;let n;do{n=ri(100,999)}while((n%d===0)!==yes);
+   const qs=String(n).split("").reduce((s,x)=>s+ +x,0);
+   const h={2:"Letzte Ziffer gerade?",5:"Letzte Ziffer 0 oder 5?",10:"Letzte Ziffer 0?",3:`Quersumme ${qs} durch 3 teilbar?`,9:`Quersumme ${qs} durch 9 teilbar?`,4:`Die letzten beiden Ziffern ${String(n).slice(-2)} durch 4 teilbar?`,6:"Durch 2 und durch 3 teilbar?"}[d];
+   return T("Teilbarkeit",`Ist ${n} durch ${d} teilbar?`,yes?"ja":"nein",h)}],
+ [1,L=>{if(!L){const n=pick([12,18,20,24,30,36,28,16]);const t=[];for(let i=1;i<=n;i++)if(n%i===0)t.push(i);return T("Teiler",`Gib alle Teiler von ${n} an.`,t.join("; "),"In Paaren suchen: 1 und "+n+", 2 und "+(n%2?"–":n/2)+" …")}
+   const [a,b]=pick([[4,6],[6,8],[6,9],[8,12],[10,15],[12,18],[9,12],[6,10]]);const g=gcd(a,b);return T("ggT und kgV",`Bestimme den ggT und das kgV von ${a} und ${b}.`,`ggT = ${g}, kgV = ${a*b/g}`,`Vielfache von ${b}: ${b}, ${2*b}, ${3*b} …`)}],
+ [1,L=>{if(!L){const n=ri(1001,9999),s=pick([10,100]);return T("Runden",`Runde ${de(n)} auf ${s===10?"Zehner":"Hunderter"}.`,de(Math.round(n/s)*s),"Ab 5 aufrunden, sonst abrunden.")}
+   if(R()<.5){const n=ri(100001,999999);return T("Runden",`Runde ${de(n)} auf Tausender.`,de(Math.round(n/1000)*1000),"Auf die Hunderterziffer schauen.")}
+   const n=ri(1001,9999);return T("Runden",`Runde ${de(n/1000)} auf Hundertstel.`,de(Math.round(n/10)/100),"Auf die dritte Stelle nach dem Komma schauen.")}],
+ [1,L=>{if(!L){const k=ri(2,15);return T("Quadratzahlen",`Berechne ${k}².`,de(k*k),`${k} · ${k}`)}
+   const t=pick([0,1,2]);if(t===0){const n=ri(3,8);return T("Potenzen",`Berechne 2<sup>${n}</sup>.`,de(2**n),`${n}-mal die 2 multiplizieren`)}
+   if(t===1){const k=ri(2,5);return T("Potenzen",`Berechne ${k}³.`,de(k**3),`${k} · ${k} · ${k}`)}
+   const n=ri(3,6);return T("Zehnerpotenzen",`Schreibe 10<sup>${n}</sup> als Zahl.`,de(10**n),`eine 1 mit ${n} Nullen`)}],
+];
+/* ---------- Bereich 2: Brüche und Dezimalzahlen ---------- */
+const BR=[
+ [1,L=>{let a,b;do{b=ri(3,L?12:9);a=ri(1,b-1)}while(gcd(a,b)>1);const k=L?pick([6,7,8,9,12]):pick([2,3,4,5]);return T("Kürzen",`Kürze vollständig: ${fr(a*k,b*k)}`,fr(a,b),`Zähler und Nenner durch ${k} teilen`)}],
+ [1,L=>{const P=L?[["3","8","0,375"],["7","20","0,35"],["1","3","0,3̅"],["5","8","0,625"],["9","25","0,36"]]:[["1","2","0,5"],["1","4","0,25"],["3","4","0,75"],["1","5","0,2"],["3","10","0,3"],["7","100","0,07"]];
+   const [a,b,d]=pick(P);return R()<.5||L?T("Bruch → Dezimalzahl",`Schreibe ${fr(a,b)} als Dezimalzahl.`,d,L?`${a} : ${b}`:`auf Nenner 10 oder 100 erweitern`):T("Dezimalzahl → Bruch",`Schreibe ${d} als Bruch (gekürzt).`,fr(a,b),"Zehntel, Hundertstel … dann kürzen")}],
+ [1,L=>{if(!L){const n=pick([5,7,8,9,11]),a=ri(1,n-2),b=ri(1,n-1-a),op=R()<.5;return op?T("Brüche addieren",`Berechne: ${N(fr(a,n)+" + "+fr(b,n))}`,frS(a+b,n),"gleicher Nenner: Zähler addieren"):T("Brüche subtrahieren",`Berechne: ${N(fr(a+b,n)+" − "+fr(b,n))}`,frS(a,n),"gleicher Nenner: Zähler subtrahieren")}
+   let b,d;do{b=pick([2,3,4,6]);d=pick([3,4,5,6,8])}while(b===d);const a=ri(1,b-1),c=ri(1,d-1),n=a*d+c*b,m=b*d;return T("Brüche addieren",`Berechne: ${N(fr(a,b)+" + "+fr(c,d))}`,frS(n,m),"Gleichnamig machen (Hauptnenner), dann Zähler addieren.")}],
+ [1,L=>{if(!L){let a,b;do{b=ri(3,9);a=ri(1,b-1)}while(gcd(a,b)>1);const n=ri(2,9);return T("Brüche multiplizieren",`Berechne: ${N(fr(a,b)+" · "+n)}`,frS(a*n,b),"Nur den Zähler mit der Zahl multiplizieren.")}
+   const a=ri(1,5),b=ri(a+1,9),c=ri(1,5),d=ri(c+1,9);return R()<.5?T("Brüche multiplizieren",`Berechne: ${N(fr(a,b)+" · "+fr(c,d))}`,frS(a*c,b*d),"Zähler mal Zähler, Nenner mal Nenner"):T("Brüche dividieren",`Berechne: ${N(fr(a,b)+" : "+fr(c,d))}`,frS(a*d,b*c),`Mit dem Kehrwert ${fr(d,c)} multiplizieren.`)}],
+ [1,L=>{const t=pick([0,1]);if(!L){if(t===0){const x=ri(101,999)/100,k=pick([10,100]);return R()<.5?T("Dezimalzahlen",`Berechne: ${de(x)} · ${k}`,de(x*k),`Komma um ${k===10?"eine Stelle":"zwei Stellen"} nach rechts`):T("Dezimalzahlen",`Berechne: ${de(x)} : ${k}`,de(x/k),`Komma um ${k===10?"eine Stelle":"zwei Stellen"} nach links`)}
+     const a=ri(11,99)/10,b=ri(101,999)/100;return T("Dezimalzahlen",`Berechne: ${N(de(a)+" + "+de(b))}`,de(a+b),"Komma unter Komma")}
+   if(t===0){const a=ri(2,9),b=ri(2,9);return T("Dezimalzahlen multiplizieren",`Berechne: ${N(de(a/10)+" · "+de(b/100))}`,de(a*b/1000),`${a} · ${b} = ${a*b}, dann drei Stellen nach dem Komma`)}
+   const b=ri(2,9),q=ri(2,9);return T("Dezimalzahlen dividieren",`Berechne: ${N(de(b*q/10)+" : "+de(b/10))}`,de(q),`Beide Kommas um eine Stelle verschieben: ${b*q} : ${b}`)}],
+ [1,L=>{let a,b;do{b=L?pick([3,4,5,6,8]):pick([2,3,4,5,10]);a=ri(1,b-1)}while(gcd(a,b)>1);const k=ri(2,L?12:8);const u=L?pick([" kg"," €"," m"]):"";
+   return T("Anteile",`Berechne ${fr(a,b)} von ${b*k}${u}.`,`${a*k}${u}`,a===1?`${b*k} : ${b} = ${k}`:`${b*k} : ${b} = ${k}, dann ${k} · ${a}`)}],
+ [2,L=>{if(!L){const [a,b,p]=pick([[1,2,50],[1,4,25],[3,4,75],[1,10,10],[1,5,20],[2,5,40],[3,10,30]]);const t=pick([0,1,2]);
+     if(t===0)return T("Prozent",`Schreibe ${fr(a,b)} in Prozent.`,`${p} %`,"auf Nenner 100 erweitern");
+     if(t===1)return T("Prozent",`Schreibe ${p} % als gekürzten Bruch.`,fr(a,b),`${fr(p,100)} kürzen`);
+     return T("Prozent",`Schreibe ${de(p/100)} in Prozent.`,`${p} %`,"Komma um zwei Stellen nach rechts")}
+   const [a,b,p]=pick([[3,8,"37,5"],[1,8,"12,5"],[7,20,"35"],[3,25,"12"],[1,3,"33,3̅"],[9,50,"18"]]);
+   if(R()<.6)return T("Prozent",`Schreibe ${fr(a,b)} in Prozent.`,`${p} %`,b===3?"1 : 3 = 0,333…":`${a} : ${b} = ${de(parseFloat(p.replace(",","."))/100)}`);
+   const d=pick([0.045,0.125,1.2,0.008]);return T("Prozent",`Schreibe ${de(d)} in Prozent.`,`${de(d*100)} %`,"Komma um zwei Stellen nach rechts")}],
+];
+/* ---------- Bereich 3: Rationale Zahlen ---------- */
+const RA=[
+ [1,L=>{if(!L){const a=nz(-15,15),b=nz(-15,15),p=R()<.5;return T("Addieren und Subtrahieren",`Berechne: ${N(`${de(a)} ${p?"+":"−"} ${par(b)}`)}`,de(p?a+b:a-b),p?"Zahlengerade: nach rechts bei +, nach links bei −":"Subtrahieren heißt: die Gegenzahl addieren.")}
+   if(R()<.5){const a=nz(-30,30),b=nz(-30,30),c=nz(-30,30);return T("Addieren und Subtrahieren",`Berechne: ${N(`${de(a)} + ${par(b)} − ${par(c)}`)}`,de(a+b-c),`− ${par(c)} wird zu + ${par(-c)}`)}
+   const a=nz(-40,40)/4,b=nz(-40,40)/4;return T("Addieren und Subtrahieren",`Berechne: ${N(`${de(a)} − ${par(b)}`)}`,de(a-b),"Subtrahieren heißt: die Gegenzahl addieren.")}],
+ [1,L=>{if(!L){const a=nz(-9,9),b=nz(-9,9);return R()<.5?T("Multiplizieren",`Berechne: ${N(`${de(a)} · ${par(b)}`)}`,de(a*b),"Gleiche Vorzeichen: plus, verschiedene: minus"):T("Dividieren",`Berechne: ${N(`${de(a*b)} : ${par(b)}`)}`,de(a),"Gleiche Vorzeichen: plus, verschiedene: minus")}
+   const t=pick([0,1,2]);if(t===0){const a=nz(-5,5),b=nz(-5,5),c=nz(-5,5);return T("Multiplizieren",`Berechne: ${N(`${par(a)} · ${par(b)} · ${par(c)}`)}`,de(a*b*c),"Minuszeichen zählen: gerade Anzahl plus, ungerade minus")}
+   if(t===1){const b=pick([2,3]),k=b===2?ri(3,5):ri(2,3);return T("Potenzen",`Berechne (−${b})<sup>${k}</sup>.`,de((-b)**k),`${k} Faktoren, ${k%2?"ungerade":"gerade"} Anzahl Minuszeichen`)}
+   const a=ri(1,4),b=ri(a+1,6),c=ri(1,4),d=ri(c+1,6);return T("Multiplizieren",`Berechne: ${N(`(−${fr(a,b)}) · ${fr(c,d)}`)}`,frS(-a*c,b*d),"Vorzeichen bestimmen, dann Zähler mal Zähler, Nenner mal Nenner")}],
+ [1,L=>{if(!L){let a,b;do{a=nz(-12,6);b=nz(-12,6)}while(a===b||(a>0&&b>0));return T("Vergleichen",`Setze &lt; oder &gt; ein: ${N(`${de(a)} ☐ ${de(b)}`)}`,`${de(a)} ${a<b?"&lt;":"&gt;"} ${de(b)}`,"Weiter rechts auf der Zahlengerade heißt größer.")}
+   const P=[["−2,5",-2.5],["−2",-2],["0,5",.5],["−0,25",-.25],["−3",-3],["¾",.75],["−½",-.5],["1,2",1.2],["−1,75",-1.75],["−⅓",-1/3]];
+   const s=shuffle(P.slice()).slice(0,4);const o=s.slice().sort((x,y)=>x[1]-y[1]);return T("Ordnen",`Ordne der Größe nach, beginne mit der kleinsten: ${s.map(x=>x[0]).join("; ")}`,o.map(x=>x[0]).join(" &lt; "),"Negative Zahlen: je größer der Betrag, desto kleiner die Zahl.")}],
+ [1,L=>{if(!L){const a=nz(-20,20);return T("Betrag und Gegenzahl",`Gib den Betrag |${de(a)}| und die Gegenzahl von ${de(a)} an.`,`|${de(a)}| = ${de(Math.abs(a))}, Gegenzahl ${de(-a)}`,"Betrag = Abstand von der Null")}
+   if(R()<.5){const a=ri(2,15);return T("Betrag",`Welche Zahlen haben den Betrag ${a}?`,`${a} und −${a}`,"gleicher Abstand von der Null, links und rechts")}
+   const a=-ri(2,15),b=ri(2,15);return T("Abstand",`Wie weit liegen ${de(a)} und ${de(b)} auf der Zahlengerade auseinander?`,de(b-a),`${b} − ${par(a)} = ${b} + ${-a}`)}],
+ [1,L=>{if(!L){const s=ri(-10,5),c=nz(-9,12);return T("Temperaturen",`Morgens sind es ${de(s)} °C. Bis mittags wird es ${Math.abs(c)} Grad ${c>0?"wärmer":"kälter"}. Temperatur mittags?`,`${de(s+c)} °C`,`${de(s)} ${c>0?"+":"−"} ${Math.abs(c)}`)}
+   if(R()<.5){const a=-ri(5,18),b=ri(2,12);return T("Temperaturen",`Nachts sind es ${de(a)} °C, mittags ${b} °C. Wie groß ist der Temperaturunterschied?`,`${b-a} Grad`,`${b} − ${par(a)}`)}
+   const k=-ri(3,15)*10,e=ri(5,30)*10,a=ri(2,20)*10;return T("Kontostand",`Ein Konto steht bei ${de(k)} €. Es werden ${e} € eingezahlt und ${a} € abgehoben. Neuer Kontostand?`,`${de(k+e-a)} €`,`${de(k)} + ${e} − ${a}`)}],
+];
+/* ---------- Bereich 4: Zuordnungen (und Prozentrechnung) ---------- */
+const ZT=[["Anzahl der Brötchen → Preis","p"],["Fahrzeit bei gleicher Geschwindigkeit → Strecke","p"],["Anzahl gleicher Hefte → Gewicht","p"],["Liter Benzin → Preis","p"],
+ ["Anzahl der Arbeiter → Zeit für dieselbe Arbeit","a"],["Geschwindigkeit → Fahrzeit für dieselbe Strecke","a"],["Anzahl der Personen → Stücke einer Pizza pro Person","a"],["Anzahl der Pumpen → Zeit zum Leeren eines Beckens","a"],
+ ["Alter eines Kindes → Körpergröße","w"],["Uhrzeit → Temperatur","w"],["Taxifahrt: Strecke → Preis (mit Grundgebühr)","w"]];
+const nm=t=>t==="p"?PR:t==="a"?AN:WE;
+const ZU=[
+ [1,L=>{if(!L){const [s,t]=pick(ZT);return T("Zuordnung erkennen",`Ist die Zuordnung proportional, antiproportional oder weder noch?<br><i>${s}</i>`,nm(t),t==="p"?"Doppelt so viel → doppelt so viel":t==="a"?"Doppelt so viel → halb so viel":"Weder „je mehr, desto mehr“ im gleichen Verhältnis noch umgekehrt")}
+   const [g,t]=pick([["y = 3x","p"],["y = 0,5x","p"],[`y = ${fr(24,"x")}`,"a"],[`y = ${fr(12,"x")}`,"a"],["y = x + 5","w"],["y = 2x + 1","w"]]);return T("Zuordnung erkennen",`Welche Zuordnung beschreibt die Gleichung ${N(g)}?`,nm(t),t==="p"?"y = k · x":t==="a"?"x · y = k":"weder y = k · x noch x · y = k")}],
+ [1,L=>{if(!L){const k=ri(2,9),x=[1,2,pick([4,5]),10],y=x.map(v=>v*k),i=ri(2,3);const ys=y.map((v,j)=>j===i?"?":v);return T("Tabelle ergänzen",`Die Zuordnung ist ${PR}. Ergänze „?“.${tab(x,ys)}`,de(y[i]),`Quotientengleichheit: y : x = ${k}`)}
+   const k=pick([1.5,2.5,0.5,1.2]),x=shuffle([2,4,6,8,10]).slice(0,3).sort((a,b)=>a-b),y=x.map(v=>v*k);return T("Tabelle ergänzen",`Die Zuordnung ist ${PR}. Ergänze „?“.${tab(x,[de(y[0]),"?",de(y[2])])}`,de(y[1]),`Quotientengleichheit: ${de(y[0])} : ${x[0]} = ${de(k)}`)}],
+ [1,L=>{const P=L?pick([36,48,60,72]):pick([12,24,36]);const ds=[];for(let i=1;i<=P;i++)if(P%i===0&&i<=12)ds.push(i);const x=shuffle(ds.slice()).slice(0,3).sort((a,b)=>a-b);
+   if(!L)return T("Tabelle ergänzen",`Die Zuordnung ist ${AN}. Ergänze „?“.${tab(x,[P/x[0],P/x[1],"?"])}`,de(P/x[2]),`Produktgleichheit: x · y = ${x[0]} · ${P/x[0]} = ${P}`);
+   const t=pick(["p","a","w"]);const m=pick([1,2]);let xs=[1,2,3,4].map(v=>v*m),ys;if(t==="p"){const k=ri(2,6);ys=xs.map(v=>v*k)}else if(t==="a"){const Q=24*pick([1,2]);xs=[1,2,3,4].map(v=>v);ys=xs.map(v=>Q/v)}else{const k=ri(2,5),c=ri(1,5);ys=xs.map(v=>v*k+c)}
+   return T("Zuordnung prüfen",`Ist die Zuordnung proportional, antiproportional oder weder noch?${tab(xs,ys)}`,nm(t),t==="p"?`Alle Quotienten y : x = ${ys[0]/xs[0]}`:t==="a"?`Alle Produkte x · y = ${xs[0]*ys[0]}`:"Quotienten und Produkte sind nicht gleich.")}],
+ [1,L=>{const [g,e,u]=pick([["Hefte","€"," Hefte"],["kg Äpfel","€"," kg"],["Liter Saft","€"," Liter"]]);let a,b,p;
+   if(!L){a=ri(2,5);p=ri(2,4);b=a*ri(2,3)}else{p=pick([1.5,2.5,0.5]);a=pick([2,4]);do{b=ri(3,10)}while(b===a||(b*p)%1&&(b*p*2)%1)}
+   const A=a*p;return T("Proportional rechnen",`${a}${u} kosten ${de(A)} €. Wie viel kosten ${b}${u}?`,`${de(b*A/a)} €`,`${N(fr("x €",b+u)+" = "+fr(de(A)+" €",a+u))} → x = ${b} · ${de(A)} : ${a}`)}],
+ [1,L=>{if(!L){const P=pick([12,24,36]),ds=[2,3,4,6].filter(d=>P%d===0);const [w1,w2]=shuffle(ds.slice()).slice(0,2);return T("Antiproportional rechnen",`${w1} Arbeiter brauchen ${P/w1} Tage für einen Zaun. Wie lange brauchen ${w2} Arbeiter?`,`${P/w2} Tage`,`Produktgleichheit: ${w1} · ${P/w1} = ${P}, dann ${P} : ${w2}`)}
+   const [v1,v2,s]=pick([[60,90,180],[40,60,120],[80,120,240],[50,75,150]]);return T("Antiproportional rechnen",`Mit ${v1} km/h dauert eine Fahrt ${s/v1} Stunden. Wie lange dauert sie mit ${v2} km/h?`,`${de(s/v2)} Stunden`,`Produktgleichheit: ${v1} · ${s/v1} = ${s}, dann ${s} : ${v2}`)}],
+ [2,L=>{const p=L?pick([15,5,30,75,12]):pick([10,20,25,50]),G=L?pick([40,60,80,120,200,300]):pick([40,60,80,120,200]);return T("Prozentwert",`Wie viel sind <span class="P">${p} %</span> von <span class="G">${G} €</span>?`,`<span class="W">${de(G*p/100)} €</span>`,`${de(p/100)} · ${G}`)}],
+ [2,L=>{let G,W;if(!L){G=pick([20,40,50,200]);W=G*pick([10,20,25,50])/100}else{G=pick([80,40,60,120]);W=G*pick([15,5,30,35,45])/100}const p=W*100/G;
+   return T("Prozentsatz",`<span class="W">${de(W)} €</span> von <span class="G">${G} €</span> sind wie viel Prozent?`,`<span class="P">${de(p)} %</span>`,`${N(fr(`<span class="G">${G}</span>`,"100 %")+" = "+fr(`<span class="W">${de(W)}</span>`,'<span class="P">p</span> %'))} → p = ${de(W)} · 100 : ${G}`)}],
+ [2,L=>{if(!L){const p=pick([10,20,25,50]),G=pick([40,60,80,120]);return T("Rabatt",`Eine Jacke kostet ${G} €. Sie wird um ${p} % reduziert. Neuer Preis?`,`${de(G*(1-p/100))} €`,`Rabatt: ${de(p/100)} · ${G} = ${de(G*p/100)} €, dann ${G} − ${de(G*p/100)}`)}
+   const [G,Nw]=pick([[80,60],[40,30],[50,40],[120,90],[200,150],[60,45]]);return T("Rabatt",`Ein Spiel kostete ${G} €, jetzt kostet es ${Nw} €. Um wie viel Prozent wurde es reduziert?`,`um ${de((G-Nw)*100/G)} %`,`Rabatt ${G-Nw} €: ${N(fr(G,"100 %")+" = "+fr(G-Nw,"p %"))} → p = ${G-Nw} · 100 : ${G}`)}],
+ [3,L=>{const p=L?pick([20,40,75,15]):pick([10,25,50]),G=L?pick([60,80,120,200,300]):pick([40,60,80,120,200]),W=G*p/100;
+   return T("Grundwert",`<span class="W">${de(W)} €</span> sind <span class="P">${p} %</span> des Preises. Wie hoch ist der Preis?`,`<span class="G">${G} €</span>`,`${N(fr('<span class="G">G</span>',"100 %")+" = "+fr(`<span class="W">${de(W)}</span>`,`<span class="P">${p}</span> %`))} → G = ${de(W)} · 100 : ${p}`)}],
+];
+/* ---------- Bereich 5: Geometrie und Größen ---------- */
+const GE=[
+ [1,L=>{if(!L){const c=pick([()=>{const x=pick([2,3,4,7,1.5,2.5]);return["m","cm",x,x*100]},()=>{const x=pick([2,5,1.5,3.2]);return["km","m",x,x*1000]},()=>{const x=pick([2,3,1.5,0.5]);return["kg","g",x,x*1000]},()=>{const x=pick([2,3,1.5,0.5]);return["h","min",x,x*60]},()=>{const x=pick([4,12,3.5]);return["cm","mm",x,x*10]}])();
+     return T("Einheiten umrechnen",`Rechne um: ${de(c[2])} ${c[0]} = ? ${c[1]}`,`${de(c[3])} ${c[1]}`,`Umrechnungszahl ${de(c[3]/c[2])}`)}
+   const c=pick([()=>{const x=pick([3,5,2.5]);return["m²","dm²",x,x*100,"100"]},()=>{const x=pick([4,7,1.5]);return["cm²","mm²",x,x*100,"100"]},()=>{const x=pick([2,3.5,0.75]);return["l","ml",x,x*1000,"1000"]},()=>{const x=pick([2,5,1.5]);return["dm³","l",x,x,"1 (1 dm³ = 1 l)"]},()=>{const x=pick([2.5,3.4,0.8]);return["t","kg",x,x*1000,"1000"]}])();
+   if(R()<.3){const h=ri(1,3),m=pick([15,20,45,30]);return T("Zeit umrechnen",`Wie viele Minuten sind ${h} h ${m} min?`,`${h*60+m} min`,`${h} · 60 + ${m}`)}
+   return T("Einheiten umrechnen",`Rechne um: ${de(c[2])} ${c[0]} = ? ${c[1]}`,`${de(c[3])} ${c[1]}`,`Umrechnungszahl ${c[4]}`)}],
+ [1,L=>{if(!L){const a=ri(3,12),b=ri(2,9);return T("Rechteck",`Rechteck: a = ${a} cm, b = ${b} cm. Berechne Umfang und Flächeninhalt.`,`u = ${2*(a+b)} cm, A = ${a*b} cm²`,"u = 2 · a + 2 · b, A = a · b")}
+   if(R()<.5){const a=ri(4,12),b=ri(3,9);return T("Rechteck",`Ein Rechteck hat A = ${a*b} cm² und a = ${a} cm. Berechne b und den Umfang.`,`b = ${b} cm, u = ${2*(a+b)} cm`,`b = ${a*b} : ${a}`)}
+   const s=ri(2,6);return T("Quadrat",`Ein Quadrat hat den Umfang ${4*s*2} cm. Wie groß ist sein Flächeninhalt?`,`${4*s*s} cm²`,`Seite: ${8*s} : 4 = ${2*s} cm`)}],
+ [1,L=>{if(!L){if(R()<.5){const a=ri(2,6);return T("Würfel",`Ein Würfel hat die Kantenlänge ${a} cm. Volumen?`,`${a**3} cm³`,"V = a · a · a")}
+     const a=ri(2,8),b=ri(2,5),c=ri(2,5);return T("Quader",`Quader: a = ${a} cm, b = ${b} cm, c = ${c} cm. Volumen?`,`${a*b*c} cm³`,"V = a · b · c")}
+   if(R()<.5){const a=ri(2,6);return T("Würfel",`Ein Würfel hat die Kantenlänge ${a} cm. Oberflächeninhalt?`,`${6*a*a} cm²`,"6 gleiche Quadrate: 6 · a · a")}
+   const a=pick([2,3,4,5]),b=pick([2,3,4]),c=pick([1,2,3]);return T("Quader",`Ein Aquarium ist ${a} dm lang, ${b} dm breit und ${c} dm hoch. Wie viele Liter passen hinein?`,`${a*b*c} Liter`,"1 dm³ = 1 Liter")}],
+ [1,L=>{if(!L){const w=pick([35,90,120,180,250,60,145,300]);const k=w<90?"spitzer":w===90?"rechter":w<180?"stumpfer":w===180?"gestreckter":"überstumpfer";return T("Winkelarten",`Welche Winkelart hat ein Winkel von ${w}°?`,`${k} Winkel`,"spitz: unter 90°, recht: 90°, stumpf: zwischen 90° und 180°, gestreckt: 180°, überstumpf: über 180°")}
+   const w=ri(3,16)*10+pick([0,5]);return R()<.5?T("Nebenwinkel",`Zwei Geraden schneiden sich. Ein Winkel ist ${w}° groß. Wie groß ist sein Nebenwinkel?`,`${180-w}°`,"Nebenwinkel ergänzen sich zu 180°."):T("Scheitelwinkel",`Zwei Geraden schneiden sich. Ein Winkel ist ${w}° groß. Gib die Größen der drei anderen Winkel an.`,`${w}°, ${180-w}°, ${180-w}°`,"Scheitelwinkel sind gleich groß, Nebenwinkel ergeben 180°.")}],
+ [1,L=>{if(!L){const c=ri(2,9);return T("Maßstab",`Bauplan im Maßstab 1 : 100. Eine Wand ist ${c} cm lang gezeichnet. Wie lang ist sie wirklich?`,`${c} m`,`${c} cm · 100 = ${c*100} cm`)}
+   const [m,c]=pick([[25000,4],[50000,6],[10000,8],[25000,8]]);return T("Maßstab",`Karte im Maßstab 1 : ${de(m)}. Eine Strecke ist ${c} cm lang. Wie lang ist sie in Wirklichkeit?`,`${de(m*c/100000)} km`,`${c} cm · ${de(m)} = ${de(c*m)} cm`)}],
+];
+const AREAS=[["Rechnen",RE],["Brüche und Dezimalzahlen",BR],["Rationale Zahlen",RA],["Zuordnungen",ZU],["Geometrie und Größen",GE]];
+
+let charge=1,level=0;try{charge=+localStorage.getItem("taeglicheFuenf7.charge")||1;level=+localStorage.getItem("taeglicheFuenf7.level")||0}catch(e){}
+function make(seedStr){
+  R=seedStr?seeded(seedStr):Math.random;
+  return AREAS.map(([name,pool])=>{
+    const avail=pool.filter(([c])=>c<=charge);
+    const fresh=avail.filter(([c])=>c===charge&&charge>1);
+    const pickFrom=fresh.length&&R()<.5?fresh:avail;
+    const [c,g]=pick(pickFrom);const t=g(level);t.area=name;t.isNew=c===charge&&charge>1;return t});
+}
+function render(tasks){
+  document.getElementById("grid").innerHTML=tasks.map((t,i)=>`<div class="card" data-i="${i}">${t.isNew?'<span class="new">NEU</span>':""}
+    <div class="h"><span class="nr">${i+1}</span><span class="topic">${t.topic}</span></div><div class="q">${t.q}</div>
+    <div class="sol"><b>${t.a}</b><br><span style="font-size:.85em">${t.s}</span></div><span class="hint">Tippen für Lösung</span></div>`).join("");
+  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>c.classList.toggle("show"));
+  const b=document.getElementById("all");if(b)b.textContent="Alle Lösungen zeigen";
+}
+const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+const seedNow=()=>todayStr()+"#"+charge+"#"+level;
+function refresh(){document.querySelectorAll("[data-c]").forEach(b=>b.classList.toggle("on",+b.dataset.c===charge));document.querySelectorAll("[data-l]").forEach(b=>b.classList.toggle("on",+b.dataset.l===level));render(make(seedNow()))}
+document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{charge=+b.dataset.c;try{localStorage.setItem("taeglicheFuenf7.charge",charge)}catch(e){}refresh()});
+document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{level=+b.dataset.l;try{localStorage.setItem("taeglicheFuenf7.level",level)}catch(e){}refresh()});
+document.getElementById("today").onclick=()=>render(make(seedNow()));
+document.getElementById("newset").onclick=()=>render(make(null));
+document.getElementById("all").onclick=e=>{const show=!!document.querySelector(".card:not(.show)");document.querySelectorAll(".card").forEach(c=>c.classList.toggle("show",show));e.target.textContent=show?"Lösungen verbergen":"Alle Lösungen zeigen"};
+document.getElementById("date").textContent=new Date().toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+/* Klingelton */
+let ac=null,soundOn=true;try{soundOn=localStorage.getItem("tf.sound")!=="0"}catch(e){}
+function unlock(){try{if(!ac){const C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C()}if(ac&&ac.state==="suspended")ac.resume()}catch(e){}}
+function bell(t,f,len,vol){const g=ac.createGain();g.connect(ac.destination);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+len);
+  [[1,1],[2.76,.25],[5.4,.08]].forEach(([m,v])=>{const o=ac.createOscillator(),h=ac.createGain();o.type="sine";o.frequency.value=f*m;h.gain.value=v;o.connect(h);h.connect(g);o.start(t);o.stop(t+len+.05)})}
+function chime(){if(!soundOn)return;unlock();if(!ac)return;try{const t=ac.currentTime+.05;
+  [[784,0],[988,.22],[1175,.44],[1568,.66],[1175,1.1],[1568,1.32],[1976,1.54]].forEach(([f,d])=>bell(t+d,f,1.2,.22));
+  [1568,1175,988].forEach(f=>bell(t+2.1,f,2.4,.16))}catch(e){}}
+let bn=null,bt=null;
+function hideB(){if(bn){bn.remove();bn=null}clearTimeout(bt)}
+function showB(){hideB();bn=document.createElement("div");bn.className="zeit";bn.innerHTML="<div>⏰ Zeit ist um!</div><small>Stifte hinlegen – wir besprechen die Lösungen.</small>";bn.onclick=hideB;document.body.appendChild(bn);bt=setTimeout(hideB,8000)}
+function finish(){chime();showB()}
+const sb=document.getElementById("snd");const showS=()=>{sb.textContent=soundOn?"🔔 Ton an":"🔕 Ton aus"};showS();
+sb.onclick=()=>{soundOn=!soundOn;try{localStorage.setItem("tf.sound",soundOn?"1":"0")}catch(e){}showS();if(soundOn){unlock();chime()}};
+/* 5-Minuten-Uhr */
+let tm=null,left=300;const tEl=document.getElementById("timer");const showT=()=>{tEl.textContent=Math.floor(left/60)+":"+String(left%60).padStart(2,"0");tEl.classList.toggle("end",left<=0)};
+document.getElementById("tstart").onclick=e=>{unlock();hideB();if(tm){clearInterval(tm);tm=null;left=300;showT();e.target.textContent="5-Minuten-Uhr starten";return}
+  left=300;showT();e.target.textContent="Uhr zurücksetzen";tm=setInterval(()=>{if(left>0){left--;showT();if(left===0)finish()}},1000)};
+refresh();
+</script>
+</body>
+</html>
