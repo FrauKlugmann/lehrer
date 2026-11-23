@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>Die täglichen 5 – Klasse 7</title>
+<title>Die tägliche Fünf – Klasse 7</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#fff;color:#000;font-family:Arial,Helvetica,sans-serif;font-size:clamp(16px,1.35vw,22px);line-height:1.4}
@@ -13,8 +12,6 @@ header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap
 h1{margin:0;font-size:2em;line-height:1.1}
 h1 small{display:block;font-size:.45em;font-weight:normal;color:#333;margin-top:4px}
 .date{font-size:1.05em;font-weight:bold;color:#076f78}
-.zur{display:inline-block;text-decoration:none;font-size:.7em;font-weight:bold;color:#076f78;border:2px solid #0E9AA7;border-radius:999px;padding:4px 14px;margin-bottom:8px;background:#fff}
-.zur:hover{background:#effafb}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
 .bar .lab{font-weight:bold;margin-right:4px}
 .sep{width:18px}
@@ -35,6 +32,10 @@ button.main{background:#0E9AA7;color:#fff}
 .card .hint{position:absolute;bottom:6px;right:10px;font-size:.75em;color:#888}
 .card.show .hint{display:none}
 .new{position:absolute;top:-10px;right:-8px;background:#C2410C;color:#fff;font-size:.65em;padding:2px 7px;border-radius:10px;font-weight:bold}
+.card.knobel{grid-column:1/-1;border:3px solid #0E9AA7;min-height:auto}
+.card.knobel .h{background:#0E9AA7;color:#fff;border-bottom-color:#0E9AA7}.card.knobel .topic{color:#fff}
+.kq{display:flex;flex-wrap:wrap;gap:18px;align-items:center}.kq .kt{flex:1 1 260px}.kq .ks{flex:1 1 320px;max-width:660px}
+.spk{padding:1px 8px;margin-left:8px;font-size:1em;border-color:#fff}
 .fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;margin:0 2px}
 .fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px}.fr>span:last-child{padding:0 3px}
 .timer{font-size:1.4em;font-weight:bold;font-variant-numeric:tabular-nums;min-width:4.2em;text-align:center;border:2px solid #000;border-radius:8px;padding:2px 8px}
@@ -53,7 +54,7 @@ footer{text-align:right;font-size:.85em;margin-top:16px}
 <body>
 <div class="wrap">
 <header>
-  <div><a class="zur" href="../">← 7. Klasse</a><h1>Die täglichen 5<small>Klasse 7 · Wiederholung ohne Taschenrechner – Emil-Petri-Schule Arnstadt</small></h1></div>
+  <h1>Die tägliche Fünf<small>Klasse 7 · Wiederholung ohne Taschenrechner – Emil-Petri-Schule Arnstadt</small></h1>
   <div class="date" id="date"></div>
 </header>
 <div class="bar"><span class="lab">Stoffstand:</span>
@@ -64,7 +65,7 @@ footer{text-align:right;font-size:.85em;margin-top:16px}
   <span style="flex:1"></span><button id="snd">🔔 Ton an</button><button id="tstart">5-Minuten-Uhr starten</button><span class="timer" id="timer">5:00</span>
 </div>
 <div class="grid" id="grid"></div>
-<div class="info">Tippen auf eine Karte zeigt ihre Lösung. „Aufgaben des Tages“ ist an einem Tag immer gleich (je Stoffstand und Niveau). So passen die Aufgaben auch in Parallelklassen zusammen. <span style="color:#C2410C;font-weight:bold">NEU</span> markiert Aufgaben aus dem zuletzt dazugekommenen Stoffgebiet.</div>
+<div class="info">Tippen auf eine Karte zeigt ihre Lösung. „Aufgaben des Tages“ ist an einem Tag immer gleich (je Stoffstand und Niveau). So passen die Aufgaben auch in Parallelklassen zusammen. <span style="color:#C2410C;font-weight:bold">NEU</span> markiert Aufgaben aus dem zuletzt dazugekommenen Stoffgebiet. Beim Niveau „schwer“ gibt es zusätzlich die 🦊 Fuchs-Knobelei für alle, die schon fertig sind.</div>
 <footer>Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</footer>
 </div>
 <script>
@@ -196,22 +197,135 @@ const GE=[
  [1,L=>{if(!L){const c=ri(2,9);return T("Maßstab",`Bauplan im Maßstab 1 : 100. Eine Wand ist ${c} cm lang gezeichnet. Wie lang ist sie wirklich?`,`${c} m`,`${c} cm · 100 = ${c*100} cm`)}
    const [m,c]=pick([[25000,4],[50000,6],[10000,8],[25000,8]]);return T("Maßstab",`Karte im Maßstab 1 : ${de(m)}. Eine Strecke ist ${c} cm lang. Wie lang ist sie in Wirklichkeit?`,`${de(m*c/100000)} km`,`${c} cm · ${de(m)} = ${de(c*m)} cm`)}],
 ];
+/* ---------- Fuchs-Knobelei (Zusatzaufgabe, nur Niveau schwer) ---------- */
+const SV=(w,h,inner,mw)=>`<svg viewBox="0 0 ${w} ${h}" style="width:100%;max-width:${mw||w}px;height:auto" font-family="Arial,Helvetica,sans-serif">${inner}</svg>`;
+const K=(typ,q,svg,say,a,s)=>({typ,q,svg,say,a,s});
+/* Tierwaagen */
+function kTiere(){const F=ri(12,25),H=ri(2,8);let S;do{S=ri(1,6)}while(S===H);
+  const w=(t,lab,red)=>{const n=[...t].length/2,fs=n>2?32:n>1?40:46;return SV(160,150,`<rect x="34" y="4" width="92" height="28" rx="5" fill="${red?"#C62828":"#000"}"/><text x="80" y="24" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">${lab}</text><polygon points="73,32 87,32 80,41" fill="${red?"#C62828":"#000"}"/><rect x="16" y="44" width="10" height="80" fill="#b8c4c6" stroke="#000"/><rect x="8" y="122" width="146" height="14" rx="4" fill="#b8c4c6" stroke="#000"/><text x="90" y="116" text-anchor="middle" font-size="${fs}">${t}</text>`,150)};
+  const g=s=>`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:640px">${s}</div>`;
+  if(R()<.5){return K("Tierwaagen","Was zeigt die vierte Waage an?",g(w("🐇🐢",(H+S)+" kg")+w("🦊🐢",(F+S)+" kg")+w("🦊",F+" kg")+w("🦊🐇🐢","? kg",1)),
+    "Was zeigt die vierte Waage an? Hase und Schildkröte wiegen "+(H+S)+" Kilogramm, Fuchs und Schildkröte "+(F+S)+" Kilogramm, der Fuchs allein "+F+" Kilogramm.",
+    (F+H+S)+" kg",`Schildkröte: ${F+S} − ${F} = ${S} kg<br>Hase: ${H+S} − ${S} = ${H} kg<br>alle drei: ${F} + ${H} + ${S} = ${F+H+S} kg`)}
+  return K("Tierwaagen","Was zeigt die vierte Waage an?",g(w("🦊🐇",(F+H)+" kg")+w("🐇🐢",(H+S)+" kg")+w("🦊🐢",(F+S)+" kg")+w("🦊🐇🐢","? kg",1)),
+    "Was zeigt die vierte Waage an? Fuchs und Hase wiegen "+(F+H)+" Kilogramm, Hase und Schildkröte "+(H+S)+", Fuchs und Schildkröte "+(F+S)+" Kilogramm.",
+    (F+H+S)+" kg",`Alle drei Waagen zusammen: ${F+H} + ${H+S} + ${F+S} = ${2*(F+H+S)} kg<br>Dabei steht jedes Tier zweimal auf der Waage → ${2*(F+H+S)} : 2 = ${F+H+S} kg<br>(Fuchs ${F} kg, Hase ${H} kg, Schildkröte ${S} kg)`)}
+/* Balkenwaage mit Kugeln */
+function kKugeln(){const k=ri(2,7),n=ri(3,6),m=ri(1,n-2),w1=ri(1,8),w2=w1+(n-m)*k;
+  const pan=(cx,cnt,wt)=>{let s="";for(let i=0;i<cnt;i++){const r=Math.floor(i/3),c=i%3;s+=`<circle cx="${cx-52+c*23+r*11.5}" cy="${115-r*21}" r="11" fill="#0E9AA7" stroke="#000" stroke-width="1.5"/><circle cx="${cx-55+c*23+r*11.5}" cy="${111-r*21}" r="3" fill="#fff" opacity=".7"/>`}
+    return s+`<line x1="${cx}" y1="44" x2="${cx-58}" y2="126" stroke="#555"/><line x1="${cx}" y1="44" x2="${cx+58}" y2="126" stroke="#555"/><path d="M${cx-64} 126 Q${cx} 150 ${cx+64} 126 Z" fill="#9aa5a7" stroke="#000"/><rect x="${cx+16}" y="94" width="46" height="32" rx="4" fill="#333"/><text x="${cx+39}" y="116" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">${wt} kg</text>`};
+  const svg=SV(320,200,`<rect x="155" y="40" width="10" height="140" fill="#777"/><ellipse cx="160" cy="186" rx="60" ry="9" fill="#777"/><circle cx="160" cy="34" r="9" fill="#777"/><rect x="40" y="38" width="240" height="8" rx="4" fill="#555"/>${pan(80,n,w1)}${pan(240,m,w2)}`,380);
+  return K("Waage im Gleichgewicht","Die Waage ist im Gleichgewicht. Alle Kugeln wiegen gleich viel. Wie schwer ist eine Kugel?",svg,
+    `Die Waage ist im Gleichgewicht. Links liegen ${n} Kugeln und ${w1} Kilogramm, rechts ${m} ${m>1?"Kugeln":"Kugel"} und ${w2} Kilogramm. Wie schwer ist eine Kugel?`,
+    k+" kg",`Links: ${n} Kugeln + ${w1} kg, rechts: ${m} ${m>1?"Kugeln":"Kugel"} + ${w2} kg<br>Auf beiden Seiten ${m} ${m>1?"Kugeln":"Kugel"} wegnehmen: ${n-m} Kugeln + ${w1} kg = ${w2} kg<br>Auf beiden Seiten ${w1} kg wegnehmen: ${n-m} Kugeln = ${w2-w1} kg<br>1 Kugel: ${w2-w1} : ${n-m} = ${k} kg`)}
+/* Flächenrätsel */
+function kFlaeche(){const a=ri(2,6),r=pick([2,3,4]),b=a*r,c=ri(2,8);let d;do{d=ri(2,8)}while(d===c);
+  const A=[[a*c,b*c],[a*d,b*d]],hr=ri(0,1),hc=ri(0,1),hid=A[hr][hc],or=1-hr,oc=1-hc;
+  const W=320,H=210,x0=10,y0=10,ws=Math.round(Math.min(150,Math.max(100,W*a/(a+b)))),hs=Math.round(Math.min(130,Math.max(80,H*c/(c+d))));
+  const X=[x0,x0+ws,x0+W],Y=[y0,y0+hs,y0+H];let s=`<defs><pattern id="hat" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#000" stroke-width="2"/></pattern></defs>`;
+  for(let i=0;i<2;i++)for(let j=0;j<2;j++){const x=X[j],y=Y[i],w=X[j+1]-x,h=Y[i+1]-y,hidC=i===hr&&j===hc;
+    s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${hidC?"url(#hat)":"#fff"}" stroke="#000" stroke-width="3"/><path d="M${x+2} ${y+h-14} h12 v12" fill="none" stroke="#C62828" stroke-width="2"/>`;
+    s+=hidC?`<circle cx="${x+w/2}" cy="${y+h/2}" r="22" fill="#fff" stroke="#C62828" stroke-width="2"/><text x="${x+w/2}" y="${y+h/2+12}" text-anchor="middle" font-size="34" font-weight="bold" fill="#C62828">?</text>`:`<text x="${x+w/2}" y="${y+h/2+9}" text-anchor="middle" font-size="26" font-weight="bold">${A[i][j]} m²</text>`}
+  const nb=A[hr][oc],o1=A[or][hc],o2=A[or][oc],big=o1>o2;
+  const st2=big?`Die beiden Rechtecke in der anderen Zeile haben dieselbe Höhe, also verhalten sich ihre Flächen wie ihre Breiten: ${o1} : ${o2} = ${de(o1/o2)}<br>Die Spalte mit „?“ ist ${de(o1/o2)}-mal so breit → ${nb} · ${de(o1/o2)} = ${hid} m²`
+    :`Die beiden Rechtecke in der anderen Zeile haben dieselbe Höhe, also verhalten sich ihre Flächen wie ihre Breiten: ${o2} : ${o1} = ${de(o2/o1)}<br>Die Spalte mit „?“ ist ${de(o2/o1)}-mal so schmal → ${nb} : ${de(o2/o1)} = ${hid} m²`;
+  return K("Flächenrätsel","Ein großes Rechteck ist in vier Rechtecke geteilt. Wie groß ist die schraffierte Fläche? (Skizze nicht maßstabsgetreu)",SV(340,230,s,400),
+    "Ein großes Rechteck ist in vier Rechtecke geteilt. Drei Flächeninhalte sind bekannt. Wie groß ist die schraffierte Fläche?",hid+" m²",st2+`<br>Probe mit Seitenlängen: Breiten ${a} m und ${b} m, Höhen ${c} m und ${d} m`)}
+/* Winkelrätsel */
+function kWinkel(){let al,ga;do{al=ri(7,15)*5;ga=ri(8,18)*5}while(al+ga>150);const x=al+ga,be=180-x;
+  const A=[60,240],B=[300,240],C=[195,92],ext=(P,Q,f)=>[Q[0]+(Q[0]-P[0])*f,Q[1]+(Q[1]-P[1])*f];
+  const E1=ext(A,C,.55),E2=ext(B,C,.55),E3=[395,240];
+  const un=(P,Q)=>{const dx=Q[0]-P[0],dy=Q[1]-P[1],l=Math.hypot(dx,dy);return[dx/l,dy/l]};
+  const arc=(P,u,v,r,lab,col)=>{const cr=u[0]*v[1]-u[1]*v[0],m=un([0,0],[u[0]+v[0],u[1]+v[1]]);
+    return `<path d="M${P[0]+r*u[0]} ${P[1]+r*u[1]} A${r} ${r} 0 0 ${cr>0?1:0} ${P[0]+r*v[0]} ${P[1]+r*v[1]}" fill="none" stroke="${col||"#1565C0"}" stroke-width="2.5"/><text x="${P[0]+(r+22)*m[0]}" y="${P[1]+(r+22)*m[1]+8}" text-anchor="middle" font-size="22" font-weight="bold" fill="${col||"#000"}">${lab}</text>`};
+  const t=pick([0,1,2]),L=[al+"°",ga+"°",x+"°"];L[t===0?2:t===1?1:0]=t===0?"x":"?";
+  const red=i=>(t===0&&i===2)||(t===1&&i===1)||(t===2&&i===0)?"#C62828":null;
+  const svg=SV(420,270,`<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+    <line x1="${A[0]}" y1="${A[1]}" x2="${E1[0]}" y2="${E1[1]}" stroke="#000" stroke-width="3" marker-end="url(#ar)"/><line x1="${B[0]}" y1="${B[1]}" x2="${E2[0]}" y2="${E2[1]}" stroke="#000" stroke-width="3" marker-end="url(#ar)"/><line x1="${A[0]}" y1="${A[1]}" x2="${E3[0]}" y2="${E3[1]}" stroke="#000" stroke-width="3" marker-end="url(#ar)"/>
+    ${arc(A,[1,0],un(A,C),48,L[0],red(0))}${arc(C,un(A,E1),un(B,E2),34,L[1],red(1))}${arc(B,[1,0],un(B,C),40,L[2],red(2))}`,430);
+  const nb=`Der Winkel oben (${ga}°) ist ein Scheitelwinkel → der Innenwinkel bei der Spitze ist auch ${ga}°.`;
+  let q,a,s;
+  if(t===0){q="Wie groß ist der Winkel x?";a="x = "+x+"°";s=`${nb}<br>Winkelsumme im Dreieck: Innenwinkel rechts unten = 180° − ${al}° − ${ga}° = ${be}°<br>x ist sein Nebenwinkel: x = 180° − ${be}° = ${x}°<br>Abkürzung: Außenwinkel = Summe der beiden anderen Innenwinkel: ${al}° + ${ga}° = ${x}°`}
+  else if(t===1){q="Wie groß ist der Winkel oben an der Kreuzung (?)?";a=ga+"°";s=`Innenwinkel rechts unten ist Nebenwinkel von ${x}°: 180° − ${x}° = ${be}°<br>Innenwinkel an der Spitze: 180° − ${al}° − ${be}° = ${ga}°<br>„?“ ist sein Scheitelwinkel → ? = ${ga}°`}
+  else{q="Wie groß ist der Winkel links unten (?)?";a=al+"°";s=`${nb}<br>Innenwinkel rechts unten ist Nebenwinkel von ${x}°: 180° − ${x}° = ${be}°<br>Winkelsumme: ? = 180° − ${ga}° − ${be}° = ${al}°`}
+  return K("Winkelrätsel",q+" (Skizze nicht maßstabsgetreu)",svg,q,a,s)}
+/* Zahlenfolgen */
+function kFolge(){const t=pick([0,1,2,3,4,5]);let f=[],rule,steps;
+  if(t===0){const k=ri(2,9);f=[ri(2,5)];while(f.length<6)f.push(2*f[f.length-1]+k);rule=`Jede Zahl wird verdoppelt, dann kommt ${k} dazu.`;steps=f.slice(1).map((v,i)=>`${f[i]} · 2 + ${k} = ${v}`).join("<br>")}
+  else if(t===1){const d=ri(2,5),inc=ri(2,4);f=[ri(1,9)];let dd=d;while(f.length<6){f.push(f[f.length-1]+dd);dd+=inc}rule=`Die Abstände wachsen jedes Mal um ${inc}.`;steps="Abstände: "+f.slice(1).map((v,i)=>"+"+(v-f[i])).join(", ")}
+  else if(t===2){const k=ri(1,3);f=[ri(2,4)];while(f.length<6)f.push(3*f[f.length-1]-k);rule=`Jede Zahl wird mit 3 multipliziert, dann wird ${k} abgezogen.`;steps=f.slice(1).map((v,i)=>`${f[i]} · 3 − ${k} = ${v}`).join("<br>")}
+  else if(t===3){const p=ri(2,6);f=[ri(1,5)];while(f.length<8)f.push(f.length%2?f[f.length-1]+p:f[f.length-1]*2);rule=`Abwechselnd wird ${p} addiert und verdoppelt.`;steps=f.slice(1).map((v,i)=>i%2?`${f[i]} · 2 = ${v}`:`${f[i]} + ${p} = ${v}`).join("<br>")}
+  else if(t===4){f=[ri(1,4),ri(2,6)];while(f.length<8)f.push(f[f.length-1]+f[f.length-2]);rule="Jede Zahl ist die Summe der beiden Zahlen davor.";steps=f.slice(2).map((v,i)=>`${f[i]} + ${f[i+1]} = ${v}`).join("<br>")}
+  else{const k=pick([-1,1,2,3,5]),o=ri(1,3);f=[];for(let n=o;f.length<6;n++)f.push(n*n+k);rule=`Quadratzahlen ${k>0?"plus "+k:"minus "+(-k)}: ${o}², ${o+1}², ${o+2}² …`;steps=f.map((v,i)=>`${o+i}² ${k>0?"+":"−"} ${Math.abs(k)} = ${v}`).join("<br>")}
+  const show=f.slice(0,-1),ans=f[f.length-1];
+  return K("Zahlenfolge","Welche Zahl kommt als Nächstes?",`<div style="font-size:1.8em;font-weight:bold;line-height:1.5">${show.join("&nbsp;&nbsp; ")}&nbsp;&nbsp; <span style="color:#C62828;border-bottom:3px solid #C62828">?</span></div>`,
+    "Welche Zahl kommt als Nächstes? "+show.join(", "),de(ans),rule+"<br>"+steps)}
+/* Kryptogramme */
+const KRY=[["AA","+","AB","CCC","A = 5, B = 6, C = 1","Zwei zweistellige Zahlen ergeben zusammen weniger als 200 → C = 1, also CCC = 111.<br>AA + AB = 111 geht nur mit A = 5: 55 + 56 = 111"],
+ ["AB","·","A","CCC","A = 3, B = 7, C = 1","CCC ist 111, 222, 333 … und 111 = 3 · 37.<br>Mit AB = 37 und A = 3 passt es: 37 · 3 = 111"],
+ ["AB","·","C","AAA","A = 3, B = 7, C = 9","AAA ist ein Vielfaches von 111 = 3 · 37 → AB = 37, also A = 3.<br>AAA = 333 → C = 333 : 37 = 9"],
+ ["AB","·","C","AAB","A = 2, B = 5, C = 9","B · C endet wieder auf B. Mit B = 5 und ungeradem C klappt das.<br>Probieren: 25 · 9 = 225 ✓"],
+ ["AB","+","CB","CDD","A = 8, B = 5, C = 1, D = 0","Das Ergebnis ist dreistellig → C = 1. Die Summe muss dann 100, 111, 122 … sein.<br>B + B endet auf D: mit 100 gilt D = 0 und B = 5 → A5 + 15 = 100 → A = 8: 85 + 15 = 100"],
+ ["AB","+","CC","ADD","A = 1, B = 2, C = 8, D = 0","Das Ergebnis ist dreistellig → A = 1. 1B + CC ergibt 1DD, das ist höchstens 108 → 1DD = 100.<br>12 + 88 = 100 ✓"],
+ ["AA","+","AB","CAC","A = 9, B = 2, C = 1","Ergebnis dreistellig → C = 1. Dann ist das Ergebnis 1A1, also größer als 100 → A muss groß sein.<br>A = 9: 99 + 92 = 191 ✓"],
+ ["AB","·","B","ACA","A = 1, B = 9, C = 7","B · B endet auf A, und das Ergebnis beginnt auch mit A.<br>B = 9: 9 · 9 = 81 endet auf 1 → A = 1: 19 · 9 = 171 ✓"],
+ ["AB","+","CB","BBA","A = 2, B = 1, C = 9","Die Summe ist kleiner als 200 → B = 1.<br>A1 + C1 endet auf 2 → A = 2. 21 + C1 = 112 → C1 = 91 → C = 9"]];
+function kKrypto(){const [x,op,y,z,a,s]=pick(KRY);const col=op==="+",w=Math.max(x.length,y.length,z.length)+1;
+  const pad=v=>"&nbsp;".repeat(w-v.length)+v;
+  const box=col?`<div style="font-family:'Courier New',monospace;font-size:2.4em;font-weight:bold;line-height:1.15;display:inline-block;color:#076f78">${pad(x)}<br>+${pad(y).slice(6)}<br><div style="border-top:3px solid #000">${pad(z)}</div></div>`
+    :`<div style="font-family:'Courier New',monospace;font-size:2.4em;font-weight:bold;color:#076f78;white-space:nowrap">${x} · ${y} = ${z}</div>`;
+  return K("Buchstabenrätsel","Jeder Buchstabe steht für eine Ziffer. Gleiche Buchstaben = gleiche Ziffern, verschiedene Buchstaben = verschiedene Ziffern. Keine Zahl beginnt mit 0. Welche Ziffern sind es?",box,
+    "Jeder Buchstabe steht für eine Ziffer. Gleiche Buchstaben sind gleiche Ziffern, verschiedene Buchstaben verschiedene Ziffern. Keine Zahl beginnt mit null. Finde die Ziffern.",a,s)}
+/* Streichhölzer */
+const SEG={0:"abcdef",1:"bc",2:"abdeg",3:"abcdg",4:"bcfg",5:"acdfg",6:"acdefg",7:"abc",8:"abcdefg",9:"abcdfg"};
+const SP={a:[12,6,48,6],b:[54,12,54,50],c:[54,62,54,100],d:[12,106,48,106],e:[6,62,6,100],f:[6,12,6,50],g:[12,56,48,56],h:[8,56,42,56],v:[25,39,25,73]};
+const MP=[[1,"+",2,4,1,"+",3,4],[1,"+",6,5,1,"+",5,6],[1,"+",6,8,1,"+",8,9],[1,"+",9,7,1,"+",6,7],[1,"-",2,6,7,"-",2,5],[1,"-",5,8,1,"+",5,6],[1,"-",9,6,1,"+",5,6],[2,"+",8,9,2,"+",6,8],[2,"-",3,9,2,"+",3,5],[2,"-",9,5,2,"+",3,5],[2,"-",9,7,2,"+",5,7],[3,"+",2,3,3,"+",2,5],[3,"+",9,5,3,"+",3,6],[3,"-",2,6,3,"+",2,5],[3,"-",6,4,9,"-",5,4],[4,"+",2,0,4,"+",2,6],[4,"+",2,7,4,"+",3,7],[4,"+",5,7,4,"+",3,7],[4,"-",2,1,4,"-",3,1],[4,"-",7,5,4,"+",1,5],[5,"+",2,5,3,"+",2,5],[5,"-",5,6,5,"-",5,0],[5,"-",6,8,6,"-",6,0],[5,"-",7,8,9,"-",1,8],[5,"-",8,3,9,"-",6,3],[6,"+",1,5,5,"+",1,6],[6,"+",1,8,8,"+",1,9],[6,"+",2,6,8,"-",2,6],[6,"+",4,5,5,"+",4,9],[6,"+",5,0,6,"-",6,0],[6,"+",5,9,6,"+",3,9],[6,"-",1,6,5,"+",1,6],[6,"-",2,3,6,"-",3,3],[6,"-",3,4,6,"-",2,4],[6,"-",7,2,9,"-",7,2],[7,"+",1,5,7,"-",1,6],[7,"+",2,0,7,"+",2,9],[7,"+",6,9,1,"+",8,9],[7,"+",9,9,1,"+",8,9],[7,"-",1,9,7,"-",1,6],[7,"-",5,4,7,"-",3,4],[8,"+",2,5,8,"-",2,6],[8,"+",2,9,6,"+",2,8],[8,"+",7,5,8,"+",1,9],[8,"+",9,0,8,"-",8,0],[8,"-",1,8,8,"+",1,9],[8,"-",2,0,8,"-",2,6],[8,"-",2,8,6,"+",2,8],[8,"-",6,3,8,"-",6,2],[8,"-",9,2,8,"-",6,2],[9,"+",1,5,5,"+",1,6],[9,"+",4,1,3,"+",4,7],[9,"+",8,0,8,"-",8,0],[9,"-",1,4,3,"+",1,4],[9,"-",1,5,6,"-",1,5],[9,"-",2,4,6,"-",2,4],[9,"-",2,5,3,"+",2,5],[9,"-",4,7,3,"+",4,7],[9,"-",5,1,6,"-",5,1],[9,"-",8,2,8,"-",6,2]];
+function stick(k,dx,hl){const [x1,y1,x2,y2]=SP[k];return `<line x1="${x1+dx}" y1="${y1}" x2="${x2+dx}" y2="${y2}" stroke="${hl?"#0E9AA7":"#E3B25B"}" stroke-width="7" stroke-linecap="round"/><circle cx="${x2+dx}" cy="${y2}" r="5.5" fill="${hl?"#076f78":"#C62828"}"/>`}
+function matchSVG(e,old){const pos=[10,95,160,245,310];const segs=[SEG[e[0]],e[1]==="+"?"hv":"h",SEG[e[2]],null,SEG[e[3]]];const os=old?[SEG[old[0]],old[1]==="+"?"hv":"h",SEG[old[2]],null,SEG[old[3]]]:null;
+  let s="";segs.forEach((g,i)=>{if(g===null){s+=stick("h",pos[i]+3).replace(/y1="56"/,'y1="44"').replace(/y2="56"/,'y2="44"').replace(/cy="56"/,'cy="44"')+stick("h",pos[i]+3).replace(/y1="56"/,'y1="68"').replace(/y2="56"/,'y2="68"').replace(/cy="56"/,'cy="68"');return}
+    for(const k of g)s+=stick(k,pos[i],os&&!os[i].includes(k))});return SV(380,115,s,380)}
+function kHolz(){const m=pick(MP),o=[m[0],m[1],m[2],m[3]],n=[m[4],m[5],m[6],m[7]];
+  const cnt=e=>[SEG[e[0]].length,e[1]==="+"?2:1,SEG[e[2]].length,SEG[e[3]].length];
+  const co=cnt(o),cn=cnt(n),ch=[0,1,2,3].filter(i=>o[i]!==n[i]),nn=(e,i)=>i===1?(e[1]==="+"?"Plus":"Minus"):String(e[i]),w=(i,f)=>i===1?{g:"des Pluszeichens",d:"dem Pluszeichen",a:"das Pluszeichen"}[f].replace("Plus",o[1]==="+"?"Plus":"Minus"):{g:"der ",d:"der ",a:"die "}[f]+o[i];
+  let s;if(ch.length===1)s=`Ein Streichholz wird innerhalb ${w(ch[0],"g")} umgelegt: aus ${nn(o,ch[0])} wird ${nn(n,ch[0])}.`;
+  else{const fr_=ch.find(i=>cn[i]<co[i]),to=ch.find(i=>cn[i]>co[i]);s=`Nimm ein Streichholz von ${w(fr_,"d")} weg (aus ${nn(o,fr_)} wird ${nn(n,fr_)}) und lege es an ${w(to,"a")} (aus ${nn(o,to)} wird ${nn(n,to)}).`}
+  const txt=e=>`${e[0]} ${e[1]==="+"?"+":"−"} ${e[2]} = ${e[3]}`;
+  return K("Streichholzrätsel","Lege genau ein Streichholz um, sodass die Rechnung stimmt.",matchSVG(o),"Lege genau ein Streichholz um, sodass die Rechnung stimmt.",txt(n),s+"<br>"+matchSVG(n,o)+"<br>Das umgelegte Streichholz ist türkis.")}
+/* Wie viele Möglichkeiten? */
+function kMoegl(){const t=pick([0,1,2,3,4]);
+  if(t===0){const n=ri(4,5),k=ri(2,3),d=shuffle([1,2,3,4,5,6,7,8,9]).slice(0,n).sort((a,b)=>a-b);let p=1,f=[];for(let i=0;i<k;i++){p*=n-i;f.push(n-i)}const st=["Hunderterstelle","Zehnerstelle","Einerstelle"].slice(3-k);
+    const q=`Du hast die Ziffernkarten ${d.join(", ")}. Wie viele verschiedene ${k===3?"dreistellige":"zweistellige"} Zahlen kannst du legen, wenn jede Karte nur einmal vorkommt?`;
+    return K("Wie viele Möglichkeiten?",q,"",q,String(p),st.map((s,i)=>`${s}: ${f[i]} Möglichkeiten`).join("<br>")+`<br>${f.join(" · ")} = ${p}`)}
+  if(t===1){const a=ri(3,5),b=ri(2,4),c=ri(2,3),q=`Fuchs Ferdinand hat ${a} T-Shirts, ${b} Hosen und ${c} Mützen. Er zieht jeden Tag ein T-Shirt, eine Hose und eine Mütze an. Wie viele Tage kann er anders aussehen?`;
+    return K("Wie viele Möglichkeiten?",q,"",q,String(a*b*c),`Zu jedem T-Shirt passen ${b} Hosen: ${a} · ${b} = ${a*b} Kombinationen<br>Zu jeder davon ${c} Mützen: ${a*b} · ${c} = ${a*b*c}`)}
+  if(t===2){const n=ri(5,9),q=`Beim Turnier spielt jede der ${n} Mannschaften genau einmal gegen jede andere. Wie viele Spiele gibt es?`;
+    return K("Wie viele Möglichkeiten?",q,"",q,String(n*(n-1)/2),`Jede Mannschaft spielt ${n-1}-mal: ${n} · ${n-1} = ${n*(n-1)}<br>Jedes Spiel wurde dabei doppelt gezählt (A gegen B ist B gegen A): ${n*(n-1)} : 2 = ${n*(n-1)/2}`)}
+  if(t===3){const n=ri(5,9),q=`Die Eisdiele hat ${n} Sorten. Du nimmst zwei Kugeln von verschiedenen Sorten in einen Becher. Wie viele verschiedene Becher gibt es?`;
+    return K("Wie viele Möglichkeiten?",q,"",q,String(n*(n-1)/2),`Erste Kugel: ${n} Sorten, zweite Kugel: ${n-1} Sorten → ${n} · ${n-1} = ${n*(n-1)}<br>Im Becher ist die Reihenfolge egal (Erdbeer–Vanille = Vanille–Erdbeer): ${n*(n-1)} : 2 = ${n*(n-1)/2}`)}
+  const n=ri(4,5),f=[];let p=1;for(let i=n;i>0;i--){p*=i;f.push(i)}const q=`${n} Freunde wollen sich für ein Foto in eine Reihe stellen. Wie viele verschiedene Reihenfolgen gibt es?`;
+  return K("Wie viele Möglichkeiten?",q,"",q,String(p),`Platz eins: ${n} Möglichkeiten, Platz zwei: ${n-1}, … , letzter Platz: 1<br>${f.join(" · ")} = ${p}`)}
+const KNOBEL=[kTiere,kKugeln,kFlaeche,kWinkel,kFolge,kKrypto,kHolz,kMoegl];
+function makeKnobel(){return pick(KNOBEL)()}
+const knobelCard=k=>`<div class="card knobel"><div class="h"><span>🦊 Fuchs-Knobelei <span style="font-weight:normal;font-size:.85em">– Zusatzaufgabe für Schnelle</span></span><span class="topic">${k.typ}<button class="spk" data-say="${k.say.replace(/"/g,"&quot;")}" title="Vorlesen">🔊</button></span></div><div class="q kq"><div class="kt">${k.q}</div>${k.svg?`<div class="ks">${k.svg}</div>`:""}</div><div class="sol"><b>${k.a}</b><br><span style="font-size:.85em">${k.s}</span></div><span class="hint">Tippen für Lösung</span></div>`;
+function vorlesen(t){try{const s=window.speechSynthesis;s.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="de-DE";u.rate=.95;const v=s.getVoices().find(v=>v.lang&&v.lang.startsWith("de"));if(v)u.voice=v;s.speak(u)}catch(e){}}
 const AREAS=[["Rechnen",RE],["Brüche und Dezimalzahlen",BR],["Rationale Zahlen",RA],["Zuordnungen",ZU],["Geometrie und Größen",GE]];
 
 let charge=1,level=0;try{charge=+localStorage.getItem("taeglicheFuenf7.charge")||1;level=+localStorage.getItem("taeglicheFuenf7.level")||0}catch(e){}
 function make(seedStr){
   R=seedStr?seeded(seedStr):Math.random;
-  return AREAS.map(([name,pool])=>{
+  const tasks=AREAS.map(([name,pool])=>{
     const avail=pool.filter(([c])=>c<=charge);
     const fresh=avail.filter(([c])=>c===charge&&charge>1);
     const pickFrom=fresh.length&&R()<.5?fresh:avail;
     const [c,g]=pick(pickFrom);const t=g(level);t.area=name;t.isNew=c===charge&&charge>1;return t});
+  if(level===1)tasks.knobel=makeKnobel();
+  return tasks;
 }
 function render(tasks){
   document.getElementById("grid").innerHTML=tasks.map((t,i)=>`<div class="card" data-i="${i}">${t.isNew?'<span class="new">NEU</span>':""}
     <div class="h"><span class="nr">${i+1}</span><span class="topic">${t.topic}</span></div><div class="q">${t.q}</div>
-    <div class="sol"><b>${t.a}</b><br><span style="font-size:.85em">${t.s}</span></div><span class="hint">Tippen für Lösung</span></div>`).join("");
-  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>c.classList.toggle("show"));
+    <div class="sol"><b>${t.a}</b><br><span style="font-size:.85em">${t.s}</span></div><span class="hint">Tippen für Lösung</span></div>`).join("")+(tasks.knobel?knobelCard(tasks.knobel):"");
+  document.querySelectorAll(".card").forEach(c=>c.onclick=e=>{const b=e.target.closest(".spk");if(b){vorlesen(b.dataset.say);return}c.classList.toggle("show")});
   const b=document.getElementById("all");if(b)b.textContent="Alle Lösungen zeigen";
 }
 const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
