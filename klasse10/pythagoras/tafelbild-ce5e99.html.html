@@ -1,0 +1,262 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hefter-Eintrag · Rechtwinklige Dreiecke und Pythagoras</title><style>
+:root{--g:#00805F;--gl:#D3F2E5}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#000;font-family:Arial,"Liberation Sans",Helvetica,sans-serif}
+.page{font-size:var(--fs);line-height:1.35}
+.title{background:var(--g);color:#fff;font-weight:bold;font-size:1.45em;padding:.35em .7em;border-radius:3px}
+.zn{font-weight:bold;font-size:.95em;padding:.3em .1em .45em}
+.box{border:2px solid var(--g);border-radius:4px;margin:0 0 .55em;break-inside:avoid}
+.box>h3{background:var(--gl);margin:0;padding:.2em .6em;font-size:1em;border-bottom:2px solid var(--g)}
+.box .in{padding:.35em .6em .4em}
+.box p{margin:.25em 0}
+.f{display:inline-block;vertical-align:baseline;border:0;border-bottom:1.5px solid #222;height:1.45em;min-width:1em;margin:0 .12em;padding:0 .1em;font:inherit;text-align:center;background:transparent;border-radius:0;color:#1565C0;font-weight:bold;outline:none}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55em}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55em}
+.card{border:1.5px solid var(--g);border-radius:6px;padding:.3em .5em .45em}
+.card h4{margin:0 0 .3em;font-size:1em;color:var(--g);border-bottom:1.5px solid var(--gl);padding-bottom:.15em}
+.chip{display:block;margin:.3em 0}
+.sq{display:inline-block;width:.9em;height:.35em;border-radius:2px;margin-right:.4em;vertical-align:middle}
+.formel{margin-top:.4em;padding:.35em .5em;background:#f2f2f2;border-radius:5px;font-weight:bold;text-align:center;line-height:1.7}
+.fz{margin-top:.45em;border:1.5px dashed var(--g);border-radius:6px;padding:.3em .6em;text-align:center;font-weight:bold;background:#fffdf0;font-size:.95em}
+.bsp{display:flex;gap:.6em;align-items:center}
+.bsp>div:last-child{flex:1;min-width:0}
+.bsp.col{flex-direction:column;align-items:flex-start}
+.bsp.col .fig{align-self:center}
+.bsp3 .fig svg{display:block;margin:0 auto}
+.zl{margin:.28em 0;white-space:nowrap}
+.rw{border-top:1px dashed #bbb;padding-top:.2em;margin-top:.3em;font-size:.95em}
+.rw:first-of-type{border-top:0}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;line-height:1.1}
+.nu{border-bottom:1.5px solid #000;padding:0 .2em .1em}.de{padding:.1em .2em 0}
+.tb{border-collapse:collapse;width:100%}
+.tb th,.tb td{border:1px solid #000;padding:.15em .45em;text-align:center}
+.tb th{background:#F2F2F2}
+.foot{text-align:right;font-style:italic;color:#555;font-size:.75em;margin-top:.3em}
+svg .seite{transition:stroke .15s}
+.jetzt>h3{display:flex;align-items:center;justify-content:space-between;gap:.5em}
+.lsg{font:inherit;font-size:.8em;font-weight:bold;border:2px solid #C62828;color:#C62828;background:#fff;border-radius:6px;padding:.15em .8em;cursor:pointer;white-space:nowrap}
+.lsg.on{background:#C62828;color:#fff}
+input.f.loes{color:#C62828}
+@media print{.lsg{display:none}}
+
+@media screen{
+ :root{--fs:19px}
+ .bar{position:sticky;top:0;z-index:10;background:#fff;border-bottom:2px solid #ddd;padding:8px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+ .bar button{font:inherit;font-size:16px;border:2px solid var(--g);background:#fff;color:#000;border-radius:8px;padding:8px 16px;cursor:pointer}
+ .bar .tab.on{background:var(--g);color:#fff;font-weight:bold}
+ .bar .sp{flex:1}.bar .hinw{font-size:14px;color:#555}
+ .bar button.warn{background:#C62828;border-color:#C62828;color:#fff;font-weight:bold}
+ .wrap{max-width:1050px;margin:0 auto;padding:14px 18px 40px}
+ .page{display:none}
+ .col .fig svg{width:280px!important} .card .fig svg{width:210px!important} .bsp3 .fig svg{width:260px!important} .qfig svg{width:200px!important} .gfig svg{width:260px!important}
+ input.f:focus{background:#FFFDE7;box-shadow:0 0 0 2px #FDD835}
+ @media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr!important}.zl{white-space:normal}}
+}
+@page{size:A4;margin:1.1cm 1.5cm 1.0cm 2.5cm}
+@page :left{margin-left:1.5cm;margin-right:2.5cm}
+@page :right{margin-left:2.5cm;margin-right:1.5cm}
+@media print{
+ :root{--fs:15.5px}
+ #z1{--fs:15px} #z3{--fs:15.5px} #z4{--fs:14.8px}
+ #z1 .col .fig svg{width:140px!important} #z1 .card .fig svg{width:135px!important} #z3 .fig svg{width:160px!important} #z4 .col .fig svg{width:150px!important} #z4 .gfig svg{width:165px!important}
+ .box{margin-bottom:.6em}
+ .zl{margin:.14em 0} .box p{margin:.15em 0} .box .in{padding:.25em .5em .3em}
+ .bar{display:none}.wrap{padding:0;max-width:none}
+ .page{display:block!important;break-after:page;page-break-after:always}
+ .page:last-of-type{break-after:auto;page-break-after:auto}
+ .f{color:#000}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style></head><body>
+<div class="bar"><button class="tab" data-p="z1">Z1 + Z2</button><button class="tab" data-p="z3">Z3</button><button class="tab" data-p="z4">Z4</button><span class="hinw">Seiten in den Musterbeispielen antippen: rot = Hypotenuse, blau = Kathete</span><span class="sp"></span><button id="clr1">Seite leeren</button><button id="clrA">Alles löschen</button></div>
+<div class="wrap"><section class="page" id="z1"><div class="title">Katheten, Hypotenuse und Satz des Pythagoras</div>
+<div class="zn">Z1 · Ich kann die Begriffe Kathete und Hypotenuse anwenden.<br>Z2 · Ich kann den Satz des Pythagoras zu beliebig bezeichneten Dreiecken aufstellen.</div>
+<div class="box"><h3>Merke</h3><div class="in"><div class="grid2">
+ <div class="card"><h4>Die Seiten im rechtwinkligen Dreieck</h4>
+  <div class="bsp"><div class="fig" data-o='{"e": ["A", "B", "C"], "r": 2, "L": [4, 3], "farbe": {"c": "#C62828", "a": "#1565C0", "b": "#1565C0"}, "klick": false, "w": 170}'></div><div>
+  <p class="chip"><i class="sq" style="background:#C62828"></i>Die Seite gegenüber dem rechten Winkel heißt <input class="f" style="width:7em" aria-label="Lücke">.</p>
+  <p class="chip">Sie ist immer die <input class="f" style="width:5em" aria-label="Lücke"> Seite.</p>
+  <p class="chip"><i class="sq" style="background:#1565C0"></i>Die beiden Seiten, die den rechten Winkel einschließen, heißen <input class="f" style="width:7em" aria-label="Lücke">.</p></div></div>
+  <div class="fz">Tipp: Erst den <input class="f" style="width:7em" aria-label="Lücke"> suchen – die Seite gegenüber ist die Hypotenuse.</div></div>
+ <div class="card"><h4>Satz des Pythagoras</h4>
+  <div class="bsp"><div class="qfig"></div><div>
+  <p>In jedem rechtwinkligen Dreieck gilt: Die beiden Quadrate über den <input class="f" style="width:6em" aria-label="Lücke"> sind zusammen so groß wie das Quadrat über der <input class="f" style="width:7em" aria-label="Lücke">.</p></div></div>
+  <div class="formel" style="white-space:nowrap"><input class="f" style="width:5.5em" aria-label="Lücke">² = <input class="f" style="width:4.8em" aria-label="Lücke">² + <input class="f" style="width:4.8em" aria-label="Lücke">²</div></div>
+</div></div></div>
+<div class="box"><h3>Musterbeispiele</h3><div class="in"><div class="grid2">
+ <div class="bsp col"><div class="fig" data-o='{"e": ["A", "B", "C"], "r": 2, "L": [4, 3], "rot": 0, "w": 190, "klick": true}'></div><div><p class="zl">Rechter Winkel bei <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Hypotenuse: <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Katheten: <input class="f" style="width:2em" aria-label="Lücke"> und <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Pythagoras: <input class="f" style="width:2em" aria-label="Lücke">² = <input class="f" style="width:2em" aria-label="Lücke">² + <input class="f" style="width:2em" aria-label="Lücke">²</p></div></div>
+ <div class="bsp col"><div class="fig" data-o='{"e": ["R", "S", "T"], "r": 1, "L": [3, 4.2], "rot": 215, "w": 190, "klick": true}'></div><div><p class="zl">Rechter Winkel bei <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Hypotenuse: <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Katheten: <input class="f" style="width:2em" aria-label="Lücke"> und <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Pythagoras: <input class="f" style="width:2em" aria-label="Lücke">² = <input class="f" style="width:2em" aria-label="Lücke">² + <input class="f" style="width:2em" aria-label="Lücke">²</p></div></div>
+</div></div></div>
+<div class="box jetzt" data-l='["K", "k", "l", "m", "k", "l", "m", "Y", "y", "x", "z", "y", "x", "z"]'><h3><span>Jetzt ihr</span><button class="lsg" type="button">Lösung zeigen</button></h3><div class="in"><div class="grid2">
+ <div class="bsp col"><div class="fig" data-o='{"e": ["K", "L", "M"], "r": 0, "L": [4.2, 2.8], "rot": 160, "w": 190, "klick": true}'></div><div><p class="zl">Rechter Winkel bei <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Hypotenuse: <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Katheten: <input class="f" style="width:2em" aria-label="Lücke"> und <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Pythagoras: <input class="f" style="width:2em" aria-label="Lücke">² = <input class="f" style="width:2em" aria-label="Lücke">² + <input class="f" style="width:2em" aria-label="Lücke">²</p></div></div>
+ <div class="bsp col"><div class="fig" data-o='{"e": ["X", "Y", "Z"], "r": 1, "L": [2.6, 4.2], "rot": 120, "w": 190, "klick": true}'></div><div><p class="zl">Rechter Winkel bei <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Hypotenuse: <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Katheten: <input class="f" style="width:2em" aria-label="Lücke"> und <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">Pythagoras: <input class="f" style="width:2em" aria-label="Lücke">² = <input class="f" style="width:2em" aria-label="Lücke">² + <input class="f" style="width:2em" aria-label="Lücke">²</p></div></div>
+</div></div></div>
+<p class="foot">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</p></section><section class="page" id="z3"><div class="title">Seitenlängen mit dem Satz des Pythagoras berechnen</div>
+<div class="zn">Z3 · Ich kann mit Hilfe des Satzes des Pythagoras Seitenlängen berechnen.</div>
+<div class="box"><h3>Merke</h3><div class="in"><div class="grid3">
+ <div class="card"><h4><span style="color:#C62828">Hypotenuse</span> gesucht</h4><div class="formel">c² = a² + b²<br>c = √(<input class="f" style="width:2.4em" aria-label="Lücke"> <input class="f" style="width:1.4em" aria-label="Lücke"> <input class="f" style="width:2.4em" aria-label="Lücke">)</div></div>
+ <div class="card"><h4><span style="color:#1565C0">Kathete</span> gesucht</h4><div class="formel">a² = c² − b²<br>a = √(<input class="f" style="width:2.4em" aria-label="Lücke"> <input class="f" style="width:1.4em" aria-label="Lücke"> <input class="f" style="width:2.4em" aria-label="Lücke">)</div></div>
+ <div class="card"><h4>Ist das Dreieck rechtwinklig?</h4><p>Die <input class="f" style="width:5em" aria-label="Lücke"> Seite ist die mögliche Hypotenuse.</p><p>Prüfe: Sind beide Seiten der Gleichung <input class="f" style="width:5em" aria-label="Lücke">?</p></div>
+</div><div class="fz">Hypotenuse gesucht → Quadrate <input class="f" style="width:7em" aria-label="Lücke"> · Kathete gesucht → Quadrate <input class="f" style="width:8em" aria-label="Lücke"> · sinnvoll runden (cm auf mm)</div></div></div>
+<div class="box"><h3>Musterbeispiele</h3><div class="in"><div class="grid3">
+ <div class="bsp3"><div class="fig" data-o='{"e": ["A", "B", "C"], "r": 2, "L": [7, 5], "s": {"a": "5 cm", "b": "7 cm", "c": "?"}, "w": 180, "klick": true}'></div><p class="zl"><b>Hypotenuse gesucht</b></p><p class="zl">c² = <input class="f" style="width:2em" aria-label="Lücke">² + <input class="f" style="width:2em" aria-label="Lücke">²</p><p class="zl">c = √(<input class="f" style="width:2em" aria-label="Lücke"> + <input class="f" style="width:2em" aria-label="Lücke">) = √<input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">c ≈ <input class="f" style="width:3em" aria-label="Lücke"> cm</p></div>
+ <div class="bsp3"><div class="fig" data-o='{"e": ["A", "B", "C"], "r": 2, "L": [12, 5], "s": {"a": "5 cm", "c": "13 cm", "b": "?"}, "w": 180, "klick": true}'></div><p class="zl"><b>Kathete gesucht</b></p><p class="zl">b² = <input class="f" style="width:2em" aria-label="Lücke">² − <input class="f" style="width:2em" aria-label="Lücke">²</p><p class="zl">b = √(<input class="f" style="width:2em" aria-label="Lücke"> − <input class="f" style="width:2em" aria-label="Lücke">) = √<input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">b = <input class="f" style="width:3em" aria-label="Lücke"> cm</p></div>
+ <div class="bsp3"><p class="zl"><b>Rechtwinklig?</b></p><div class="rw"><b>9 cm, 12 cm, 15 cm</b><p class="zl"><input class="f" style="width:2em" aria-label="Lücke">² + <input class="f" style="width:2em" aria-label="Lücke">²</p><p class="zl">= <input class="f" style="width:2.4em" aria-label="Lücke"> + <input class="f" style="width:2.4em" aria-label="Lücke"> = <input class="f" style="width:2.6em" aria-label="Lücke"></p><p class="zl"><input class="f" style="width:2em" aria-label="Lücke">² = <input class="f" style="width:2.6em" aria-label="Lücke"></p><p class="zl">→ <input class="f" style="width:10em" aria-label="Lücke"></p></div><div class="rw"><b>6 cm, 7 cm, 9 cm</b><p class="zl"><input class="f" style="width:2em" aria-label="Lücke">² + <input class="f" style="width:2em" aria-label="Lücke">²</p><p class="zl">= <input class="f" style="width:2.4em" aria-label="Lücke"> + <input class="f" style="width:2.4em" aria-label="Lücke"> = <input class="f" style="width:2.6em" aria-label="Lücke"></p><p class="zl"><input class="f" style="width:2em" aria-label="Lücke">² = <input class="f" style="width:2.6em" aria-label="Lücke"></p><p class="zl">→ <input class="f" style="width:10em" aria-label="Lücke"></p></div></div>
+</div></div></div>
+<div class="box jetzt" data-l='["4", "9", "16", "81", "97", "9,8", "10", "6", "100", "36", "64", "8", "5", "12", "25", "144", "169", "13", "169", "rechtwinklig", "8", "9", "64", "81", "145", "12", "144", "nicht rechtwinklig"]'><h3><span>Jetzt ihr</span><button class="lsg" type="button">Lösung zeigen</button></h3><div class="in"><div class="grid3">
+ <div class="bsp3"><div class="fig" data-o='{"e": ["A", "B", "C"], "r": 2, "L": [9, 4], "s": {"a": "4 cm", "b": "9 cm", "c": "?"}, "w": 180, "klick": true}'></div><p class="zl"><b>Hypotenuse gesucht</b></p><p class="zl">c² = <input class="f" style="width:2em" aria-label="Lücke">² + <input class="f" style="width:2em" aria-label="Lücke">²</p><p class="zl">c = √(<input class="f" style="width:2em" aria-label="Lücke"> + <input class="f" style="width:2em" aria-label="Lücke">) = √<input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">c ≈ <input class="f" style="width:3em" aria-label="Lücke"> cm</p></div>
+ <div class="bsp3"><div class="fig" data-o='{"e": ["A", "B", "C"], "r": 2, "L": [6, 8], "s": {"b": "6 cm", "c": "10 cm", "a": "?"}, "w": 180, "klick": true}'></div><p class="zl"><b>Kathete gesucht</b></p><p class="zl">a² = <input class="f" style="width:2em" aria-label="Lücke">² − <input class="f" style="width:2em" aria-label="Lücke">²</p><p class="zl">a = √(<input class="f" style="width:2em" aria-label="Lücke"> − <input class="f" style="width:2em" aria-label="Lücke">) = √<input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">a = <input class="f" style="width:3em" aria-label="Lücke"> cm</p></div>
+ <div class="bsp3"><p class="zl"><b>Rechtwinklig?</b></p><div class="rw"><b>5 cm, 12 cm, 13 cm</b><p class="zl"><input class="f" style="width:2em" aria-label="Lücke">² + <input class="f" style="width:2em" aria-label="Lücke">²</p><p class="zl">= <input class="f" style="width:2.4em" aria-label="Lücke"> + <input class="f" style="width:2.4em" aria-label="Lücke"> = <input class="f" style="width:2.6em" aria-label="Lücke"></p><p class="zl"><input class="f" style="width:2em" aria-label="Lücke">² = <input class="f" style="width:2.6em" aria-label="Lücke"></p><p class="zl">→ <input class="f" style="width:10em" aria-label="Lücke"></p></div><div class="rw"><b>8 cm, 9 cm, 12 cm</b><p class="zl"><input class="f" style="width:2em" aria-label="Lücke">² + <input class="f" style="width:2em" aria-label="Lücke">²</p><p class="zl">= <input class="f" style="width:2.4em" aria-label="Lücke"> + <input class="f" style="width:2.4em" aria-label="Lücke"> = <input class="f" style="width:2.6em" aria-label="Lücke"></p><p class="zl"><input class="f" style="width:2em" aria-label="Lücke">² = <input class="f" style="width:2.6em" aria-label="Lücke"></p><p class="zl">→ <input class="f" style="width:10em" aria-label="Lücke"></p></div></div>
+</div></div></div>
+<p class="foot">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</p></section><section class="page" id="z4"><div class="title">Flächeninhalt rechtwinkliger Dreiecke</div>
+<div class="zn">Z4 · Ich kann den Flächeninhalt rechtwinkliger Dreiecke aus 2 Seitenlängen berechnen.</div>
+<div class="box"><h3>Merke</h3><div class="in"><div class="grid2" style="grid-template-columns:auto 1fr">
+ <div class="gfig"></div>
+ <div><p>Das rechtwinklige Dreieck ist die <input class="f" style="width:5em" aria-label="Lücke"> des Rechtecks aus den beiden Katheten.</p>
+ <div class="formel" style="font-size:1.15em">A = <span class="fr"><span class="nu">1</span><span class="de">2</span></span> · <input class="f" style="width:6em" aria-label="Lücke"> · <input class="f" style="width:6em" aria-label="Lücke"></div>
+ <div class="fz">Im rechtwinkligen Dreieck sind die <input class="f" style="width:7em" aria-label="Lücke"> Grundseite und Höhe.<br>Die <input class="f" style="width:7em" aria-label="Lücke"> kommt nie in die Flächenformel.</div></div>
+</div></div></div>
+<div class="box"><h3>Musterbeispiele</h3><div class="in"><div class="grid2">
+ <div class="bsp col"><div class="fig" data-o='{"e": ["A", "B", "C"], "r": 2, "L": [4, 6], "s": {"a": "6 cm", "b": "4 cm", "c": ""}, "w": 170, "klick": true}'></div><div><p class="zl"><b>Beide Katheten gegeben</b></p><p class="zl">A = <span class="fr"><span class="nu">1</span><span class="de">2</span></span> · <input class="f" style="width:2em" aria-label="Lücke"> · <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">A = <input class="f" style="width:3em" aria-label="Lücke"> cm²</p></div></div>
+ <div class="bsp col"><div class="fig" data-o='{"e": ["A", "B", "C"], "r": 2, "L": [12, 5], "s": {"a": "5 cm", "c": "13 cm", "b": "?"}, "w": 170, "klick": true}'></div><div><p class="zl"><b>Kathete und Hypotenuse gegeben</b></p><p class="zl">1. b = √(<input class="f" style="width:2.4em" aria-label="Lücke"> − <input class="f" style="width:2.4em" aria-label="Lücke">) = √<input class="f" style="width:2.4em" aria-label="Lücke"> = <input class="f" style="width:2.4em" aria-label="Lücke"> cm</p><p class="zl">2. A = <span class="fr"><span class="nu">1</span><span class="de">2</span></span> · <input class="f" style="width:2em" aria-label="Lücke"> · <input class="f" style="width:2em" aria-label="Lücke"> = <input class="f" style="width:3em" aria-label="Lücke"> cm²</p></div></div>
+</div></div></div>
+<div class="box jetzt" data-l='["8", "5", "20", "225", "81", "144", "12", "9", "12", "54"]'><h3><span>Jetzt ihr</span><button class="lsg" type="button">Lösung zeigen</button></h3><div class="in"><div class="grid2">
+ <div class="bsp col"><div class="fig" data-o='{"e": ["A", "B", "C"], "r": 2, "L": [5, 8], "s": {"a": "8 cm", "b": "5 cm", "c": ""}, "w": 170, "klick": true}'></div><div><p class="zl"><b>Beide Katheten gegeben</b></p><p class="zl">A = <span class="fr"><span class="nu">1</span><span class="de">2</span></span> · <input class="f" style="width:2em" aria-label="Lücke"> · <input class="f" style="width:2em" aria-label="Lücke"></p><p class="zl">A = <input class="f" style="width:3em" aria-label="Lücke"> cm²</p></div></div>
+ <div class="bsp col"><div class="fig" data-o='{"e": ["A", "B", "C"], "r": 2, "L": [12, 9], "s": {"a": "9 cm", "c": "15 cm", "b": "?"}, "w": 170, "klick": true}'></div><div><p class="zl"><b>Kathete und Hypotenuse gegeben</b></p><p class="zl">1. b = √(<input class="f" style="width:2.4em" aria-label="Lücke"> − <input class="f" style="width:2.4em" aria-label="Lücke">) = √<input class="f" style="width:2.4em" aria-label="Lücke"> = <input class="f" style="width:2.4em" aria-label="Lücke"> cm</p><p class="zl">2. A = <span class="fr"><span class="nu">1</span><span class="de">2</span></span> · <input class="f" style="width:2em" aria-label="Lücke"> · <input class="f" style="width:2em" aria-label="Lücke"> = <input class="f" style="width:3em" aria-label="Lücke"> cm²</p></div></div>
+</div></div></div>
+<div class="box jetzt" data-l='["60", "750", "800", "42", "840", "rechts", "812,5", "Hypotenuse"]'><h3><span>Auflösung: Welche LED-Dreiecksplatte hat die größte Leuchtfläche?</span><button class="lsg" type="button">Lösung zeigen</button></h3><div class="in">
+<table class="tb"><tr><th>Platte</th><th>gegeben</th><th>2. Kathete</th><th>Leuchtfläche</th></tr>
+<tr><td>links</td><td>Kathete 25 cm, Hypotenuse 65 cm</td><td><input class="f" style="width:3em" aria-label="Lücke"> cm</td><td><input class="f" style="width:4em" aria-label="Lücke"> cm²</td></tr>
+<tr><td>Mitte</td><td>Katheten 32 cm und 50 cm</td><td>–</td><td><input class="f" style="width:4em" aria-label="Lücke"> cm²</td></tr>
+<tr><td>rechts</td><td>Kathete 40 cm, Hypotenuse 58 cm</td><td><input class="f" style="width:3em" aria-label="Lücke"> cm</td><td><input class="f" style="width:4em" aria-label="Lücke"> cm²</td></tr></table>
+<p class="zl">Die größte Leuchtfläche hat die Platte <input class="f" style="width:5em" aria-label="Lücke">.</p><p class="zl">Falle: 25 · 65 ÷ 2 = <input class="f" style="width:4em" aria-label="Lücke"> cm² ist falsch, weil 65 cm die <input class="f" style="width:7em" aria-label="Lücke"> ist.</p>
+</div></div>
+<p class="foot">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</p></section></div><script>/* ─── Geometrie-Helfer „Rechtwinklige Dreiecke“ (Arbeitsblattvorlage: rechter Winkel mit Bogen und Punkt, Ecken gegen den Uhrzeigersinn, Seite gegenüber der gleichnamigen Ecke) ─── */
+const gU=(x,y)=>{const l=Math.hypot(x,y)||1;return[x/l,y/l];};
+const gE=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const gZ=(x,d)=>{const f=Math.pow(10,d==null?1:d);return String(Math.round(x*f)/f).replace(".",",");};
+function gT(x,y,s,o){o=o||{};return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" font-size="'+(o.size||16)+'" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" fill="'+(o.fill||"#000")+'"'+(o.bold?' font-weight="700"':'')+(o.it?' font-style="italic"':'')+'>'+gE(s)+'</text>';}
+/* rtSvg({e:["A","B","C"], r:2, L:[4,3], rot:0, s:{a:"5 cm"}, farbe:{c:"#C62828"}, klick:false, w:260})
+   e = Ecken gegen den Uhrzeigersinn · r = Index der Ecke mit dem rechten Winkel · L = [Länge zur nächsten Ecke, Länge zur übernächsten]
+   rot = Drehung in Grad · s = Seitenbeschriftung (Schlüssel = kleiner Buchstabe; fehlt eine Seite, steht ihr Buchstabe; s:false = keine)
+   fix = feste Pixel je Einheit (dann wächst das Dreieck sichtbar), org = [x,y] Lage des rechten Winkels bei fix */
+function rtSvg(o){
+  o=o||{};const e=o.e||["A","B","C"],r=o.r==null?2:o.r,L=o.L||[4,3],rot=(o.rot||0)*Math.PI/180;
+  const n=(r+1)%3,p=(r+2)%3,raw=[];raw[r]=[0,0];raw[n]=[L[0],0];raw[p]=[0,L[1]];
+  /* Regel: erste Ecke links unten, dann gegen den Uhrzeigersinn → Seite e0e1 waagerecht unten, e0 links; rot erzeugt nur eine leichte Neigung */
+  const phi=Math.atan2(raw[1][1]-raw[0][1],raw[1][0]-raw[0][0]),al=(Math.atan2(raw[2][1]-raw[0][1],raw[2][0]-raw[0][0])-phi)*180/Math.PI;
+  const kw=o.kipp!=null?o.kipp:(o.rot?((Math.round(o.rot)*7)%21+21)%21:0),kipp=Math.min(kw,Math.max(0,90-(((al%360)+360)%360)-3))*Math.PI/180,w0=-phi+kipp;
+  const pts=raw.map(([x,y])=>{x-=raw[0][0];y-=raw[0][1];return[x*Math.cos(w0)-y*Math.sin(w0),x*Math.sin(w0)+y*Math.cos(w0)];});
+  const pad=o.pad||(o.s&&Object.values(o.s).some(x=>String(x).length>2)?60:44),xs=pts.map(q=>q[0]),ys=pts.map(q=>q[1]),W=o.bw||300;
+  const dxs=(Math.max(...xs)-Math.min(...xs))||1,dys=(Math.max(...ys)-Math.min(...ys))||1,H=o.bh||Math.round(Math.max(130,Math.min(240,2*pad+(W-2*pad)*dys/dxs)));
+  let sc,ox,oy;
+  if(o.fix){sc=o.fix;ox=o.org[0];oy=o.org[1];}
+  else{sc=Math.min((W-2*pad)/((Math.max(...xs)-Math.min(...xs))||1),(H-2*pad)/((Math.max(...ys)-Math.min(...ys))||1));
+    ox=(W-sc*(Math.max(...xs)+Math.min(...xs)))/2;oy=(H+sc*(Math.max(...ys)+Math.min(...ys)))/2;}
+  const P=pts.map(([x,y])=>[ox+sc*x,oy-sc*y]),G=[(P[0][0]+P[1][0]+P[2][0])/3,(P[0][1]+P[1][1]+P[2][1])/3];
+  let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Rechtwinkliges Dreieck '+e.join("")+'" style="width:'+(o.w||W)+'px;max-width:100%;height:auto;font-family:Arial,sans-serif">';
+  const u=gU(P[n][0]-P[r][0],P[n][1]-P[r][1]),v=gU(P[p][0]-P[r][0],P[p][1]-P[r][1]),ra=o.ra||24,cr=u[0]*v[1]-u[1]*v[0],bi=gU(u[0]+v[0],u[1]+v[1]);
+  s+='<path d="M'+P[r][0].toFixed(1)+' '+P[r][1].toFixed(1)+' L'+(P[r][0]+ra*u[0]).toFixed(1)+' '+(P[r][1]+ra*u[1]).toFixed(1)+' A'+ra+' '+ra+' 0 0 '+(cr>0?1:0)+' '+(P[r][0]+ra*v[0]).toFixed(1)+' '+(P[r][1]+ra*v[1]).toFixed(1)+' Z" fill="#e9e9e9" stroke="#000" stroke-width="1.3"/>';
+  s+='<circle cx="'+(P[r][0]+9.5*bi[0]).toFixed(1)+'" cy="'+(P[r][1]+9.5*bi[1]).toFixed(1)+'" r="2.8" fill="#000"/>';
+  const lab=[];
+  for(let k=0;k<3;k++){
+    const i=(k+1)%3,j=(k+2)%3,nm=e[k].toLowerCase(),A=P[i],B=P[j],M=[(A[0]+B[0])/2,(A[1]+B[1])/2],d=gU(B[0]-A[0],B[1]-A[1]);
+    let nn=[-d[1],d[0]];if((M[0]-G[0])*nn[0]+(M[1]-G[1])*nn[1]<0)nn=[-nn[0],-nn[1]];
+    const f=(o.farbe&&o.farbe[nm])||"#000";
+    s+='<line class="seite" data-s="'+nm+'" x1="'+A[0].toFixed(1)+'" y1="'+A[1].toFixed(1)+'" x2="'+B[0].toFixed(1)+'" y2="'+B[1].toFixed(1)+'" stroke="'+f+'" stroke-width="'+(f==="#000"?3:5)+'" stroke-linecap="round"/>';
+    if(o.klick)s+='<line class="hit" data-s="'+nm+'" x1="'+A[0].toFixed(1)+'" y1="'+A[1].toFixed(1)+'" x2="'+B[0].toFixed(1)+'" y2="'+B[1].toFixed(1)+'" stroke="transparent" stroke-width="24" style="cursor:pointer"/>';
+    if(o.s!==false){const t=o.s&&o.s[nm]!=null?o.s[nm]:nm;if(t!==""){const off=13+Math.abs(nn[0])*t.length*4.6+Math.abs(nn[1])*6;
+      lab.push(gT(M[0]+off*nn[0],M[1]+off*nn[1],t,{it:t.length===1,size:o.fs||16,fill:f==="#000"?"#000":f,bold:f!=="#000"}));}}
+  }
+  s+=lab.join("");
+  for(let k=0;k<3;k++){const q=gU(P[k][0]-G[0],P[k][1]-G[1]);s+=gT(P[k][0]+17*q[0],P[k][1]+17*q[1],e[k],{bold:true,size:17});}
+  return s+'</svg>';
+}
+/* qSvg(a,b): rechtwinkliges Dreieck ABC (A links unten, B rechts unten, rechter Winkel bei C oben) mit Quadraten über allen drei Seiten; feste Größe (1 cm = u px) */
+function qSvg(a,b,o){
+  o=o||{};const u=o.u||22,c=Math.hypot(a,b),A=[0,0],B=[c,0],C=[b*b/c,a*b/c];
+  const sqr=(P,Q)=>{const d=[Q[0]-P[0],Q[1]-P[1]],nn=[d[1],-d[0]];return[P,Q,[Q[0]+nn[0],Q[1]+nn[1]],[P[0]+nn[0],P[1]+nn[1]]];};
+  const S={c:sqr(A,B),a:sqr(B,C),b:sqr(C,A)},all=[].concat(S.a,S.b,S.c);
+  const mnx=Math.min(...all.map(q=>q[0])),mxx=Math.max(...all.map(q=>q[0])),mny=Math.min(...all.map(q=>q[1])),mxy=Math.max(...all.map(q=>q[1])),pad=24;
+  const W=(mxx-mnx)*u+2*pad,H=(mxy-mny)*u+2*pad,X=x=>pad+(x-mnx)*u,Y=y=>pad+(mxy-y)*u,pt=q=>X(q[0]).toFixed(1)+','+Y(q[1]).toFixed(1);
+  let s='<svg viewBox="0 0 '+W.toFixed(0)+' '+H.toFixed(0)+'" role="img" aria-label="Quadrate über den Seiten" style="width:'+(o.w||W.toFixed(0))+'px;max-width:100%;height:auto;font-family:Arial,sans-serif">';
+  const quad=(Q,f,st,n)=>{let h='<polygon points="'+Q.map(pt).join(" ")+'" fill="'+f+'" stroke="'+st+'" stroke-width="2"/>';
+    if(n){const P=Q[0],ux=(Q[1][0]-P[0])/n,uy=(Q[1][1]-P[1])/n,vx=(Q[3][0]-P[0])/n,vy=(Q[3][1]-P[1])/n;
+      for(let i=1;i<n;i++){h+='<line x1="'+X(P[0]+i*ux)+'" y1="'+Y(P[1]+i*uy)+'" x2="'+X(P[0]+i*ux+n*vx)+'" y2="'+Y(P[1]+i*uy+n*vy)+'" stroke="#7aa6d6" stroke-width="1"/>';
+        h+='<line x1="'+X(P[0]+i*vx)+'" y1="'+Y(P[1]+i*vy)+'" x2="'+X(P[0]+i*vx+n*ux)+'" y2="'+Y(P[1]+i*vy+n*uy)+'" stroke="#7aa6d6" stroke-width="1"/>';}}
+    return h;};
+  s+=quad(S.c,"#FDE7E7","#C62828",0)+quad(S.a,"#E3EEFB","#1565C0",Number.isInteger(a)?a:0)+quad(S.b,"#E3EEFB","#1565C0",Number.isInteger(b)?b:0);
+  s+='<polygon points="'+[A,B,C].map(pt).join(" ")+'" fill="#fff" stroke="#000" stroke-width="3" stroke-linejoin="round"/>';
+  const uC=gU(X(A[0])-X(C[0]),Y(A[1])-Y(C[1])),vC=gU(X(B[0])-X(C[0]),Y(B[1])-Y(C[1])),ra=Math.min(15,0.4*Math.min(a,b)*u),bi=gU(uC[0]+vC[0],uC[1]+vC[1]);
+  s+='<path d="M'+X(C[0])+' '+Y(C[1])+' L'+(X(C[0])+ra*uC[0])+' '+(Y(C[1])+ra*uC[1])+' A'+ra+' '+ra+' 0 0 0 '+(X(C[0])+ra*vC[0])+' '+(Y(C[1])+ra*vC[1])+' Z" fill="#e9e9e9" stroke="#000" stroke-width="1.2"/><circle cx="'+(X(C[0])+ra*.45*bi[0])+'" cy="'+(Y(C[1])+ra*.45*bi[1])+'" r="2.3" fill="#000"/>';
+  const G=[(A[0]+B[0]+C[0])/3,(A[1]+B[1]+C[1])/3],mid=(P,Q,t2)=>{const M=[(P[0]+Q[0])/2,(P[1]+Q[1])/2],d=gU(M[0]-G[0],M[1]-G[1]);return gT(X(M[0])-d[0]*12,Y(M[1])+d[1]*12,t2,{it:true,size:16});};
+  s+=mid(A,B,"c")+mid(B,C,"a")+mid(C,A,"b");
+  const lab=(P,t2)=>{const d=gU(P[0]-G[0],P[1]-G[1]);return gT(X(P[0])+14*d[0],Y(P[1])-14*d[1],t2,{bold:true,size:15});};
+  s+=lab(A,"A")+lab(B,"B")+lab(C,"C");
+  return s+'</svg>';
+}
+/* sdSvg(x,y,z): beliebiges Dreieck aus drei Seiten, längste Seite unten; größter Winkel mit Gradzahl im Bogen (bei 90° mit Punkt) */
+function sdSvg(x,y,z){
+  const L=[x,y,z].sort((p,q)=>p-q),[s1,s2,lg]=L;
+  if(!(s1>0)||s1+s2<=lg+1e-9)return '<p style="color:#C62828;font-weight:700">Mit diesen drei Seiten gibt es kein Dreieck.</p>';
+  const ax=(lg*lg+s1*s1-s2*s2)/(2*lg),ay=Math.sqrt(Math.max(0,s1*s1-ax*ax));
+  const W=340,H=230,pad=34,sc=Math.min((W-2*pad)/lg,(H-2*pad-10)/ay);
+  const A=[pad+(W-2*pad-lg*sc)/2,H-pad],B=[A[0]+lg*sc,H-pad],C=[A[0]+ax*sc,H-pad-ay*sc];
+  const gam=Math.acos(Math.max(-1,Math.min(1,(s1*s1+s2*s2-lg*lg)/(2*s1*s2))))*180/Math.PI,rund=Math.round(gam*10)/10,recht=Math.abs(rund-90)<0.05;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Dreieck aus drei Seiten" style="width:340px;max-width:100%;height:auto;font-family:Arial,sans-serif">';
+  const u=gU(A[0]-C[0],A[1]-C[1]),v=gU(B[0]-C[0],B[1]-C[1]),bi=gU(u[0]+v[0],u[1]+v[1]),lb=recht?"90°":gZ(rund)+"°";
+  const ra=Math.min(0.45*Math.min(s1,s2)*sc,46),tR=ra*0.62;
+  s+='<path d="M'+C[0].toFixed(1)+' '+C[1].toFixed(1)+' L'+(C[0]+ra*u[0]).toFixed(1)+' '+(C[1]+ra*u[1]).toFixed(1)+' A'+ra.toFixed(1)+' '+ra.toFixed(1)+' 0 0 0 '+(C[0]+ra*v[0]).toFixed(1)+' '+(C[1]+ra*v[1]).toFixed(1)+' Z" fill="'+(recht?"#E5F4E6":"#e9e9e9")+'" stroke="#000" stroke-width="1.3"/>';
+  if(recht)s+='<circle cx="'+(C[0]+8*bi[0]).toFixed(1)+'" cy="'+(C[1]+8*bi[1]).toFixed(1)+'" r="2.6" fill="#000"/>';
+  s+=gT(C[0]+(tR+6)*bi[0],C[1]+(tR+6)*bi[1],lb,{size:12,bold:true});
+  s+='<polygon points="'+[A,B,C].map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(" ")+'" fill="none" stroke="#000" stroke-width="3" stroke-linejoin="round"/>';
+  s+=gT((A[0]+B[0])/2,H-pad+16,gZ(lg,2)+" cm",{size:14});
+  s+=gT((A[0]+C[0])/2-22,(A[1]+C[1])/2-4,gZ(s1,2)+" cm",{size:14})+gT((B[0]+C[0])/2+22,(B[1]+C[1])/2-4,gZ(s2,2)+" cm",{size:14});
+  return s+'</svg><p class="summe">Größter Winkel: <b>'+lb+'</b> → '+(recht?'<b style="color:#2e7d32">rechtwinklig</b>':'<b>nicht rechtwinklig</b>')+'</p>';
+}
+/* gSvg(a,b): rechtwinkliges Dreieck im Kästchenraster (1 Kästchen = 1 cm²), gestricheltes Rechteck aus beiden Katheten */
+function gSvg(a,b,o){
+  o=o||{};const u=o.u||26,M=o.max||10,pad=30,W=M*u+2*pad,H=M*u+2*pad,X=x=>pad+x*u,Y=y=>H-pad-y*u;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Dreieck im Kästchenraster" style="width:'+(o.w||W)+'px;max-width:100%;height:auto;font-family:Arial,sans-serif">';
+  for(let i=0;i<=M;i++)s+='<line x1="'+X(i)+'" y1="'+Y(0)+'" x2="'+X(i)+'" y2="'+Y(M)+'" stroke="#c9d6e6" stroke-width="1"/><line x1="'+X(0)+'" y1="'+Y(i)+'" x2="'+X(M)+'" y2="'+Y(i)+'" stroke="#c9d6e6" stroke-width="1"/>';
+  s+='<rect x="'+X(0)+'" y="'+Y(b)+'" width="'+a*u+'" height="'+b*u+'" fill="#FFF3B0" fill-opacity=".55" stroke="#000" stroke-width="2" stroke-dasharray="7 5"/>';
+  s+='<polygon points="'+X(0)+','+Y(0)+' '+X(a)+','+Y(0)+' '+X(0)+','+Y(b)+'" fill="#9ED8BE" stroke="#000" stroke-width="3" stroke-linejoin="round"/>';
+  const ra=Math.min(18,0.45*Math.min(a,b)*u);
+  s+='<path d="M'+X(0)+' '+Y(0)+' L'+(X(0)+ra)+' '+Y(0)+' A'+ra+' '+ra+' 0 0 0 '+X(0)+' '+(Y(0)-ra)+' Z" fill="#e9e9e9" stroke="#000" stroke-width="1.2"/><circle cx="'+(X(0)+ra*.42)+'" cy="'+(Y(0)-ra*.42)+'" r="2.4" fill="#000"/>';
+  s+=gT(X(a/2),Y(0)+15,"a = "+gZ(a)+" cm",{size:15})+gT(X(0)+34,Y(b)-12,"b = "+gZ(b)+" cm",{size:15});
+  return s+'</svg>';
+}
+
+document.querySelectorAll(".fig").forEach(d=>{d.innerHTML=rtSvg(JSON.parse(d.dataset.o));});
+document.querySelectorAll(".qfig").forEach(d=>{d.innerHTML=qSvg(3,4,{u:24,w:160});});
+document.querySelectorAll(".gfig").forEach(d=>{d.innerHTML=gSvg(6,4,{u:24,max:6,w:210});});
+/* Seiten antippen: schwarz → rot (Hypotenuse) → blau (Kathete) → schwarz */
+const FARB=["#000","#C62828","#1565C0"];
+document.addEventListener("click",e=>{const h=e.target.closest(".hit");if(!h||h.closest(".jetzt[data-on]"))return;const svg=h.closest("svg");
+  const l=svg.querySelector('.seite[data-s="'+h.dataset.s+'"]');const k=(FARB.indexOf(l.getAttribute("stroke"))+1)%3;
+  l.setAttribute("stroke",FARB[k]);l.setAttribute("stroke-width",k?5:3);});
+const pages=[...document.querySelectorAll(".page")],tabs=[...document.querySelectorAll(".tab")];
+function show(id){pages.forEach(p=>p.style.display=p.id===id?"block":"none");tabs.forEach(t=>t.classList.toggle("on",t.dataset.p===id));
+  try{history.replaceState(null,"","#"+id)}catch(e){};window.scrollTo(0,0)}
+tabs.forEach(t=>t.onclick=()=>show(t.dataset.p));
+function cur(){return pages.find(p=>p.style.display==="block")}
+document.addEventListener("keydown",e=>{if(e.key!=="Enter"||!e.target.matches("input.f"))return;e.preventDefault();
+  const l=[...cur().querySelectorAll("input.f")],i=l.indexOf(e.target);(l[i+1]||e.target).focus();if(!l[i+1])e.target.blur()});
+/* Lösung je Bereich „Jetzt ihr“ ein-/ausblenden; Schülereinträge und Seitenfarben werden gemerkt und danach wiederhergestellt */
+function zeigeL(box,an){const btn=box.querySelector(".lsg"),inp=[...box.querySelectorAll("input.f")],L=JSON.parse(box.dataset.l);
+  if(an){inp.forEach((i,k)=>{i.dataset.alt=i.value;i.dataset.w=i.style.width;i.value=L[k]==null?"":L[k];i.readOnly=true;i.classList.add("loes");
+      const need=i.value.length*0.65+0.8;if(need>parseFloat(i.style.width))i.style.width=need.toFixed(2)+"em";});
+    box.querySelectorAll(".fig").forEach(d=>{const o=JSON.parse(d.dataset.o),hy=(o.e||["A","B","C"])[o.r==null?2:o.r].toLowerCase();
+      d.querySelectorAll(".seite").forEach(l=>{l.dataset.alt=l.getAttribute("stroke");l.setAttribute("stroke",l.dataset.s===hy?"#C62828":"#1565C0");l.setAttribute("stroke-width",5);});});
+    btn.textContent="Lösung ausblenden";btn.classList.add("on");box.dataset.on=1;}
+  else{inp.forEach(i=>{i.value=i.dataset.alt||"";i.readOnly=false;i.classList.remove("loes");if(i.dataset.w)i.style.width=i.dataset.w;});
+    box.querySelectorAll(".seite").forEach(l=>{if(l.dataset.alt){const f=l.dataset.alt;l.setAttribute("stroke",f);l.setAttribute("stroke-width",f==="#000"?3:5);delete l.dataset.alt;}});
+    btn.textContent="Lösung zeigen";btn.classList.remove("on");delete box.dataset.on;}}
+document.querySelectorAll(".jetzt").forEach(b=>b.querySelector(".lsg").onclick=()=>zeigeL(b,!b.dataset.on));
+function clearPage(p){p.querySelectorAll(".jetzt[data-on]").forEach(b=>zeigeL(b,false));p.querySelectorAll("input.f").forEach(i=>i.value="");p.querySelectorAll(".fig").forEach(d=>{d.innerHTML=rtSvg(JSON.parse(d.dataset.o));});}
+function armed(btn,action){const l=btn.textContent;btn.onclick=()=>{if(btn.dataset.a){clearTimeout(btn._t);delete btn.dataset.a;btn.textContent=l;btn.classList.remove("warn");action()}
+  else{btn.dataset.a=1;btn.textContent="Sicher? Nochmal tippen";btn.classList.add("warn");btn._t=setTimeout(()=>{delete btn.dataset.a;btn.textContent=l;btn.classList.remove("warn")},3500)}}}
+armed(document.getElementById("clr1"),()=>clearPage(cur()));
+armed(document.getElementById("clrA"),()=>pages.forEach(clearPage));
+const h0=location.hash.slice(1);show(["z1","z3","z4"].includes(h0)?h0:"z1");
+</script></body></html>
