@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>Die täglichen 5 – Klasse 10</title>
+<title>Die tägliche Fünf – BLF ohne Taschenrechner</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#fff;color:#000;font-family:Arial,Helvetica,sans-serif;font-size:clamp(16px,1.35vw,22px);line-height:1.4}
@@ -13,10 +12,9 @@ header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap
 h1{margin:0;font-size:2em;line-height:1.1}
 h1 small{display:block;font-size:.45em;font-weight:normal;color:#333;margin-top:4px}
 .date{font-size:1.05em;font-weight:bold;color:#076f78}
-.zur{display:inline-block;text-decoration:none;font-size:.7em;font-weight:bold;color:#076f78;border:2px solid #0E9AA7;border-radius:999px;padding:4px 14px;margin-bottom:8px;background:#fff}
-.zur:hover{background:#effafb}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
 .bar .lab{font-weight:bold;margin-right:4px}
+.sep{width:18px}
 button{font:inherit;font-weight:bold;cursor:pointer;border-radius:8px;border:2px solid #0E9AA7;background:#fff;color:#076f78;padding:6px 14px}
 button.on{background:#0E9AA7;color:#fff}
 button.main{background:#0E9AA7;color:#fff}
@@ -24,9 +22,9 @@ button.main{background:#0E9AA7;color:#fff}
 @media(max-width:1100px){.grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.grid{grid-template-columns:1fr}}
 .card{border:2px solid #000;border-radius:10px;display:flex;flex-direction:column;min-height:16em;cursor:pointer;position:relative}
-.card .h{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;border-bottom:2px solid #000;font-weight:bold}
-.card .nr{display:inline-grid;place-items:center;width:1.8em;height:1.8em;border-radius:50%;background:#0E9AA7;color:#fff;font-size:1.1em}
-.card .topic{font-size:.85em;color:#333}
+.card .h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 12px;border-bottom:2px solid #000;font-weight:bold}
+.card .nr{display:inline-grid;place-items:center;width:1.8em;height:1.8em;border-radius:50%;background:#0E9AA7;color:#fff;font-size:1.1em;flex:none}
+.card .topic{font-size:.85em;color:#333;text-align:right}
 .card .q{padding:12px;font-size:1.25em;flex:1}
 .card .sol{display:none;border-top:2px dashed #0E9AA7;padding:10px 12px;background:#effafb}
 .card.show .sol{display:block}
@@ -34,6 +32,10 @@ button.main{background:#0E9AA7;color:#fff}
 .card .hint{position:absolute;bottom:6px;right:10px;font-size:.75em;color:#888}
 .card.show .hint{display:none}
 .new{position:absolute;top:-10px;right:-8px;background:#C2410C;color:#fff;font-size:.65em;padding:2px 7px;border-radius:10px;font-weight:bold}
+.card.knobel{grid-column:1/-1;border:3px solid #0E9AA7;min-height:auto}
+.card.knobel .h{background:#0E9AA7;color:#fff;border-bottom-color:#0E9AA7}.card.knobel .topic{color:#fff}
+.kq{display:flex;flex-wrap:wrap;gap:18px;align-items:center}.kq .kt{flex:1 1 260px}.kq .ks{flex:1 1 320px;max-width:660px}
+.spk{padding:1px 8px;margin-left:8px;font-size:1em;border-color:#fff}
 .fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;margin:0 2px}
 .fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px}.fr>span:last-child{padding:0 3px}
 .timer{font-size:1.4em;font-weight:bold;font-variant-numeric:tabular-nums;min-width:4.2em;text-align:center;border:2px solid #000;border-radius:8px;padding:2px 8px}
@@ -42,25 +44,36 @@ button.main{background:#0E9AA7;color:#fff}
 .zeit{position:fixed;left:50%;top:38%;transform:translate(-50%,-50%);background:#0E9AA7;color:#fff;border:4px solid #000;border-radius:18px;padding:28px 48px;text-align:center;z-index:99;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.35);animation:pop .5s ease-out}
 .zeit div{font-size:3em;font-weight:bold}.zeit small{font-size:1.1em}
 @keyframes pop{from{transform:translate(-50%,-50%) scale(.5);opacity:0}}
+/* Startbildschirm: Milchglas */
+.locked .bar,.locked #grid,.locked .info{filter:blur(11px);pointer-events:none;user-select:none}
+#startOv{display:none}
+.locked #startOv{display:flex;position:fixed;inset:0;align-items:center;justify-content:center;z-index:50;pointer-events:none}
+.sbox{pointer-events:auto;background:#fff;border:4px solid #0E9AA7;border-radius:22px;padding:24px 52px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.25);min-width:320px}
+.sbox .fx{width:155px;height:170px;margin:0 auto;background:url(data:image/webp;base64,UklGRq4dAABXRUJQVlA4WAoAAAAQAAAAmgAAqQAAQUxQSOwLAAAB8IZtm6Kp2bYdczL4hUNkcHd3iLu7K04MjULc3T0h7gkQd3e35cLd3XVgaj/2H91dVd1dk98RMQGSz8pXPnV4kfxHvYsse6/zf5MO2wjlhgv/k0wiAJAv1f3v0XKzRqD8romfKs32b1Zu3UEkckZ3t4ZDXphWOnmv8qrGAgtwWQ+HHpNWkXywgpTXx0EtwMW9bZo+u53EjtHV+wy97amXnrp79OEl5c1kwppL2iWduJgEzAcPzilj4popx1UqTxqvcwD/bhp38S4CgNlFwiBWSf50TJFdUatTbpn62WVVwjSYcOVvtSIjlIhVJDN2642Vk4q6TPh+C6MXh+lVN3BSQaTvFsLZbPj3jetO6d+2aXFc/UHf7CAJAHw7SLUXewAnSOUfCGddfnVrsW1842JSEc8/K4Sod5l60NKBR1LdALPmtYMSSm5eScKSC2qE6ELCWQFO+56AcQOJqe1FpMroZSSsuapBiCZ5iJKIN8YOUK45Tgb+SMKRGxoHqPCDJ0s3gFve3EI4c0uLANVa5KCA+jE2IAkPW1sGqNVmB2tjIpnlpqYB6lum/pBlwzV7BegQIkXjpv7AJXUCdFzGVP3NrBKgE1KJNzaJqj5+LArQodTUPKqf1yXA/UwOoup2Y4habyVUNWuqHk4OUe1FRNrGB9y4o32I5CM7VfVgrUnunFYlRG3+0CylyBckwINWElALW83a+eFp+BoJqCfNhCZwU7Pg7DubCgAJCqgFoFlI5pdFoWmxkrBWVSSrZm2MhHY8EatxHtWbqhPXNQnOVXEsNQBU1Q1qpxqjUbcnJbi9dhJQfnzqTs0SEFE73dEtF50fmzKxlT+5kiTvq3EPACiSVQFVRYoKF74qeey/huSGm2t4k1M/+PDYdh8TgFqoKjQlAKo2urVrHgqf0RhD/trZm8he168johZRVUWGeL3kseYiGgOAyw/zVPfQx5eR8Gmlnqz5R41cFP9GxHLHKLdqFz705VKSBmmlz639JJ8jqTEgryu4FD9PUuE7S6oXSE6Ln6PGQPlSDQepMYVEosmMRu2UN0luqzxGxkD5VVMHqfLADk2Iqo3GegFUVW2UkyrkR+TsOdQIwHn7O4iM3q42yZrsD7a7bi1Irhtcu1FjwC0j7Do+vx7uGoEqkA1de0aNfMlZmxNAXmtR5fqNpJsqYlW9GA8gf6mbq3ZbiGTliKSqr5HwozHqIzaiFqDpkqsLaSzAjW0TpHjcRrolK/xHrLmifq4etQMfTBLp/jmp6sddEzSaoBq5S/LcY4vC7p8iC6k4Yh6ZCU1QVYVlzEuV8nQ3Ya8b+9qI1BmzPBPJqoqoxsTy6Uo5et0Fun50BZuTvlpnspRspZy6Z36edAL5XmuLBq9TM6Sa4MgZR+XmJGpENQnKZWckSfHV25g30Lzcq5CPyp8QgCYZACBfKUkQ6f8LmQFV+FcSE4vzIY2+I0mFFZRzjk2S6lduoOaIXPFcL8lt9Yu+nb+cjEtm2cP1m54zrL1EO74KpuVfd9+37x6S7xp73bONJG2gnLeK3DwmInLM72Q+oP/2lPx3uerJW2fRBiABmrMrRqTa2CVkLsAtV9TIXbTzYlrF6s6/Lqsm0ZJHdlJzwZkdgiA9lzLGWEDJNytFRAZ8SGaN5PwJdSSQA9Yz4qg8MU7klP9rdpQkN314Th0J5+Gb6QZOLkQqnfzMe38hu7vmffHwmS0krKeX0Q14r4VIvQ9JElCNqEI1BSU3ny0Bvgjqplw6pOpzVETjor6UJGY/0LM4RHIF1Qkg/yxVxMG3Mn73ovcnDKguob6X6galIiWzY9vaOd+/dv2ZPetIyAv3Gg9e1aHs3UPqVpVysN5qZsJZ5w2SlItr1qtZMX+9yjTBZAnkTSnUPeGO9/9csGzhP588fF7TfPVnPqA4wtfApxfTdsN7p1bPUe2ZTMg6ZzXycshHu0nYkvx3eNXcyEHLSM0D+LiHxs+WUeGq5I99cyNNJ74NzYg6zKnidNICKrxy1+WV8yIiLzGaAUf+UuxQ4XYQUA/kqg/vLslRzSdWrPtrEzOmw8W+5ktUAKpOXHNVI8l5/ZKKA6dRs/VIJav/fUKFV/7dWYK41xtklsDJe1lUfonwy/nNJZCFUdvpT9UNnNUr6VHCr5YdI+E8eCazYYwBAK64avQx/xORM1Q98TMJ6d6TSU+wg0EsSf7RUdqsJjwaA/D8oEjxjWX05F05bc83CE/c3jYsIsfM10wB/L1UvcCAi2uFRrpuoi/1BCp8c1a14OxfphlLkUtqB+cBIpTc1io0VWekRGYIPDE0+xr1oGqxfhuZocdDcyfhTQFwRMc75ml2FtYOS6W/k9SDgpuaibTaTF/qBA4LS49SpMqfCiKFz7x55G+VgnIDXVQdnhQRafk9NSPgWSGp+IeVwp1jIlJ9Qplm5e+qAem7GyZJAXUbFCPyBFNRC/DigNxKGJPglRPiqv2ajjXn1gxGtWkRE6deJsddSdiqm9qAY4Mx0MAYgxQ5t3qk8Vq7qFop7ObWDMW9NCnp7j6RR4lUHcDBgag+OzXwShEZWKrpQB2+rxCGQwzS+0Gk8neEX/VV2iUMk2iMMXBWKy17/NAJhKtqjKWqlXJiEOouyQCUNEhWjWhK4DeFEBxL+HFWTeLuXTHwqHbrG4dgEk0mLLlgyDoig6qHBaDe0ggyq/ytdavSTICjAnAKTZbI5+rIiUQ2HgrA1Exx2xgRuSkrU/PXaJ1mSBceLCLySUom6ev8DSESNAO8WkSk0bqUkvlTUe7eJYCIZuLlyGAiIz/nrumGbE0WkaLPM/OV5H0YETXIJieISL9dmpWpeSt8HJdRztxbpPABkZWH89Zma7ZOEZEhqpkZlbfemq0XRHqtIzKqelDeKjxJzZCWdt9nGZFVrmuUN6n6Epmkmhb41yYCgMnGd4XcScXrdzEBXtRGARLZ5fUSwsPXaoJXO0WWdVf3IJSsYxrWNiYFYxL4W8UgjCFCawzAiyWExT+GBwAX1Q1Cj1LNg4kxaYyTIF5LBIizagSh8E2cMdlKW3m2BLFkbYj4UiEMB6jGIDWTJc5uIGEcRMQaO/VissNN+0ogr4oxsFcvGebOkyWUt3kimRvuHi7BvD3GVXH5/ctJ1Txww8kSzsupHvieyF5Dv2cufu8ptQvBOJ3bjZOW9hcRqfUbs6dbp7z5960VgtFhx4Ob1IVTJbbHRmYOIP9fIsGs9GKrGXRQHBYnF+fityYS0IbyhAvnVk8ofpdZIz8pkbAeDHV4UJKbLKYTmYZyy7VVJLDVptFOD7eQ01UddP5GOpk4Jcum9JDwXmdluLahTdEbdOCoAdPIiElgos59aICEuP12tfqz2EaaLKPDuVL/gW0kEnXtUy989M3X7z01bt+aEuaiz2gBfij2g12OEZFuz28kGQN80lwCP8TuVYeKP9JGy/pKtMWYrzcxce3RgWu0njavOMihu9Vme/sYEWlx0oRHX3nrpUcmnto2cEWfW011kcm04PomSeXobVZfF7n03akATJSr9y6HhlktrudS9AkjiKxrVA6dYqO7e7vIuTFR7OxaDp1HwJgY8GCnvVcTgDGA4eBy6AYbbm3jJJ8mgZPLofeJZE4tuJ1HwBhENjUvd+ossdDSPuJe7V8ikVeVO4dCk/iC+DxbLebXLW/uJxJ1a3svlX5nAji+nKk6w4LPit/zbBbULV/2NxpndHsXT9VnEDARcHz58jCRyHfF93U2i/YsT+oss9ATvXXYrkjk4+VF9S4nDHqMSOTM6t6KPiGMidGdjz33ztuPDW0duMZ3zC4lCYubxP8gAnFQxm5+rnnITl5KEra6o1MKTTYQxsQkkgv7hOucnYQjvy2kUPQpYeDKZZ1D1XUz4XSZpHk54ZEfVQjUa4S1AXR7+1T6lKkH3d07TPVXuvH7QirVZtIDOCpMbXc4AOBYSfc6P5eHqd4KF+X0BinV+pBUF3K/MMnFO0mNGAMl+UU7SbvK+BkkqTFKkitGFQVK+r20zDC+bNFbxxdLBqsf9egfa3Yxii3z3r2kRAK+95Hj7n762SfvHnVIfclsxSYDTh528cjzj+lcW3IIVlA4IJwRAADQRQCdASqbAKoAPp0+mUkloyIhLljawLATiWwIcAGW3Iy8fL38B5r1j/y/kP7j41Vtb0Zfqj2Eecv5hP229Yn/a/tv7r/6z6gH9A/0PWU+gP5cX7wfCR/b/+z+63tq5qj2c/6/w38gvujOsy91rPxR/I4b/kXqI+wd3RAF9ef+T4jepZ4h9gL9XOL79K9gT9L+rV/jftd6J/rX2EP1166vpGIxWNtOjB7fSe7LZgPhrq0/qLXeyz8o1e+DEUD4eCdhJxlwm1K16wYsOQ0G1WT9dkXjhILvLSy/7dP9G2C3n3XBV7NfPwgpm7MBQB2hLdSQNMPXdzvL5OIFo8xJYluh23YCyZW7ideagWdOHcSv7juHZZzZMhAqnQM9uhbGydRUwH10FbCKlA69Qk08OID6rRHChos179MPyBZKMBwOfMM82udl5wuikf1jmtCYQZXKALdZqHxYeaKLcRsjNuh8N+OCjFFEogpB+gipy6v9PdAJ8GbJsyD2zc5SRKTjdXr8ex1LpTi7AvDzY08F+/GGg+puy0bTY8nHL/YAl8qdlXjA0sQVXO+Hxcm/7F94vScnByqiHrGqzCctmbZmeQSZiz8iBCybCeadqFbi60hX43ZbqsPRgXVLEcd/08ssUHk0QLq47JkmFqeZ0Ta950mkf/DisbMbVbnd5fqVqvaUGyEQxz2/eVagQV86kaFElkIG1wJdD9PbvPCE5UZK4wIHb+rRB6X6Arz0npdjMXwopQZBHt6m8oAA/s1wyl3lhdMTFYQPIxWNHEwi5J6MY0RwDFf+0gMmbHTeCKLVuliC3fpgs9VYrkZOn4j+IeH/7csssFmv37D5YJ4jkW67VJ6xkDdQHHPZfTvXLvs/LN6vXXlNwZ0zKFj0zOb7reFzxOR6BfDzAt5NjysnUloZGzBNKCVqQ3m/rjudrpRcnkIS9nlxmQ/JV80LB+xHgDTp1fzTqAnZnlf0JCJ1622epOrvw7DAxLhuWeYtMQTOEICKersrtwqKYLNn1EUIdH5vNLg5HQ7KLdsk34PKUlAi0rbxQmrUEd9oDS1EprstzwNddN1iOG0Q+RTp1Q1hag5mCeKT594kbUGfXjJ25H/jCG6+vqaQtPhpzBvyryFjYU2m8dA4bGavLGvu/fH2HmFuWriKvmx7zhb45kRJXfXo351JEVAzo17I1G0zuT3qOZDB6+UFRgyxZ0exO0wyXrnR8vWNW3OmxnvrRt5R1M3TXaCbst8u2zZEdZYHHNmjIavTLFNcuYkcvf/Lez7rjmt69fFv++2KMHT65aaX0zH6C/on/DehDjAT65jdVuG9BKeI3EToPCzImPjyA7lgdQHw4K/+bSxyd631u/dpjmHIWMKK/3xp3wne1lAQVjSAaVs2nPohwfw2cMOf1JydSAUWbjjPWBfqwn9jqC1dPrQKmwbH/Vtaljeysq/B/qRVvp1WrxHFDkdJPx2xFMTTklPA5MDjAjo+vYNYHM/59VAawrExAbdjFCXKRwCNC+l3+18fm2neyykleMIjf1MgNnFFQadjEwSW4QMSJUVT7pJplLSGmDzNx8+U2oRfm5Qa/vXF7ivzp3NOMm3BDUopvXCKFC4tNlss1o5bB11TGxUQczYbPHNuZedfaOxNnmRUeI3i6WG21P6RPsM419lE9srs3H+DEXR/pWeYDdkYT+//k/lQP95vjrUV+BNXCL89124ouyD6flxfd+uHh/wn3t0fnwprToD7GUGGbHGDAQECmsmjAbAJKEH7CqtqdltirGO1xwe0qmB1v/j6oTVt59rBW2yUAT3Iw7G9+dD15kj821nfPV/fs+774oianYDnovsV52ixsWbyCNwmGPyASXHWEnW1a8w0nv73bSFw4tzgSD2suj+Y4ifPJJYKev3XdJ++XeKDMS+QFoJWNc4JSWVhynUN9xno60zpNs2OTfVNL7DT29+Hnt+e6aGWWTIGjGjUkesdE5PgscTq5GipNDrIC8Dmvc2wpOsORRyceoW/1bkHqxGG5D/n/5b0zaPUXCdc29T+FTut/cI/3trCqdvW3QuycCT0TElWjbCYzxU5guDxlnPKPB3aebybeKLopLtAgKGcySmWLuFGKNtsI7IcZPjHFV0VqQ4tRpTsvh5lpOfz6BmXYQUkjQePnLD8rUjM75pcyW+6mVKL6kXubhPZyTTUq6hQuzaVm7x3Icc8qKqw0SgdbAexFvUsm8VtQfUpCee4cxqN03c6h6BbSwYq+1GfSPS97XF1hHb5hJPBGt3FXvW6184XN07CrIPfJdbz1sUrrFx4wmNNBbmunUaRRaGuWQj7J5Rkv5ZeFFYtcedLrTloDECfYOvOb+mfa86yewQWUDmtfNyc/QyxZTgdR3a2LND318E3Dm45/YQT1uNBuiEtEnBwhVRNrIbv1abIRBOsm4tb/+DqHhRiUra6h9ZxRobk8hokKFpSc6XowplMJdvZx47ZbT5o9Tx7WYdobdinl+t8hdzdBIHDcmeb79zSOB701tcgHhD/t1MAEOSREi65Yi61r4gF0+fd4+RQ23XIIxhDIKEidbIMFtZNDeX+1aB9d16+dB6+dU8FkO4OB7GiVYt7NQxUDq4ASUqxpU+QQ2XEmZlAoCg+pAsdqhG8PS7i5CTonDZl9GuOy27xjfycnCI185GABd9dTPuUBP3JPGSnkt5ukxvgHiczWNmD7VnZqJ/hb47yhwsr0U0H7hMXli3q9lHEFGUMlXmLubcVPQmIEN6RSvEhXkNh539boUpMvugpnfdYTTK8o67ATrIK7u1OqR7B4RKDxEWHPPMggFUPXjr1moQbAMZnequoFxkVfdKmYvUst5EyZ7n2c8G/5zGINLVB1PIVHhJZKc9PsUPwuMOMQ1cDb9iX7kxdBLxvzHzTx6mdeK3KXxoPvXWt13XXgaOOnKbWEZxwYHB5xruWjtBac42sQn/hI2ww9ZA4RfuZ68PyTXpg3U/lRxnhRGpdbv98FClSeuQpgW+alW3HPtGALi1kKg6+8/8INxfJSTpi7j4N2jtJbpMWyS1ZVyBUNRlID55gypWb/dhSKi0296VcrZq9sdZxMvBNJwX9skzATkMVEyS2PIFm6uQ9v+0iv+PpPWwAlRLRgZVskzwsTOmjJ1jj8NIySIT1MXETUxWA/xpH+BwnXZTRstqA19k7yVVK4QzJWG6VIX8rh4kYWlpP6DEt3+7/A2/Ow4VxyqhsjJx8aZFna8M/cCmtcI8OG+ivOIk9Pnwd1b/2RFPQ3KYr5HadKIy9Lwc/DP5Mrmy0RicdxR272ktka7BOpDIq/m+Z939VBHqtYdYwtoVRqwGx4ozp7+T2KELOJFKmiZ2N3ObmgaTlo99vOpo57l5j0P88+xRUTmdvk8TxUUBPx3opYQAaTFrSIZ0p8ItzCwRfNoFsv3XP/C8RR52LoS85fLnXDv6NnL5ENGaefFcScDZXv7xRyLcKoPU5uDfcaozrHYdaLSqVlaR0tap9n/NbH1JXv/tJzJvkBCD0RdmUhsLv0MVlsbssbnyh/7snw3T6bQm+UyiXyJ/+bMF3CVLhpzrkfNx95CotfHJfyvYZFc6kNBVjGBsLAcLH8J2bB0RkWYcam2LA39hPVxlL5ebpTW35YY+QrtWHutA9ukiXcLDQ5da3U3B9lZRzoXR9Qb7Q/L3Ew7+Fk6y/zYoyDLbQf2Uwqvhnp0IFfWRxgpNgAUA/a7IL1MdH0vjXzS0+a24sD3PsskkwGZu675oEFf1198Kc6KXubtfgI9Evu6PrTyVZQ387/ubh5wv23qGe77RMHH21k4jKLpe3Ah/6U0SE5k4MJm9icuyJd+K26ELtclI038t1mVmkdOqJ6w0++wqjPszVnpvRnuBAdYs6OzAFbBtKdXjIieXqVAqwdcKZkUbJEHysqXiev75UQYwv0jMB+UU9LtR9DJo3tQOCy3Z9HJ9QC3IrleaFrT+z96OhH6n9jkdBaGlb0YK1ue2Y8Kj/emMKGJZC0wm3P8UUfkyq2nIs8Ee1djpc7gY3Wx+qI0LczkSyyjZFirVc3ojAe+K5g6dZGPKMlYlJJhvHpyKXxgzsIQuk+bNrw0Muz2smIPJDFC6Qq6agByj39QuIW5rA6ZfSYexZ2pBq1UiOPmFrZcUzj9AmlDwnNPxYHUn0DkR/eiyJ6EmYbaruZZVxM5qMuGV0W64NOFcMFynNUhjVe+LbfHev3CWUpRukjecyciQuYtqxgT6qir2a+9MP/55SWpH19vo5lxnCCnsJ2sSxfi07+AORd39Sb1wBqeXb1JOEsaz7X5dghXGPjJeyGvLb5EAtl48ninkWyhrOgPNVpl1eXKXqGW03lEwQiMP/4mpFdjZDntEd2cyW0ZB4Tu7FpXjrcR8Rs3oM2Dj3HcQk3qJq013SfqWXJvlbvDyZAJnctVD7ICbmzfBiESa9H63TR8cdtEdoSbohMVDcKnr6TkcqLKzmPsxe/KrXd1cdqLd+2rou8DIV2GGjdc05Xfibs1oXBQ9aBDCaSX/ULAiw/k18XYdXnoIDaj0MDrAAzjvy9ejasXRH+eduJtmDlOOKKQ9y5a2Pera1srGSyQtLyOdx2FxEw1ZxZCMunL/9K6cIl9J2aE6Z1fvuyCUJj/D6tflxhMzZrvmp3jMGdvn7MkLic9FypA8izXrke5iK6xMdjad/cY7I611H4oZWvnZWuMpOAGKsv52mEF5FPgaFaG7eVrdrPXMJDPNvlehFENRvu7cmb8oNGXgg+jDfry/OzFfzaoOx4GfzRbIyI1MIMqNneLlDonZqM62tJ+Mj+UqONQLoThnfwGjFwQTuJu9hiGhVGiB6kbutLQE6BMS4SYJckM4hnxwfXyJHG6Xv48EU2R8Ym/+gpqWR0SA1LUwL/Sn4tMctprU9CCpjjnxlKs34Mr3GRX6ycicRxo0ifmx436rQ0xpvORFvwXgsqBv2XqJCtpoNswIUORdNVbSNmMVfCH3zn8nX175vCdF6uXzDZt/FiaMbInExP1nVtH0HDHpQ/7V/2YL2fGfuBj4dpOY3ldlvNXVKpi03sqsZUwp55aab1Ug8P94AAK+cXwTuhcdfxGuyJm51e+oPSziBc70rv5xfbt2bnTbbUGD3r2P6KC4AesZO30pX0m6FQYXmB5xTnpDUOKCML79YwYfvshkwbgOpXUXc0Q3euMhRrGqOl3Z9lBGpxywyj42Gaoax50VxxoKKI/QSH8f/+M//Q/oqrDQbkHM7aNn/KGFO/ZTW629mGZiEJpAe7ISN1kEK5BV2zYY1ykynJ/0A+4EYoSMx9GA9TNqF3ELnQXSK/uMFr7tSJvMX6B/ZjvpZiM1TsuVzChPG+pR81+EdlZYvy28fCfFiz3XPn/WK1v6aE/BLBiqYzY4VbnbBTS7jZpMrMSJILd8HpQwUmQOypnv/P3mqPu94pTPfZnwUCADA4nbOSHMtOTS3TeuhNUOOEd1t6X+H8bhdW0nERsONnWfzVJSdx4auulmtyo0rltNZh/bmWLM0zK4BZqsQ1ydPICUWVcfcouMsh8ofh8sY+6dOK4Q8CpbbBWZUJ02um6INMMlwJOXU8S2UiM3XvW3IEm3mAVcIhy5q5RBuARQHQV/xlZBI0wcrICjohqvAm9zRgm3YkPDB3uLPHQGM4wgB5kn0vS0Xn8AGhgmDWqGmSlTI2lZRoUaY2n30MydxaPhapIhJBzJct88tfO2+VDS04seCfWFKprgCT26/k9USxCg2+bUU1Sx5r4X6oBsdZwtVeMshAOaf4VVw+M95LMvkOyz7DcJamLLEgpaeSL//AHiV/Bl1NedAORPsqfolpOzoLaDh44qPvV/9AaDJUoABMecjEYS2taPMOKjtOwiy+SC4psfNHdSlf4IHv+q9hebmQZJg1gI6UgsO0278kYsOWlm776oG/iuAmxBs4W212gjlr0aHHEUdGR589LrR2FxxBc/eQekZ3RSSU1Muts9HA5znA8NRGueswpYYTaWbt+kBZpliK8Qr1XF58RlQAqlHgcAUwAAAAA==) center/contain no-repeat}.sbox .st{font-size:1.7em;font-weight:bold;margin-top:6px}.sbox .sub{color:#333;margin-top:4px}
+#los{font-size:1.6em;background:#0E9AA7;color:#fff;padding:10px 38px;margin-top:16px}
+.cd{font-size:8em;font-weight:bold;color:#0E9AA7;line-height:1.1;animation:cdpop .9s ease-out}
+@keyframes cdpop{from{transform:scale(.3);opacity:0}60%{transform:scale(1.15);opacity:1}to{transform:scale(1)}}
 table.v{border-collapse:collapse;margin:6px 0;font-size:.85em}table.v td{border:1px solid #000;padding:2px 8px;text-align:center}table.v tr:first-child td,table.v td:first-child{background:#e6e6e6;font-weight:bold}
 .info{font-size:.85em;color:#333;margin-top:12px}
 footer{text-align:right;font-size:.85em;margin-top:16px}
 </style>
 </head>
-<body>
+<body class="locked">
 <div class="wrap">
 <header>
-  <div><a class="zur" href="../">← 10. Klasse</a><h1>Die täglichen 5<small>BLF-Wiederholung ohne Taschenrechner – Emil-Petri-Schule Arnstadt</small></h1></div>
+  <h1>Die tägliche Fünf<small>BLF-Wiederholung ohne Taschenrechner – Emil-Petri-Schule Arnstadt</small></h1>
   <div class="date" id="date"></div>
 </header>
+<div id="startOv"><div class="sbox" id="sbox"></div></div>
 <div class="bar"><span class="lab">Stoffstand:</span>
-  <button data-c="1">1 – ohne Trigonometrie</button><button data-c="2">2 – mit Trigonometrie im Dreieck</button><button data-c="3">3 – mit Winkelfunktionen</button><button data-c="4">4 – alles</button></div>
+  <button data-c="1">1 – ohne Trigonometrie</button><button data-c="2">2 – mit Trigonometrie im Dreieck</button><button data-c="3">3 – mit Winkelfunktionen</button><button data-c="4">4 – alles</button>
+  <span class="sep"></span><span class="lab">🦊 Fuchs-Knobelei:</span><button data-k="0">leicht</button><button data-k="1">schwer</button></div>
 <div class="bar">
-  <button class="main" id="today">Aufgaben des Tages</button><button id="newset">Neue Aufgaben</button><button id="all">Alle Lösungen zeigen</button>
+  <button class="main" id="today">Aufgaben des Tages</button><button id="newset">Neue Aufgaben</button><button id="all">Alle Lösungen zeigen</button><button id="relock" title="Aufgaben wieder verdecken (z. B. für die nächste Klasse)">🔒 Verdecken</button>
   <span style="flex:1"></span><button id="snd">🔔 Ton an</button><button id="tstart">5-Minuten-Uhr starten</button><span class="timer" id="timer">5:00</span>
 </div>
 <div class="grid" id="grid"></div>
-<div class="info">Tippen auf eine Karte zeigt ihre Lösung. „Aufgaben des Tages“ ist an einem Tag immer gleich – so passen die Aufgaben auch in Parallelklassen zusammen. <span style="color:#C2410C;font-weight:bold">NEU</span> markiert Aufgaben aus dem zuletzt dazugekommenen Stoffgebiet.</div>
+<div class="info">Tippen auf eine Karte zeigt ihre Lösung. „Aufgaben des Tages“ ist an einem Tag immer gleich – so passen die Aufgaben auch in Parallelklassen zusammen. <span style="color:#C2410C;font-weight:bold">NEU</span> markiert Aufgaben aus dem zuletzt dazugekommenen Stoffgebiet. Die 🦊 Fuchs-Knobelei ist die Zusatzaufgabe für alle, die schon fertig sind.</div>
 <footer>Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</footer>
 </div>
 <script>
@@ -79,16 +92,17 @@ const co=(a,v="x")=>a===1?v:a===-1?"−"+v:de(a)+v;
 const xm=d=>d===0?"x":`(x ${d>0?"−":"+"} ${Math.abs(d)})`;
 const T=(topic,q,a,s)=>({topic,q,a,s});
 const N=x=>`<span style="white-space:nowrap">${x}</span>`;
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 
 /* ---------- Bereich 1: Zahlen, Terme, Potenzen ---------- */
 const Z=[
  [1,()=>{const b=pick([3,4,5,6,8]),d=pick([2,3,4,6]);const a=ri(1,b-1),c=ri(1,d+1);const op=pick(["+",":"]);let n,m;if(op==="+"){n=a*d+c*b;m=b*d}else{n=a*d;m=b*c}
    return T("Bruchrechnung",`Berechne: ${N(fr(a,b)+" "+op+" "+fr(c,d))}`,frS(n,m),op==="+"?"Auf einen gemeinsamen Nenner bringen, dann Zähler addieren.":"Mit dem Kehrwert multiplizieren.")}],
  [1,()=>{const t=pick([0,1,2]);if(t===0){const p=pick([10,20,25,50,75]),G=pick([40,80,120,200,360]);return T("Prozentwert",`Wie viel sind ${p} % von ${G} €?`,`${de(G*p/100)} €`,`${G} € · ${fr(p,100)}`)}
-   if(t===1){const p=pick([20,25,40,50]),G=pick([60,80,120,200]),W=G*p/100;return T("Grundwert",`${W} € sind ${p} % des Preises. Wie hoch ist der Preis?`,`${G} €`,`${W} € : ${p} · 100`)}
+   if(t===1){const p=pick([20,25,40,50]),G=pick([60,80,120,200]),W=G*p/100;return T("Grundwert",`${W} € sind ${p} % des Preises. Wie hoch ist der Preis?`,`${G} €`,`${N(fr("G","100 %")+" = "+fr(W+" €",p+" %"))} → G = ${W} € · 100 : ${p}`)}
    const p=pick([10,20,25]),G=pick([40,60,80,120]);return T("Rabatt",`Ein Pulli kostet ${G} €. Er wird um ${p} % reduziert. Neuer Preis?`,`${de(G*(1-p/100))} €`,`${G} € · ${de(1-p/100)}`)}],
  [1,()=>{const t=pick([0,1,2]);if(t===0){const m=ri(2,7),n=ri(2,6),k=ri(1,5);return T("Potenzgesetze",`Vereinfache: ${fr(`a<sup>${m}</sup> · a<sup>${n}</sup>`,`a<sup>${k}</sup>`)}`,`a<sup>${m+n-k}</sup>`,`${m} + ${n} − ${k} = ${m+n-k}`)}
-   if(t===1){const [b,k]=pick([[2,3],[2,4],[5,2],[10,3],[3,2]]);return T("Negative Exponenten",`Berechne ${b}<sup>−${k}</sup>.`,fr(1,b**k),`${b}<sup>−${k}</sup> = 1 : ${b}<sup>${k}</sup>`)}
+   if(t===1){const [b,k]=pick([[2,3],[2,4],[5,2],[10,3],[3,2]]);return T("Negative Exponenten",`Berechne ${b}<sup>−${k}</sup>.`,fr(1,b**k),`${b}<sup>−${k}</sup> = ${fr(1,`${b}<sup>${k}</sup>`)}`)}
    const c=pick([2.5,3.4,6,7.2]),k=-ri(3,5);return T("Zehnerpotenzen",`Schreibe ${de(c*10**k)} in wissenschaftlicher Schreibweise.`,`${de(c)} · 10<sup>${de(k)}</sup>`,"Komma so verschieben, dass eine Ziffer vor dem Komma steht.")}],
  [1,()=>{const t=pick([0,1,2]);if(t===0){const [a,b]=pick([[2,18],[3,12],[2,50],[5,20],[3,27]]);return T("Wurzeln",`Berechne √${a} · √${b}.`,de(Math.sqrt(a*b)),`√${a*b}`)}
    if(t===1){const [b,e,r]=pick([[27,"⅓",3],[16,"¼",2],[49,"0,5",7],[8,"⅔",4],[100,"½",10]]);return T("Rationale Exponenten",`Berechne ${b}<sup>${e}</sup>.`,r,"Hochzahl ⅓ bedeutet dritte Wurzel usw.")}
@@ -115,12 +129,12 @@ const F=[
  [1,()=>{const d=nz(-4,4),e=ri(-5,5),a=pick([1,-1,2,-2,0.5]);return T("Scheitelpunkt",`Gib den Scheitelpunkt von ${N(`f(x) = ${a===1?"":a===-1?"−":de(a)}${xm(d)}²${e?sg(e):""}`)} an. Ist die Parabel nach oben oder unten geöffnet?`,`S(${de(d)} | ${de(e)}), nach ${a>0?"oben":"unten"} geöffnet`,`a(x − d)² + e → S(d | e)`)}],
  [1,()=>{let r1,r2;do{r1=ri(-6,6);r2=ri(-6,6)}while(r1===r2);return T("Nullstellen",`Gib die Nullstellen von ${N(`f(x) = ${xm(r1)} · ${xm(r2)}`)} an.`,`x = ${de(r1)} und x = ${de(r2)}`,"Satz vom Nullprodukt")}],
  [1,()=>{const n=pick([2,3,4,5,-1,-2]);const ev=n%2===0;return T("Potenzfunktionen",`Welche Symmetrie hat der Graph von f(x) = x<sup>${de(n)}</sup>?`,ev?"achsensymmetrisch zur y-Achse":"punktsymmetrisch zum Ursprung",`Exponent ${de(n)} ist ${ev?"gerade":"ungerade"}.`)}],
- [1,()=>{const c=nz(-3,3),e=nz(-3,3);return T("Verschieben",`Gib die Asymptoten des Graphen von f(x) = ${fr(1,xm(c))}${sg(e)} an.`,`x = ${de(c)} und y = ${de(e)}`,"Verschiebung von 1/x")}],
- [3,()=>{const t=pick([0,1,2]);const a=pick([2,3,4]),b=pick([2,3,4]);if(t===0)return T("Sinusfunktion",`Gib Amplitude und kleinste Periode von f(x) = ${a} · sin(${b}x) an.`,`Amplitude ${a}, Periode ${b===2?"π":frS(2,b)+"π"}`,"Periode = 2π : b");
+ [1,()=>{const c=nz(-3,3),e=nz(-3,3);return T("Verschieben",`Gib die Asymptoten des Graphen von f(x) = ${fr(1,xm(c))}${sg(e)} an.`,`x = ${de(c)} und y = ${de(e)}`,`Verschiebung von ${fr(1,"x")}`)}],
+ [3,()=>{const t=pick([0,1,2]);const a=pick([2,3,4]),b=pick([2,3,4]);if(t===0)return T("Sinusfunktion",`Gib Amplitude und kleinste Periode von f(x) = ${a} · sin(${b}x) an.`,`Amplitude ${a}, Periode ${b===2?"π":frS(2,b)+"π"}`,`Periode = ${fr("2π","b")}`);
    if(t===1){const d=nz(-3,3);return T("Wertebereich",`Gib den Wertebereich von ${N(`f(x) = ${a} · sin(x)${sg(d)}`)} an.`,`[${de(d-a)}; ${de(d+a)}]`,"sin x liegt zwischen −1 und 1.")}
    return T("Sinusfunktion",`Gib alle Nullstellen von f(x) = sin(x) im Intervall [0; 2π] an.`,"x = 0, x = π, x = 2π","Sinuskurve schneidet die x-Achse bei Vielfachen von π.")}],
- [3,()=>{const L=[[180,"π"],[90,fr("π",2)],[60,fr("π",3)],[45,fr("π",4)],[270,fr("3π",2)],[120,fr("2π",3)]];const [g,b]=pick(L);return R()<.5?T("Bogenmaß",`Gib ${g}° im Bogenmaß an.`,b,"180° entsprechen π."):T("Gradmaß",`Gib ${b} im Gradmaß an.`,`${g}°`,"π entspricht 180°.")}],
- [4,()=>{const t=pick([0,1,2]);if(t===0){const p=pick([3,5,8,20]),up=R()<.5;return T("Wachstumsfaktor",`Ein Bestand ${up?"wächst":"nimmt"} jährlich um ${p} % ${up?"":"ab"}. Wachstumsfaktor?`,`q = ${de(up?1+p/100:1-p/100)}`,"q = 1 ± p/100")}
+ [3,()=>{const L=[[180,"π"],[90,fr("π",2)],[60,fr("π",3)],[45,fr("π",4)],[270,fr("3π",2)],[120,fr("2π",3)]];const [g,b]=pick(L);const v=N(`${fr("α","180°")} = ${fr("b","π")}`);return R()<.5?T("Bogenmaß",`Gib ${g}° im Bogenmaß an.`,b,`${v} (180° entsprechen π)`):T("Gradmaß",`Gib ${b} im Gradmaß an.`,`${g}°`,`${v} (π entspricht 180°)`)}],
+ [4,()=>{const t=pick([0,1,2]);if(t===0){const p=pick([3,5,8,20]),up=R()<.5;return T("Wachstumsfaktor",`Ein Bestand ${up?"wächst":"nimmt"} jährlich um ${p} % ${up?"":"ab"}. Wachstumsfaktor?`,`q = ${de(up?1+p/100:1-p/100)}`,`q = 1 ${up?"+":"−"} ${fr(p,100)}`)}
    if(t===1){const B=pick([50,100,200]),n=ri(2,4);return T("Exponentielles Wachstum",`Bakterien verdoppeln sich stündlich. Start: ${B}. Wie viele sind es nach ${n} Stunden?`,de(B*2**n),`${B} · 2<sup>${n}</sup>`)}
    const m=pick([2,4,0.5,-2]),n=nz(-6,6);return T("Umkehrfunktion",`Bestimme die Umkehrfunktion von ${N(`f(x) = ${co(m)}${sg(n)}`)}.`,`f<sup>−1</sup>(x) = ${co(1/m)}${sg(-n/m)}`,"Nach x umstellen, x und y tauschen.")}],
 ];
@@ -133,7 +147,7 @@ const Ge=[
    if(t===1){const r=ri(2,5),h=ri(2,10);return T("Zylinder",`Zylinder: r = ${r} cm, h = ${h} cm. Volumen (als Vielfaches von π)?`,`${r*r*h}π cm³`,"V = π · r² · h")}
    if(t===2){const r=ri(2,9);return T("Kreis",`Kreis mit r = ${r} cm. Umfang und Flächeninhalt (mit π)?`,`u = ${2*r}π cm, A = ${r*r}π cm²`,"u = 2πr, A = πr²")}
    const l=pick([20,30,40,50]),b=pick([10,20,30]),h=pick([10,20,30]);return T("Volumen",`Aquarium ${l} cm × ${b} cm × ${h} cm. Wie viele Liter?`,`${l*b*h/1000} Liter`,"1 Liter = 1000 cm³")}],
- [1,()=>{const s=pick([1.5,2]),sch=pick([2,3]),B=pick([6,9,12]);return T("Strahlensatz",`Ein ${de(s)} m langer Stab wirft einen ${sch} m langen Schatten, ein Baum einen ${B} m langen. Wie hoch ist der Baum?`,`${de(s*B/sch)} m`,`h : ${B} = ${de(s)} : ${sch}`)}],
+ [1,()=>{const s=pick([1.5,2]),sch=pick([2,3]),B=pick([6,9,12]);return T("Strahlensatz",`Ein ${de(s)} m langer Stab wirft einen ${sch} m langen Schatten, ein Baum einen ${B} m langen. Wie hoch ist der Baum?`,`${de(s*B/sch)} m`,`${N(fr("h",B+" m")+" = "+fr(de(s)+" m",sch+" m"))} → h = ${de(s)} m · ${B} : ${sch}`)}],
  [2,()=>{const t=pick([0,1,2,3]);if(t===0){const [f,w,v]=pick([["sin",30,fr(1,2)],["cos",60,fr(1,2)],["tan",45,"1"],["sin",90,"1"],["cos",0,"1"],["sin",60,fr("√3",2)],["cos",45,fr("√2",2)]]);return T("Besondere Werte",`Gib ${f} ${w}° an.`,v,"Merkhilfe: ½√0, ½√1, ½√2, ½√3, ½√4")}
    if(t===1){const c=pick([6,8,10,14,20]);return T("Trigonometrie",`Rechtwinkliges Dreieck: Hypotenuse ${c} cm, α = 30°. Gegenkathete von α?`,`${c/2} cm`,"sin 30° = ½")}
    if(t===2){const a=pick([4,6,8]),b=pick([5,10]);return T("Flächeninhalt",`Dreieck mit a = ${a} cm, b = ${b} cm, γ = 30°. Flächeninhalt?`,`${a*b/4} cm²`,"A = ½ · a · b · sin γ, sin 30° = ½")}
@@ -141,38 +155,242 @@ const Ge=[
 ];
 /* ---------- Bereich 5: Stochastik ---------- */
 const St=[
- [1,()=>{const e=pick([["eine gerade Zahl",3],["eine Primzahl",3],["eine Zahl größer als 4",2],["eine Sechs",1]]);return T("Laplace",`Ein Würfel wird geworfen. Wahrscheinlichkeit für ${e[0]}?`,frS(e[1],6),"günstige : mögliche Ergebnisse")}],
+ [1,()=>{const e=pick([["eine gerade Zahl",3],["eine Primzahl",3],["eine Zahl größer als 4",2],["eine Sechs",1]]);return T("Laplace",`Ein Würfel wird geworfen. Wahrscheinlichkeit für ${e[0]}?`,frS(e[1],6),`P = ${fr("Anzahl günstige","Anzahl mögliche")} = ${fr(e[1],6)}`)}],
  [1,()=>{const p=pick([15,30,35,62,85]);return T("Gegenereignis",`P(Regen) = ${p} %. Wie groß ist P(kein Regen)?`,`${100-p} %`,"1 − P(A)")}],
  [1,()=>{const r=ri(2,5),b=ri(2,5),n=r+b;return R()<.5?T("Mit Zurücklegen",`${r} rote, ${b} blaue Kugeln. Zweimal mit Zurücklegen: P(rot, rot)?`,frS(r*r,n*n),`${fr(r,n)} · ${fr(r,n)}`):T("Ohne Zurücklegen",`${r} rote, ${b} blaue Kugeln. Zweimal ohne Zurücklegen: P(rot, rot)?`,frS(r*(r-1),n*(n-1)),`${fr(r,n)} · ${fr(r-1,n-1)}`)}],
  [1,()=>{const k=ri(2,4);return T("Mindestens einmal",`Eine Münze wird ${k}-mal geworfen. P(mindestens einmal Zahl)?`,frS(2**k-1,2**k),`1 − (½)<sup>${k}</sup>`)}],
- [1,()=>{let a;do{a=Array.from({length:5},()=>ri(1,9))}while(a.reduce((s,x)=>s+x,0)%5);const b=a.slice().sort((x,y)=>x-y);return T("Mittelwert und Median",`Daten: ${a.join("; ")}. Mittelwert und Median?`,`Mittelwert ${a.reduce((s,x)=>s+x,0)/5}, Median ${b[2]}`,`geordnet: ${b.join("; ")}`)}],
+ [1,()=>{let a;do{a=Array.from({length:5},()=>ri(1,9))}while(a.reduce((s,x)=>s+x,0)%5);const b=a.slice().sort((x,y)=>x-y);return T("Arithmetisches Mittel und Median",`Daten: ${a.join("; ")}. Arithmetisches Mittel und Median?`,`arithmetisches Mittel ${a.reduce((s,x)=>s+x,0)/5}, Median ${b[2]}`,`geordnet: ${b.join("; ")}`)}],
  [1,()=>{const N=pick([100,200]),A=pick([40,60]),AB=pick([10,20,30]),B=pick([50,70]);const tbl=`<table class="v"><tr><td></td><td>B</td><td>nicht B</td><td>Σ</td></tr><tr><td>A</td><td>${AB}</td><td>?</td><td>${A}</td></tr><tr><td>nicht A</td><td>${B-AB}</td><td></td><td>${N-A}</td></tr><tr><td>Σ</td><td>${B}</td><td></td><td>${N}</td></tr></table>`;
    return T("Vierfeldertafel",`Ergänze das Feld „?“.${tbl}`,`${A-AB}`,`${A} − ${AB}`)}],
  [1,()=>{const pA=pick([0.2,0.4,0.5]),pB=pick([0.3,0.5]),u=R()<.5,pAB=u?pA*pB:pA*pB+0.05;return T("Unabhängigkeit",`P(A) = ${de(pA)}, P(B) = ${de(pB)}, P(A ∩ B) = ${de(pAB)}. Unabhängig?`,u?"ja":"nein",`P(A) · P(B) = ${de(pA*pB)}`)}],
 ];
 const AREAS=[["Zahlen und Terme",Z],["Gleichungen",G],["Funktionen",F],["Geometrie",Ge],["Stochastik",St]];
 
-let charge=1;try{charge=+localStorage.getItem("taeglicheFuenf.charge")||1}catch(e){}
+/* ==================== 🦊 Fuchs-Knobelei ==================== */
+const SV=(w,h,inner,mw)=>`<svg viewBox="0 0 ${w} ${h}" style="width:100%;max-width:${mw||w}px;height:auto" font-family="Arial,Helvetica,sans-serif">${inner}</svg>`;
+const K=(typ,q,svg,say,a,s)=>({typ,q,svg,say,a,s});
+const un=(P,Q)=>{const dx=Q[0]-P[0],dy=Q[1]-P[1],l=Math.hypot(dx,dy);return[dx/l,dy/l]};
+const arcL=(P,u,v,r,lab,col)=>{const cr=u[0]*v[1]-u[1]*v[0],m=un([0,0],[u[0]+v[0],u[1]+v[1]]);
+  return `<path d="M${P[0]+r*u[0]} ${P[1]+r*u[1]} A${r} ${r} 0 0 ${cr>0?1:0} ${P[0]+r*v[0]} ${P[1]+r*v[1]}" fill="none" stroke="${col||"#1565C0"}" stroke-width="2.5"/><text x="${P[0]+(r+22)*m[0]}" y="${P[1]+(r+22)*m[1]+8}" text-anchor="middle" font-size="22" font-weight="bold" fill="${col||"#000"}">${lab}</text>`};
+const ARR=`<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>`;
+const ln=(P,Q,arr)=>`<line x1="${P[0]}" y1="${P[1]}" x2="${Q[0]}" y2="${Q[1]}" stroke="#000" stroke-width="3"${arr?' marker-end="url(#ar)"':""}/>`;
+/* Tierwaagen */
+const tierW=(t,lab,red)=>{const n=[...t].length/2,fs=n>2?32:n>1?40:46;return SV(160,150,`<rect x="34" y="4" width="92" height="28" rx="5" fill="${red?"#C62828":"#000"}"/><text x="80" y="24" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">${lab}</text><polygon points="73,32 87,32 80,41" fill="${red?"#C62828":"#000"}"/><rect x="16" y="44" width="10" height="80" fill="#b8c4c6" stroke="#000"/><rect x="8" y="122" width="146" height="14" rx="4" fill="#b8c4c6" stroke="#000"/><text x="90" y="116" text-anchor="middle" font-size="${fs}">${t}</text>`,150)};
+const tierG=s=>`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:640px">${s}</div>`;
+function kTiere(){const F=ri(12,25),H=ri(2,8);let S;do{S=ri(1,6)}while(S===H);
+  if(R()<.5){return K("Tierwaagen","Was zeigt die vierte Waage an?",tierG(tierW("🐇🐢",(H+S)+" kg")+tierW("🦊🐢",(F+S)+" kg")+tierW("🦊",F+" kg")+tierW("🦊🐇🐢","? kg",1)),
+    "Was zeigt die vierte Waage an? Hase und Schildkröte wiegen "+(H+S)+" Kilogramm, Fuchs und Schildkröte "+(F+S)+" Kilogramm, der Fuchs allein "+F+" Kilogramm.",
+    (F+H+S)+" kg",`Schildkröte: ${F+S} − ${F} = ${S} kg<br>Hase: ${H+S} − ${S} = ${H} kg<br>alle drei: ${F} + ${H} + ${S} = ${F+H+S} kg`)}
+  return K("Tierwaagen","Was zeigt die vierte Waage an?",tierG(tierW("🦊🐇",(F+H)+" kg")+tierW("🐇🐢",(H+S)+" kg")+tierW("🦊🐢",(F+S)+" kg")+tierW("🦊🐇🐢","? kg",1)),
+    "Was zeigt die vierte Waage an? Fuchs und Hase wiegen "+(F+H)+" Kilogramm, Hase und Schildkröte "+(H+S)+", Fuchs und Schildkröte "+(F+S)+" Kilogramm.",
+    (F+H+S)+" kg",`Alle drei Waagen zusammen: ${F+H} + ${H+S} + ${F+S} = ${2*(F+H+S)} kg<br>Dabei steht jedes Tier zweimal auf der Waage → ${2*(F+H+S)} : 2 = ${F+H+S} kg<br>(Fuchs ${F} kg, Hase ${H} kg, Schildkröte ${S} kg)`)}
+function kTiere2(){const F=ri(12,25),H=ri(3,9);let S;do{S=ri(1,7)}while(S===H);
+  if(R()<.5){const a=2*F+H,b=2*H+S,c=2*S+F;return K("Tierwaagen","Was zeigt die vierte Waage an?",tierG(tierW("🦊🦊🐇",a+" kg")+tierW("🐇🐇🐢",b+" kg")+tierW("🐢🐢🦊",c+" kg")+tierW("🦊🐇🐢","? kg",1)),
+    `Was zeigt die vierte Waage an? Zwei Füchse und ein Hase wiegen ${a} Kilogramm, zwei Hasen und eine Schildkröte ${b} Kilogramm, zwei Schildkröten und ein Fuchs ${c} Kilogramm.`,
+    (F+H+S)+" kg",`Alle drei Waagen zusammen: ${a} + ${b} + ${c} = ${a+b+c} kg<br>Dabei steht jedes Tier genau dreimal auf einer Waage → ${a+b+c} : 3 = ${F+H+S} kg<br>(Fuchs ${F} kg, Hase ${H} kg, Schildkröte ${S} kg)`)}
+  const a=2*F+H,b=F+H,c=H+2*S;return K("Tierwaagen","Was zeigt die vierte Waage an?",tierG(tierW("🦊🦊🐇",a+" kg")+tierW("🦊🐇",b+" kg")+tierW("🐇🐢🐢",c+" kg")+tierW("🦊🐇🐢","? kg",1)),
+    `Was zeigt die vierte Waage an? Zwei Füchse und ein Hase wiegen ${a} Kilogramm, ein Fuchs und ein Hase ${b} Kilogramm, ein Hase und zwei Schildkröten ${c} Kilogramm.`,
+    (F+H+S)+" kg",`Waage 1 minus Waage 2: Fuchs = ${a} − ${b} = ${F} kg<br>Hase = ${b} − ${F} = ${H} kg<br>Zwei Schildkröten = ${c} − ${H} = ${2*S} kg → eine Schildkröte ${S} kg<br>alle drei: ${F} + ${H} + ${S} = ${F+H+S} kg`)}
+/* Balkenwaage mit Kugeln */
+function kKugeln(){const k=ri(2,7),n=ri(3,6),m=ri(1,n-2),w1=ri(1,8),w2=w1+(n-m)*k;
+  const pan=(cx,cnt,wt)=>{let s="";for(let i=0;i<cnt;i++){const r=Math.floor(i/3),c=i%3;s+=`<circle cx="${cx-52+c*23+r*11.5}" cy="${115-r*21}" r="11" fill="#0E9AA7" stroke="#000" stroke-width="1.5"/><circle cx="${cx-55+c*23+r*11.5}" cy="${111-r*21}" r="3" fill="#fff" opacity=".7"/>`}
+    return s+`<line x1="${cx}" y1="44" x2="${cx-58}" y2="126" stroke="#555"/><line x1="${cx}" y1="44" x2="${cx+58}" y2="126" stroke="#555"/><path d="M${cx-64} 126 Q${cx} 150 ${cx+64} 126 Z" fill="#9aa5a7" stroke="#000"/><rect x="${cx+16}" y="94" width="46" height="32" rx="4" fill="#333"/><text x="${cx+39}" y="116" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">${wt} kg</text>`};
+  const svg=SV(320,200,`<rect x="155" y="40" width="10" height="140" fill="#777"/><ellipse cx="160" cy="186" rx="60" ry="9" fill="#777"/><circle cx="160" cy="34" r="9" fill="#777"/><rect x="40" y="38" width="240" height="8" rx="4" fill="#555"/>${pan(80,n,w1)}${pan(240,m,w2)}`,380);
+  return K("Waage im Gleichgewicht","Die Waage ist im Gleichgewicht. Alle Kugeln wiegen gleich viel. Wie schwer ist eine Kugel?",svg,
+    `Die Waage ist im Gleichgewicht. Links liegen ${n} Kugeln und ${w1} Kilogramm, rechts ${m} ${m>1?"Kugeln":"Kugel"} und ${w2} Kilogramm. Wie schwer ist eine Kugel?`,
+    k+" kg",`Links: ${n} Kugeln + ${w1} kg, rechts: ${m} ${m>1?"Kugeln":"Kugel"} + ${w2} kg<br>Auf beiden Seiten ${m} ${m>1?"Kugeln":"Kugel"} wegnehmen: ${n-m} Kugeln + ${w1} kg = ${w2} kg<br>Auf beiden Seiten ${w1} kg wegnehmen: ${n-m} Kugeln = ${w2-w1} kg<br>1 Kugel: ${w2-w1} : ${n-m} = ${k} kg`)}
+/* Flächenrätsel */
+function kFlaeche(){const a=ri(2,6),r=pick([2,3,4]),b=a*r,c=ri(2,8);let d;do{d=ri(2,8)}while(d===c);
+  const A=[[a*c,b*c],[a*d,b*d]],hr=ri(0,1),hc=ri(0,1),hid=A[hr][hc],or=1-hr,oc=1-hc;
+  const W=320,H=210,x0=10,y0=10,ws=Math.round(Math.min(150,Math.max(100,W*a/(a+b)))),hs=Math.round(Math.min(130,Math.max(80,H*c/(c+d))));
+  const X=[x0,x0+ws,x0+W],Y=[y0,y0+hs,y0+H];let s=`<defs><pattern id="hat" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#000" stroke-width="2"/></pattern></defs>`;
+  for(let i=0;i<2;i++)for(let j=0;j<2;j++){const x=X[j],y=Y[i],w=X[j+1]-x,h=Y[i+1]-y,hidC=i===hr&&j===hc;
+    s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${hidC?"url(#hat)":"#fff"}" stroke="#000" stroke-width="3"/><path d="M${x+2} ${y+h-14} h12 v12" fill="none" stroke="#C62828" stroke-width="2"/>`;
+    s+=hidC?`<circle cx="${x+w/2}" cy="${y+h/2}" r="22" fill="#fff" stroke="#C62828" stroke-width="2"/><text x="${x+w/2}" y="${y+h/2+12}" text-anchor="middle" font-size="34" font-weight="bold" fill="#C62828">?</text>`:`<text x="${x+w/2}" y="${y+h/2+9}" text-anchor="middle" font-size="26" font-weight="bold">${A[i][j]} m²</text>`}
+  const nb=A[hr][oc],o1=A[or][hc],o2=A[or][oc],big=o1>o2;
+  const st2=big?`Die beiden Rechtecke in der anderen Zeile haben dieselbe Höhe, also verhalten sich ihre Flächen wie ihre Breiten: ${fr(o1,o2)} = ${de(o1/o2)}<br>Die Spalte mit „?“ ist ${de(o1/o2)}-mal so breit → ${nb} · ${de(o1/o2)} = ${hid} m²`
+    :`Die beiden Rechtecke in der anderen Zeile haben dieselbe Höhe, also verhalten sich ihre Flächen wie ihre Breiten: ${fr(o2,o1)} = ${de(o2/o1)}<br>Die Spalte mit „?“ ist ${de(o2/o1)}-mal so schmal → ${nb} : ${de(o2/o1)} = ${hid} m²`;
+  return K("Flächenrätsel","Ein großes Rechteck ist in vier Rechtecke geteilt. Wie groß ist die schraffierte Fläche? (Skizze nicht maßstabsgetreu)",SV(340,230,s,400),
+    "Ein großes Rechteck ist in vier Rechtecke geteilt. Drei Flächeninhalte sind bekannt. Wie groß ist die schraffierte Fläche?",hid+" m²",st2+`<br>Probe mit Seitenlängen: Breiten ${a} m und ${b} m, Höhen ${c} m und ${d} m`)}
+function kFlaeche2(){const a=pick([6,8,10,12,14]),b=pick([4,6,8,10]);let x,y;do{x=ri(1,a-1)}while(2*x===a);do{y=ri(1,b-1)}while(2*y===b);
+  const ar={o:a*y/2,u:a*(b-y)/2,l:b*x/2,r:b*(a-x)/2},nm={o:"oben",u:"unten",l:"links",r:"rechts"},h=pick(["o","u","l","r"]),pt={o:"u",u:"o",l:"r",r:"l"}[h];
+  const X0=20,Y0=15,Wd=320,Hd=200,px=X0+Wd*Math.min(.64,Math.max(.36,x/a)),py=Y0+Hd*Math.min(.66,Math.max(.34,y/b));
+  const E=[[X0,Y0],[X0+Wd,Y0],[X0+Wd,Y0+Hd],[X0,Y0+Hd]],P=[px,py];
+  const cen={o:[(X0+X0+Wd+px)/3,(Y0+Y0+py)/3],u:[(X0+X0+Wd+px)/3,(2*(Y0+Hd)+py)/3],l:[(2*X0+px)/3,(Y0+Y0+Hd+py)/3],r:[(2*(X0+Wd)+px)/3,(Y0+Y0+Hd+py)/3]};
+  let s=`<rect x="${X0}" y="${Y0}" width="${Wd}" height="${Hd}" fill="#fff" stroke="#000" stroke-width="3"/>`;
+  if(true){const tri={o:[E[0],E[1]],u:[E[3],E[2]],l:[E[0],E[3]],r:[E[1],E[2]]}[h];s+=`<polygon points="${tri[0]} ${tri[1]} ${P}" fill="#d9f3f5"/>`}
+  E.forEach(e=>s+=`<line x1="${e[0]}" y1="${e[1]}" x2="${px}" y2="${py}" stroke="#000" stroke-width="2.5"/>`);s+=`<circle cx="${px}" cy="${py}" r="5"/>`;
+  cen.l[0]=Math.max(cen.l[0],X0+44);cen.r[0]=Math.min(cen.r[0],X0+Wd-44);
+  for(const k of "oulr"){const [cx,cy]=cen[k];s+=k===h?`<text x="${cx}" y="${cy+11}" text-anchor="middle" font-size="32" font-weight="bold" fill="#C62828">?</text>`:`<text x="${cx}" y="${cy+8}" text-anchor="middle" font-size="19" font-weight="bold">${ar[k]} cm²</text>`}
+  const g1=["o","u"].includes(h)?["l","r"]:["o","u"],sum=ar[g1[0]]+ar[g1[1]];
+  return K("Flächenrätsel","Ein Punkt im Rechteck ist mit allen vier Ecken verbunden. Drei der vier Dreiecke sind bekannt. Wie groß ist das Dreieck mit „?“? (Skizze nicht maßstabsgetreu)",SV(360,230,s,420),
+    "Ein Punkt im Rechteck ist mit allen vier Ecken verbunden. So entstehen vier Dreiecke. Drei Flächeninhalte sind bekannt. Wie groß ist das vierte Dreieck?",ar[h]+" cm²",
+    `Oberes und unteres Dreieck haben beide eine Rechteckseite als Grundseite, ihre Höhen ergeben zusammen die andere Rechteckseite → zusammen sind sie genau das halbe Rechteck. Genauso das linke und das rechte Dreieck.<br>Also: ${nm[g1[0]]} + ${nm[g1[1]]} = ${ar[g1[0]]} + ${ar[g1[1]]} = ${sum} cm² = ${nm[h]} + ${nm[pt]}<br>? = ${sum} − ${ar[pt]} = ${ar[h]} cm²`)}
+/* Winkelrätsel */
+function kWinkel(){let al,ga;do{al=ri(7,15)*5;ga=ri(8,18)*5}while(al+ga>150);const x=al+ga,be=180-x;
+  const A=[60,240],B=[300,240],C=[195,92],ext=(P,Q,f)=>[Q[0]+(Q[0]-P[0])*f,Q[1]+(Q[1]-P[1])*f];
+  const E1=ext(A,C,.55),E2=ext(B,C,.55),E3=[395,240];
+  const t=pick([0,1,2]),L=[al+"°",ga+"°",x+"°"];L[t===0?2:t===1?1:0]=t===0?"x":"?";
+  const red=i=>(t===0&&i===2)||(t===1&&i===1)||(t===2&&i===0)?"#C62828":null;
+  const svg=SV(420,270,ARR+ln(A,E1,1)+ln(B,E2,1)+ln(A,E3,1)+arcL(A,[1,0],un(A,C),48,L[0],red(0))+arcL(C,un(A,E1),un(B,E2),34,L[1],red(1))+arcL(B,[1,0],un(B,C),40,L[2],red(2)),430);
+  const nb=`Der Winkel oben (${ga}°) ist ein Scheitelwinkel → der Innenwinkel bei der Spitze ist auch ${ga}°.`;
+  let q,a,s;
+  if(t===0){q="Wie groß ist der Winkel x?";a="x = "+x+"°";s=`${nb}<br>Winkelsumme im Dreieck: Innenwinkel rechts unten = 180° − ${al}° − ${ga}° = ${be}°<br>x ist sein Nebenwinkel: x = 180° − ${be}° = ${x}°<br>Abkürzung: Außenwinkel = Summe der beiden anderen Innenwinkel: ${al}° + ${ga}° = ${x}°`}
+  else if(t===1){q="Wie groß ist der Winkel oben an der Kreuzung (?)?";a=ga+"°";s=`Innenwinkel rechts unten ist Nebenwinkel von ${x}°: 180° − ${x}° = ${be}°<br>Innenwinkel an der Spitze: 180° − ${al}° − ${be}° = ${ga}°<br>„?“ ist sein Scheitelwinkel → ? = ${ga}°`}
+  else{q="Wie groß ist der Winkel links unten (?)?";a=al+"°";s=`${nb}<br>Innenwinkel rechts unten ist Nebenwinkel von ${x}°: 180° − ${x}° = ${be}°<br>Winkelsumme: ? = 180° − ${ga}° − ${be}° = ${al}°`}
+  return K("Winkelrätsel",q+" (Skizze nicht maßstabsgetreu)",svg,q,a,s)}
+function kWinkel2(){let ga,be,al;do{ga=ri(8,16)*5;be=ri(8,16)*5;al=180-ga-be}while(al<35);const e=180-be;
+  const A=[50,250],B=[350,250],C=[195,40],tt=(250-150)/(250-40),P=[A[0]+tt*(C[0]-A[0]),150],Q=[B[0]+tt*(C[0]-B[0]),150];
+  const t=pick([0,1,2]),lab=[t===0?"?":al+"°",t===1?"?":ga+"°",t===2?"?":e+"°"],col=i=>i===t?"#C62828":null;
+  const svg=SV(420,270,ARR+ln(A,B)+ln(A,C)+ln(B,C)+ln(P,[412,150],1)+`<path d="M${(P[0]+Q[0])/2-6} 144 l8 6 l-8 6 M215 244 l8 6 l-8 6" fill="none" stroke="#0E9AA7" stroke-width="3"/>`
+    +arcL(A,[1,0],un(A,C),44,lab[0],col(0))+arcL(C,un(C,A),un(C,B),36,lab[1],col(1))+arcL(Q,[1,0],un(Q,C),36,lab[2],col(2)),430);
+  const pre="Die waagerechte Linie ist parallel zur Grundseite (türkise Pfeilchen).";
+  let q,a,s;
+  if(t===0){q="Wie groß ist der Winkel links unten (?)?";a=al+"°";s=`Nebenwinkel: Der Innenwinkel des kleinen Dreiecks oben rechts ist 180° − ${e}° = ${be}°<br>Winkelsumme im kleinen Dreieck: Winkel links = 180° − ${ga}° − ${be}° = ${al}°<br>Stufenwinkel an Parallelen: ? = ${al}°`}
+  else if(t===1){q="Wie groß ist der Winkel an der Spitze (?)?";a=ga+"°";s=`Stufenwinkel an Parallelen: Im kleinen Dreieck oben ist der Winkel links auch ${al}°<br>Nebenwinkel: Der Winkel rechts im kleinen Dreieck ist 180° − ${e}° = ${be}°<br>Winkelsumme: ? = 180° − ${al}° − ${be}° = ${ga}°`}
+  else{q="Wie groß ist der Winkel rechts an der Parallele (?)?";a=e+"°";s=`Stufenwinkel an Parallelen: Im kleinen Dreieck oben ist der Winkel links auch ${al}°<br>Winkelsumme: Winkel rechts im kleinen Dreieck = 180° − ${al}° − ${ga}° = ${be}°<br>? ist sein Nebenwinkel: 180° − ${be}° = ${e}°`}
+  return K("Winkelrätsel",q+" "+pre+" (Skizze nicht maßstabsgetreu)",svg,q+" "+pre,a,s)}
+/* Zahlenfolgen */
+const folgeK=(f,rule,steps)=>{const show=f.slice(0,-1),ans=f[f.length-1];
+  return K("Zahlenfolge","Welche Zahl kommt als Nächstes?",`<div style="font-size:1.8em;font-weight:bold;line-height:1.5">${show.map(de).join("&nbsp;&nbsp; ")}&nbsp;&nbsp; <span style="color:#C62828;border-bottom:3px solid #C62828">?</span></div>`,
+    "Welche Zahl kommt als Nächstes? "+show.join(", "),de(ans),rule+"<br>"+steps)};
+function kFolge(){const t=pick([0,1,2,3,4,5]);let f=[],rule,steps;
+  if(t===0){const k=ri(2,9);f=[ri(2,5)];while(f.length<6)f.push(2*f[f.length-1]+k);rule=`Jede Zahl wird verdoppelt, dann kommt ${k} dazu.`;steps=f.slice(1).map((v,i)=>`${f[i]} · 2 + ${k} = ${v}`).join("<br>")}
+  else if(t===1){const d=ri(2,5),inc=ri(2,4);f=[ri(1,9)];let dd=d;while(f.length<6){f.push(f[f.length-1]+dd);dd+=inc}rule=`Die Abstände wachsen jedes Mal um ${inc}.`;steps="Abstände: "+f.slice(1).map((v,i)=>"+"+(v-f[i])).join(", ")}
+  else if(t===2){const k=ri(1,3);f=[ri(2,4)];while(f.length<6)f.push(3*f[f.length-1]-k);rule=`Jede Zahl wird mit 3 multipliziert, dann wird ${k} abgezogen.`;steps=f.slice(1).map((v,i)=>`${f[i]} · 3 − ${k} = ${v}`).join("<br>")}
+  else if(t===3){const p=ri(2,6);f=[ri(1,5)];while(f.length<8)f.push(f.length%2?f[f.length-1]+p:f[f.length-1]*2);rule=`Abwechselnd wird ${p} addiert und verdoppelt.`;steps=f.slice(1).map((v,i)=>i%2?`${f[i]} · 2 = ${v}`:`${f[i]} + ${p} = ${v}`).join("<br>")}
+  else if(t===4){f=[ri(1,4),ri(2,6)];while(f.length<8)f.push(f[f.length-1]+f[f.length-2]);rule="Jede Zahl ist die Summe der beiden Zahlen davor.";steps=f.slice(2).map((v,i)=>`${f[i]} + ${f[i+1]} = ${v}`).join("<br>")}
+  else{const k=pick([-1,1,2,3,5]),o=ri(1,3);f=[];for(let n=o;f.length<6;n++)f.push(n*n+k);rule=`Quadratzahlen ${k>0?"plus "+k:"minus "+(-k)}: ${o}², ${o+1}², ${o+2}² …`;steps=f.map((v,i)=>`${o+i}² ${k>0?"+":"−"} ${Math.abs(k)} = ${v}`).join("<br>")}
+  return folgeK(f,rule,steps)}
+function kFolge2(){const t=pick([0,1,2,3,4,5,6]);let f=[],rule,steps;
+  if(t===0){const k=pick([-1,1,2,3]),o=ri(1,2);for(let n=o;f.length<6;n++)f.push(n**3+k);rule=`Kubikzahlen ${k>0?"plus "+k:"minus "+(-k)}: ${o}³, ${o+1}³, ${o+2}³ …`;steps=f.map((v,i)=>`${o+i}³ ${k>0?"+":"−"} ${Math.abs(k)} = ${v}`).join("<br>")}
+  else if(t===1){const d=ri(2,4);f=[ri(1,9)];let dd=d;while(f.length<7){f.push(f[f.length-1]+dd);dd*=2}rule="Die Abstände verdoppeln sich jedes Mal.";steps="Abstände: "+f.slice(1).map((v,i)=>"+"+(v-f[i])).join(", ")}
+  else if(t===2){const o=ri(1,3);for(let n=o;f.length<6;n++)f.push(n*(n+1));rule=`Jede Zahl ist ein Produkt zweier Nachbarzahlen: ${o} · ${o+1}, ${o+1} · ${o+2} …`;steps=f.map((v,i)=>`${o+i} · ${o+i+1} = ${v}`).join("<br>")}
+  else if(t===3){const s=ri(1,3);f=[s];for(let n=2;f.length<6;n++)f.push(f[f.length-1]*n);rule="Die Zahl wird nacheinander mit 2, 3, 4, 5 … multipliziert.";steps=f.slice(1).map((v,i)=>`${f[i]} · ${i+2} = ${v}`).join("<br>")}
+  else if(t===4){const k=ri(1,3);f=[ri(1,3)];while(f.length<6)f.push(-2*f[f.length-1]+k);rule=`Jede Zahl wird mit (−2) multipliziert, dann kommt ${k} dazu.`;steps=f.slice(1).map((v,i)=>`${de(f[i])} · (−2) + ${k} = ${de(v)}`).join("<br>")}
+  else if(t===5){f=[ri(1,2),ri(1,3),ri(2,4)];while(f.length<8)f.push(f[f.length-1]+f[f.length-2]+f[f.length-3]);rule="Jede Zahl ist die Summe der drei Zahlen davor.";steps=f.slice(3).map((v,i)=>`${f[i]} + ${f[i+1]} + ${f[i+2]} = ${v}`).join("<br>")}
+  else{const k=ri(1,4);f=[ri(3,5)];while(f.length<8)f.push(f.length%2?f[f.length-1]*3:f[f.length-1]-k);rule=`Abwechselnd wird mit 3 multipliziert und ${k} abgezogen.`;steps=f.slice(1).map((v,i)=>i%2?`${f[i]} − ${k} = ${v}`:`${f[i]} · 3 = ${v}`).join("<br>")}
+  return folgeK(f,rule,steps)}
+/* Kryptogramme */
+const KRY=[["AA","+","AB","CCC","A = 5, B = 6, C = 1","Zwei zweistellige Zahlen ergeben zusammen weniger als 200 → C = 1, also CCC = 111.<br>AA + AB = 111 geht nur mit A = 5: 55 + 56 = 111"],
+ ["AB","·","A","CCC","A = 3, B = 7, C = 1","CCC ist 111, 222, 333 … und 111 = 3 · 37.<br>Mit AB = 37 und A = 3 passt es: 37 · 3 = 111"],
+ ["AB","·","C","AAA","A = 3, B = 7, C = 9","AAA ist ein Vielfaches von 111 = 3 · 37 → AB = 37, also A = 3.<br>AAA = 333 → C = 333 : 37 = 9"],
+ ["AB","·","C","AAB","A = 2, B = 5, C = 9","B · C endet wieder auf B. Mit B = 5 und ungeradem C klappt das.<br>Probieren: 25 · 9 = 225 ✓"],
+ ["AB","+","CB","CDD","A = 8, B = 5, C = 1, D = 0","Das Ergebnis ist dreistellig → C = 1. Die Summe muss dann 100, 111, 122 … sein.<br>B + B endet auf D: mit 100 gilt D = 0 und B = 5 → A5 + 15 = 100 → A = 8: 85 + 15 = 100"],
+ ["AB","+","CC","ADD","A = 1, B = 2, C = 8, D = 0","Das Ergebnis ist dreistellig → A = 1. 1B + CC ergibt 1DD, das ist höchstens 108 → 1DD = 100.<br>12 + 88 = 100 ✓"],
+ ["AA","+","AB","CAC","A = 9, B = 2, C = 1","Ergebnis dreistellig → C = 1. Dann ist das Ergebnis 1A1, also größer als 100 → A muss groß sein.<br>A = 9: 99 + 92 = 191 ✓"],
+ ["AB","·","B","ACA","A = 1, B = 9, C = 7","B · B endet auf A, und das Ergebnis beginnt auch mit A.<br>B = 9: 9 · 9 = 81 endet auf 1 → A = 1: 19 · 9 = 171 ✓"],
+ ["AB","+","CB","BBA","A = 2, B = 1, C = 9","Die Summe ist kleiner als 200 → B = 1.<br>A1 + C1 endet auf 2 → A = 2. 21 + C1 = 112 → C1 = 91 → C = 9"]];
+const KRY2=[["AB","·","AB","CAB","A = 2, B = 5, C = 6","B · B endet wieder auf B → B ist 0, 1, 5 oder 6. Das Ergebnis ist dreistellig → AB ist höchstens 31.<br>Ausprobieren: nur 25 · 25 = 625 passt."],
+ ["ABC","+","ABC","BCDC","A = 5, B = 1, C = 0, D = 2","Zwei dreistellige Zahlen ergeben weniger als 2000 → B = 1.<br>Einer: C + C endet auf C → C = 0. Also A10 + A10 = 10D0 → A = 5: 510 + 510 = 1020 → D = 2"],
+ ["ABCD","·","D","DCBA","A = 1, B = 0, C = 8, D = 9","Das Ergebnis bleibt vierstellig → A = 1, und D ist groß.<br>D · D endet auf A = 1 → D = 9. Damit 1BC9 · 9 vierstellig bleibt, muss B = 0 sein.<br>Probieren: 1089 · 9 = 9801 ✓"],
+ ["AB","·","C","BBB","A = 7, B = 4, C = 6","BBB = B · 111 = B · 3 · 37 → AB ist 37 oder 74.<br>AB = 37 → B = 7: 777 : 37 = 21 (keine Ziffer ✗). AB = 74 → B = 4: 444 : 74 = 6 ✓"],
+ ["AAB","+","ACD","BBBB","A = 5, B = 1, C = 6, D = 0","Die Summe ist kleiner als 2000 → B = 1, also BBBB = 1111.<br>AA1 + ACD = 1111 → zwei Hunderterziffern A ergeben 11 → A = 5: 551 + 5CD = 1111 → 5CD = 560"],
+ ["AAB","+","CAD","BDDB","A = 5, B = 1, C = 4, D = 0","Die Summe ist kleiner als 2000 → B = 1.<br>Einer: 1 + D endet auf 1 → D = 0, also BDDB = 1001.<br>Zehner: A + A endet auf 0 → A = 5: 551 + C50 = 1001 → C = 4"],
+ ["AA","·","BB","CDCB","A = 3, B = 5, C = 1, D = 8","AA · BB = 11 · A · 11 · B = 121 · A · B<br>Die Einerziffer von A · B ist wieder B → B = 5 und A ungerade probieren: 121 · 3 · 5 = 1815 ✓"]];
+function kKryptoFrom(pool){const [x,op,y,z,a,s]=pick(pool);const col=op==="+",w=Math.max(x.length,y.length,z.length)+1;
+  const pad=v=>"&nbsp;".repeat(w-v.length)+v;
+  const box=col?`<div style="font-family:'Courier New',monospace;font-size:2.4em;font-weight:bold;line-height:1.15;display:inline-block;color:#076f78">${pad(x)}<br>+${pad(y).slice(6)}<br><div style="border-top:3px solid #000">${pad(z)}</div></div>`
+    :`<div style="font-family:'Courier New',monospace;font-size:2.4em;font-weight:bold;color:#076f78;white-space:nowrap">${x} · ${y} = ${z}</div>`;
+  return K("Buchstabenrätsel","Jeder Buchstabe steht für eine Ziffer. Gleiche Buchstaben = gleiche Ziffern, verschiedene Buchstaben = verschiedene Ziffern. Keine Zahl beginnt mit 0. Welche Ziffern sind es?",box,
+    "Jeder Buchstabe steht für eine Ziffer. Gleiche Buchstaben sind gleiche Ziffern, verschiedene Buchstaben verschiedene Ziffern. Keine Zahl beginnt mit null. Finde die Ziffern.",a,s)}
+const kKrypto=()=>kKryptoFrom(KRY),kKrypto2=()=>kKryptoFrom(KRY2);
+/* Streichhölzer */
+const SEG={0:"abcdef",1:"bc",2:"abdeg",3:"abcdg",4:"bcfg",5:"acdfg",6:"acdefg",7:"abc",8:"abcdefg",9:"abcdfg","+":"hv","-":"h"};
+const SP={a:[12,6,48,6],b:[54,12,54,50],c:[54,62,54,100],d:[12,106,48,106],e:[6,62,6,100],f:[6,12,6,50],g:[12,56,48,56],h:[8,56,42,56],v:[25,39,25,73]};
+const MP7=["1+2=4|1+3=4","1+6=5|1+5=6","1+6=8|1+8=9","1+9=7|1+6=7","1-2=6|7-2=5","1-5=8|1+5=6","1-9=6|1+5=6","2+8=9|2+6=8","2-3=9|2+3=5","2-9=5|2+3=5","2-9=7|2+5=7","3+2=3|3+2=5","3+9=5|3+3=6","3-2=6|3+2=5","3-6=4|9-5=4","4+2=0|4+2=6","4+2=7|4+3=7","4+5=7|4+3=7","4-2=1|4-3=1","4-7=5|4+1=5","5+2=5|3+2=5","5-5=6|5-5=0","5-6=8|6-6=0","5-7=8|9-1=8","5-8=3|9-6=3","6+1=5|5+1=6","6+1=8|8+1=9","6+2=6|8-2=6","6+4=5|5+4=9","6+5=0|6-6=0","6+5=9|6+3=9","6-1=6|5+1=6","6-2=3|6-3=3","6-3=4|6-2=4","6-7=2|9-7=2","7+1=5|7-1=6","7+2=0|7+2=9","7+6=9|1+8=9","7+9=9|1+8=9","7-1=9|7-1=6","7-5=4|7-3=4","8+2=5|8-2=6","8+2=9|6+2=8","8+7=5|8+1=9","8+9=0|8-8=0","8-1=8|8+1=9","8-2=0|8-2=6","8-2=8|6+2=8","8-6=3|8-6=2","8-9=2|8-6=2","9+1=5|5+1=6","9+4=1|3+4=7","9+8=0|8-8=0","9-1=4|3+1=4","9-1=5|6-1=5","9-2=4|6-2=4","9-2=5|3+2=5","9-4=7|3+4=7","9-5=1|6-5=1","9-8=2|8-6=2"];
+const MP10=["56+7=67|66+1=67","11+9=18|11+8=19","36+8=30|38-8=30","18-4=20|16+4=20","15+3=76|15+3=18","20-2=70|20-2=18","49-1=46|45+1=46","68+7=61|60+7=67","37+8=31|37+0=37","40-5=25|40-5=35","56-3=47|50-3=47","69+8=95|89+6=95","19+2=31|19+2=21","44+5=90|44+6=50","69-6=53|65-6=59","92-1=25|32-7=25","67+9=70|67+9=76","88-4=93|89+4=93","73+8=55|73-8=65","57-1=52|51+1=52","30+5=41|36+5=41","51+9=86|57+9=66","30-9=27|36-9=27","48-9=93|48-9=39","19-3=72|75-3=72","88-8=30|98-8=90","49-1=60|49+1=50","79-8=13|79-6=73","57-5=57|57-6=51","86-2=88|88-2=86","57-8=59|51+8=59","25+3=27|25+2=27","56-8=52|58-6=52","42-6=42|42-0=42","15-5=74|19-5=14","67+5=63|57+6=63","88-4=82|88+4=92","40+7=95|48+7=55","40-9=34|40-6=34","88-9=65|88-3=85","68+2=79|68+2=70","16+1=18|18+1=19","48-6=38|46-8=38","84+5=65|64+5=69","91+5=62|57+5=62","96+3=87|96-9=87","99+4=93|95+4=99","47-3=90|47+3=50","73-8=61|73-6=67","29+1=96|29+7=36"];
+const stickL=([x1,y1,x2,y2],dx,hl)=>`<line x1="${x1+dx}" y1="${y1}" x2="${x2+dx}" y2="${y2}" stroke="${hl?"#0E9AA7":"#E3B25B"}" stroke-width="7" stroke-linecap="round"/><circle cx="${x2+dx}" cy="${y2}" r="5.5" fill="${hl?"#076f78":"#C62828"}"/>`;
+function holzSVG(e,old){let s="",x=10;
+  [...e].forEach((c,i)=>{if(c==="="){x+=14;s+=stickL([8,44,42,44],x)+stickL([8,68,42,68],x);x+=66;return}
+    const op=c==="+"||c==="-";if(op)x+=8;const os=old?SEG[old[i]]:null;
+    for(const k of SEG[c])s+=stickL(SP[k],x,os!==null&&!os.includes(k));x+=op?58:66});
+  return SV(x+6,115,s,Math.min(560,Math.round((x+6)*1.05)))}
+function holzText(o,n){const L=c=>SEG[c].length,ch=[];for(let i=0;i<o.length;i++)if(o[i]!==n[i])ch.push(i);
+  const op=c=>c==="+"||c==="-",nm=(c,f)=>op(c)?{g:"des ",d:"dem ",a:"das "}[f]+(c==="+"?"Plus":"Minus")+"zeichen"+(f==="g"?"s":""):{g:"der ",d:"der ",a:"die "}[f]+c,z=c=>c==="+"?"Plus":c==="-"?"Minus":c;
+  if(ch.length===1){const i=ch[0];return `Ein Streichholz wird innerhalb ${nm(o[i],"g")} umgelegt: aus ${z(o[i])} wird ${z(n[i])}.`}
+  const f=ch.find(i=>L(n[i])<L(o[i])),t=ch.find(i=>L(n[i])>L(o[i]));
+  return `Nimm ein Streichholz von ${nm(o[f],"d")} weg (aus ${z(o[f])} wird ${z(n[f])}) und lege es an ${nm(o[t],"a")} (aus ${z(o[t])} wird ${z(n[t])}).`}
+const holzTxt=e=>e.replace(/([+\-=])/g," $1 ").replace(/-/g,"−");
+function kHolzFrom(pool){const [o,n]=pick(pool).split("|");
+  return K("Streichholzrätsel","Lege genau ein Streichholz um, sodass die Rechnung stimmt.",holzSVG(o),"Lege genau ein Streichholz um, sodass die Rechnung stimmt.",holzTxt(n),holzText(o,n)+"<br>"+holzSVG(n,o)+"<br>Das umgelegte Streichholz ist türkis.")}
+const kHolz=()=>kHolzFrom(MP7),kHolz2=()=>kHolzFrom(MP10);
+/* Wie viele Möglichkeiten? */
+function kMoegl(){const t=pick([0,1,2,3,4]);
+  if(t===0){const n=ri(4,5),k=ri(2,3),d=shuffle([1,2,3,4,5,6,7,8,9]).slice(0,n).sort((a,b)=>a-b);let p=1,f=[];for(let i=0;i<k;i++){p*=n-i;f.push(n-i)}const st=["Hunderterstelle","Zehnerstelle","Einerstelle"].slice(3-k);
+    const q=`Du hast die Ziffernkarten ${d.join(", ")}. Wie viele verschiedene ${k===3?"dreistellige":"zweistellige"} Zahlen kannst du legen, wenn jede Karte nur einmal vorkommt?`;
+    return K("Wie viele Möglichkeiten?",q,"",q,String(p),st.map((s,i)=>`${s}: ${f[i]} Möglichkeiten`).join("<br>")+`<br>${f.join(" · ")} = ${p}`)}
+  if(t===1){const a=ri(3,5),b=ri(2,4),c=ri(2,3),q=`Fuchs Ferdinand hat ${a} T-Shirts, ${b} Hosen und ${c} Mützen. Er zieht jeden Tag ein T-Shirt, eine Hose und eine Mütze an. Wie viele Tage kann er anders aussehen?`;
+    return K("Wie viele Möglichkeiten?",q,"",q,String(a*b*c),`Zu jedem T-Shirt passen ${b} Hosen: ${a} · ${b} = ${a*b} Kombinationen<br>Zu jeder davon ${c} Mützen: ${a*b} · ${c} = ${a*b*c}`)}
+  if(t===2){const n=ri(5,9),q=`Beim Turnier spielt jede der ${n} Mannschaften genau einmal gegen jede andere. Wie viele Spiele gibt es?`;
+    return K("Wie viele Möglichkeiten?",q,"",q,String(n*(n-1)/2),`Jede Mannschaft spielt ${n-1}-mal: ${n} · ${n-1} = ${n*(n-1)}<br>Jedes Spiel wurde dabei doppelt gezählt (A gegen B ist B gegen A): ${n*(n-1)} : 2 = ${n*(n-1)/2}`)}
+  if(t===3){const n=ri(5,9),q=`Die Eisdiele hat ${n} Sorten. Du nimmst zwei Kugeln von verschiedenen Sorten in einen Becher. Wie viele verschiedene Becher gibt es?`;
+    return K("Wie viele Möglichkeiten?",q,"",q,String(n*(n-1)/2),`Erste Kugel: ${n} Sorten, zweite Kugel: ${n-1} Sorten → ${n} · ${n-1} = ${n*(n-1)}<br>Im Becher ist die Reihenfolge egal (Erdbeer–Vanille = Vanille–Erdbeer): ${n*(n-1)} : 2 = ${n*(n-1)/2}`)}
+  const n=ri(4,5),f=[];let p=1;for(let i=n;i>0;i--){p*=i;f.push(i)}const q=`${n} Freunde wollen sich für ein Foto in eine Reihe stellen. Wie viele verschiedene Reihenfolgen gibt es?`;
+  return K("Wie viele Möglichkeiten?",q,"",q,String(p),`Platz eins: ${n} Möglichkeiten, Platz zwei: ${n-1}, … , letzter Platz: 1<br>${f.join(" · ")} = ${p}`)}
+function kMoegl2(){const t=pick([0,1,2,3,4]);
+  if(t===0){const s=ri(4,10),pr=[];for(let a=1;a<=6;a++)for(let b=1;b<=6;b++)if(a+b===s)pr.push(`(${a}|${b})`);const q=`Du wirfst zwei Würfel. Wie groß ist die Wahrscheinlichkeit, dass die Augensumme genau ${s} ist?`;
+    return K("Wahrscheinlichkeit",q,"",q,frS(pr.length,36),`Mögliche Ergebnisse: 6 · 6 = 36<br>Günstige: ${pr.join(", ")} → ${pr.length} Stück<br>P = ${fr(pr.length,36)}${gcd(pr.length,36)>1?" = "+frS(pr.length,36):""}`)}
+  if(t===1){const n=ri(6,12),S=n*(n-1)/2,q=`Bei einem Turnier spielt jede Mannschaft genau einmal gegen jede andere. Insgesamt gab es ${S} Spiele. Wie viele Mannschaften waren dabei?`;
+    return K("Wie viele Möglichkeiten?",q,"",q,n+" Mannschaften",`Bei n Mannschaften gibt es ${fr("n · (n − 1)",2)} Spiele.<br>${fr("n · (n − 1)",2)} = ${S} → n · (n − 1) = ${2*S}<br>Zwei Nachbarzahlen mit Produkt ${2*S}: ${n} · ${n-1} = ${2*S} → n = ${n}`)}
+  if(t===2){const [w,an,rw]=pick([["OTTO",6,"4 · 3 · 2 · 1 = 24, aber die beiden O und die beiden T kann man nicht unterscheiden: 24 : 2 : 2 = 6"],["KIWI",12,"4 · 3 · 2 · 1 = 24, aber die beiden I kann man nicht unterscheiden: 24 : 2 = 12"],["EULE",12,"4 · 3 · 2 · 1 = 24, aber die beiden E kann man nicht unterscheiden: 24 : 2 = 12"],["FUCHS",120,"Alle Buchstaben verschieden: 5 · 4 · 3 · 2 · 1 = 120"],["ANANAS",60,"6 · 5 · 4 · 3 · 2 · 1 = 720; die drei A lassen sich auf 3 · 2 · 1 = 6 Arten vertauschen, die zwei N auf 2 Arten: 720 : 6 : 2 = 60"],["MAMA",6,"4 · 3 · 2 · 1 = 24, je zwei M und zwei A sind gleich: 24 : 2 : 2 = 6"]]);
+    const q=`Wie viele verschiedene „Wörter“ (auch sinnlose) kann man aus allen Buchstaben von ${w} legen?`;return K("Wie viele Möglichkeiten?",q,"",q,String(an),rw)}
+  if(t===3){const v=pick([0,1,2]);let q,a,s;
+    if(v===0){q="Ein dreistelliger Zahlencode besteht aus den Ziffern 1 bis 9, alle Ziffern sind verschieden und die erste Ziffer ist ungerade. Wie viele Codes gibt es?";a=280;s="Erste Ziffer ungerade: 5 Möglichkeiten (1, 3, 5, 7, 9)<br>Zweite Ziffer: 8, dritte Ziffer: 7<br>5 · 8 · 7 = 280"}
+    else if(v===1){q="Ein dreistelliger Zahlencode besteht aus den Ziffern 1 bis 9, alle Ziffern sind verschieden und die letzte Ziffer ist gerade. Wie viele Codes gibt es?";a=224;s="Am besten mit der letzten Ziffer anfangen: 4 Möglichkeiten (2, 4, 6, 8)<br>Dann bleiben für die anderen Stellen 8 und 7<br>4 · 8 · 7 = 224"}
+    else{q="Ein vierstelliger PIN darf alle Ziffern von 0 bis 9 enthalten, aber keine Ziffer doppelt. Wie viele PINs gibt es?";a=5040;s="10 · 9 · 8 · 7 = 5040"}
+    return K("Wie viele Möglichkeiten?",q,"",q,de(a),s)}
+  const [m,n]=pick([[2,2],[3,2],[3,3],[4,2]]),cs=36,X0=30,Y0=20+cs*(3-n);let g="";
+  for(let i=0;i<=m;i++)g+=`<line x1="${X0+i*cs*1.4}" y1="${Y0}" x2="${X0+i*cs*1.4}" y2="${Y0+n*cs*1.4}" stroke="#555" stroke-width="2"/>`;for(let j=0;j<=n;j++)g+=`<line x1="${X0}" y1="${Y0+j*cs*1.4}" x2="${X0+m*cs*1.4}" y2="${Y0+j*cs*1.4}" stroke="#555" stroke-width="2"/>`;
+  g+=`<text x="${X0-4}" y="${Y0+n*cs*1.4+30}" font-size="28" text-anchor="middle">🦊</text><text x="${X0+m*cs*1.4+4}" y="${Y0-6}" font-size="26" text-anchor="middle">🏠</text>`;
+  const ways=[];for(let i=0;i<=m;i++){ways[i]=[];for(let j=0;j<=n;j++)ways[i][j]=i===0||j===0?1:ways[i-1][j]+ways[i][j-1]}
+  const q=`Der Fuchs läuft auf den Linien von unten links nach oben rechts zu seinem Bau. Er geht nur nach rechts oder nach oben. Wie viele verschiedene Wege gibt es?`;
+  return K("Wie viele Wege?",q,SV(X0+m*cs*1.4+40,Y0+n*cs*1.4+50,g,300),q,String(ways[m][n]),`Trick: An jede Kreuzung schreibt man, auf wie vielen Wegen man sie erreicht. Das ist immer die Summe aus der Zahl links und der Zahl darunter.<br>Unterste Reihe und linke Spalte: überall 1.<br>`+Array.from({length:n},(_,j)=>`Reihe ${j+2}: `+Array.from({length:m+1},(_,i)=>ways[i][j+1]).join(", ")).join("<br>")+`<br>Oben rechts: ${ways[m][n]} Wege`)}
+/* Altersrätsel */
+function kAlter(){if(R()<.5){const f=pick([3,4]),S=ri(4,12),k=(f-2)*S,M=f*S;if(M>52)return kAlter();
+    const q=`Fuchsmama Frieda ist heute ${f===3?"dreimal":"viermal"} so alt wie ihr Sohn Fred. In ${k} Jahren ist sie nur noch doppelt so alt wie er. Wie alt sind beide heute?`;
+    return K("Altersrätsel",q,"",q,`Fred ${S} Jahre, Frieda ${M} Jahre`,`Fred heute: x, Frieda heute: ${f}x<br>In ${k} Jahren: ${f}x + ${k} = 2 · (x + ${k})<br>${f}x + ${k} = 2x + ${2*k} → ${f-2===1?"":f-2}x = ${k} → x = ${S}<br>Probe: ${M} + ${k} = ${M+k}, ${S} + ${k} = ${S+k}, und ${M+k} = 2 · ${S+k} ✓`)}
+  const f=pick([3,4,5]),T_=ri(8,15),j=ri(2,Math.min(6,T_-2)),M=f*(T_-j)+j;if(M<26||M>55)return kAlter();const m=M+T_;
+  const q=`Mutter und Tochter sind zusammen ${m} Jahre alt. Vor ${j} Jahren war die Mutter ${["","","","dreimal","viermal","fünfmal"][f]} so alt wie die Tochter. Wie alt sind beide heute?`;
+  return K("Altersrätsel",q,"",q,`Tochter ${T_} Jahre, Mutter ${M} Jahre`,`Tochter heute: x, Mutter heute: ${m} − x<br>Vor ${j} Jahren: ${m} − x − ${j} = ${f} · (x − ${j})<br>${m-j} − x = ${f}x − ${f*j} → ${m-j+f*j} = ${f+1}x → x = ${T_}<br>Mutter: ${m} − ${T_} = ${M}<br>Probe: vor ${j} Jahren ${M-j} und ${T_-j}, ${M-j} = ${f} · ${T_-j} ✓`)}
+/* Uhrzeigerwinkel */
+function kUhr(){const h=ri(1,11),m=pick([10,15,20,30,40,45,50]),mw=6*m,hw=30*h+m/2;let d=Math.abs(hw-mw);const kl=d>180?360-d:d;
+  let g=`<circle cx="100" cy="100" r="90" fill="#fff" stroke="#000" stroke-width="4"/>`;for(let i=0;i<12;i++){const a=i*Math.PI/6;g+=`<line x1="${100+78*Math.sin(a)}" y1="${100-78*Math.cos(a)}" x2="${100+88*Math.sin(a)}" y2="${100-88*Math.cos(a)}" stroke="#000" stroke-width="${i%3?2:4}"/><text x="${100+64*Math.sin(a)}" y="${106-64*Math.cos(a)}" text-anchor="middle" font-size="15" font-weight="bold">${i||12}</text>`}
+  const hand=(w,l,sw,c)=>`<line x1="100" y1="100" x2="${100+l*Math.sin(w*Math.PI/180)}" y2="${100-l*Math.cos(w*Math.PI/180)}" stroke="${c}" stroke-width="${sw}" stroke-linecap="round"/>`;
+  g+=hand(hw,48,7,"#000")+hand(mw,74,4,"#0E9AA7")+`<circle cx="100" cy="100" r="6"/>`;
+  const zeit=`${h}:${String(m).padStart(2,"0")} Uhr`,q=`Es ist ${zeit}. Wie groß ist der kleinere Winkel zwischen Stunden- und Minutenzeiger?`;
+  return K("Uhrzeigerwinkel",q,SV(200,200,g,230),q,de(kl)+"°",`Minutenzeiger: 6° pro Minute → ${m} · 6° = ${mw}° (von der 12 aus)<br>Stundenzeiger: 30° pro Stunde und 0,5° pro Minute → ${h} · 30° + ${m} · 0,5° = ${de(hw)}°<br>Unterschied: ${de(Math.abs(hw-mw))}°${d>180?` → kleinerer Winkel: 360° − ${de(d)}° = ${de(kl)}°`:""}`)}
+const KNOBEL7=[kTiere,kKugeln,kFlaeche,kWinkel,kFolge,kKrypto,kHolz,kMoegl];
+const KNOBEL10=[kTiere2,kFlaeche2,kWinkel2,kFolge2,kKrypto2,kHolz2,kMoegl2,kAlter,kUhr];
+const knobelCard=k=>`<div class="card knobel"><div class="h"><span>🦊 Fuchs-Knobelei <span style="font-weight:normal;font-size:.85em">– Zusatzaufgabe für Schnelle (${klev?"schwer":"leicht"})</span></span><span class="topic">${k.typ}<button class="spk" data-say="${k.say.replace(/"/g,"&quot;")}" title="Vorlesen">🔊</button></span></div><div class="q kq"><div class="kt">${k.q}</div>${k.svg?`<div class="ks">${k.svg}</div>`:""}</div><div class="sol"><b>${k.a}</b><br><span style="font-size:.85em">${k.s}</span></div><span class="hint">Tippen für Lösung</span></div>`;
+function vorlesen(t){try{const s=window.speechSynthesis;s.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="de-DE";u.rate=.95;const v=s.getVoices().find(v=>v.lang&&v.lang.startsWith("de"));if(v)u.voice=v;s.speak(u)}catch(e){}}
+
+let charge=1,klev=0;try{charge=+localStorage.getItem("taeglicheFuenf.charge")||1;klev=+localStorage.getItem("taeglicheFuenf.knobel")||0}catch(e){}
 function make(seedStr){
   R=seedStr?seeded(seedStr):Math.random;
-  return AREAS.map(([name,pool])=>{
+  const tasks=AREAS.map(([name,pool])=>{
     const avail=pool.filter(([c])=>c<=charge);
     const fresh=avail.filter(([c])=>c===charge&&charge>1);
     const pickFrom=fresh.length&&R()<.5?fresh:avail;
     const [c,g]=pick(pickFrom);const t=g();t.area=name;t.isNew=c===charge&&charge>1;return t});
+  tasks.knobel=pick(klev?KNOBEL10:KNOBEL7)();
+  return tasks;
 }
 function render(tasks){
   document.getElementById("grid").innerHTML=tasks.map((t,i)=>`<div class="card" data-i="${i}">${t.isNew?'<span class="new">NEU</span>':""}
     <div class="h"><span class="nr">${i+1}</span><span class="topic">${t.topic}</span></div><div class="q">${t.q}</div>
-    <div class="sol"><b>${t.a}</b><br><span style="font-size:.85em">${t.s}</span></div><span class="hint">Tippen für Lösung</span></div>`).join("");
-  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>c.classList.toggle("show"));
+    <div class="sol"><b>${t.a}</b><br><span style="font-size:.85em">${t.s}</span></div><span class="hint">Tippen für Lösung</span></div>`).join("")+knobelCard(tasks.knobel);
+  document.querySelectorAll(".card").forEach(c=>c.onclick=e=>{const b=e.target.closest(".spk");if(b){vorlesen(b.dataset.say);return}c.classList.toggle("show")});
+  const b=document.getElementById("all");if(b)b.textContent="Alle Lösungen zeigen";
 }
 const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
-function setCharge(c){charge=c;try{localStorage.setItem("taeglicheFuenf.charge",c)}catch(e){}document.querySelectorAll("[data-c]").forEach(b=>b.classList.toggle("on",+b.dataset.c===c));render(make(todayStr()+"#"+c))}
+function refresh(){document.querySelectorAll("[data-c]").forEach(b=>b.classList.toggle("on",+b.dataset.c===charge));document.querySelectorAll("[data-k]").forEach(b=>b.classList.toggle("on",+b.dataset.k===klev));render(make(todayStr()+"#"+charge))}
+function setCharge(c){charge=c;try{localStorage.setItem("taeglicheFuenf.charge",c)}catch(e){}refresh()}
 document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>setCharge(+b.dataset.c));
+document.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{klev=+b.dataset.k;try{localStorage.setItem("taeglicheFuenf.knobel",klev)}catch(e){}refresh()});
 document.getElementById("today").onclick=()=>render(make(todayStr()+"#"+charge));
 document.getElementById("newset").onclick=()=>render(make(null));
-let allShown=false;document.getElementById("all").onclick=e=>{allShown=!document.querySelector(".card:not(.show)")?false:true;document.querySelectorAll(".card").forEach(c=>c.classList.toggle("show",allShown));e.target.textContent=allShown?"Lösungen verbergen":"Alle Lösungen zeigen"};
+document.getElementById("all").onclick=e=>{const show=!!document.querySelector(".card:not(.show)");document.querySelectorAll(".card").forEach(c=>c.classList.toggle("show",show));e.target.textContent=show?"Lösungen verbergen":"Alle Lösungen zeigen"};
 document.getElementById("date").textContent=new Date().toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
 /* Klingelton */
 let ac=null,soundOn=true;try{soundOn=localStorage.getItem("tf.sound")!=="0"}catch(e){}
@@ -192,7 +410,16 @@ sb.onclick=()=>{soundOn=!soundOn;try{localStorage.setItem("tf.sound",soundOn?"1"
 let tm=null,left=300;const tEl=document.getElementById("timer");const showT=()=>{tEl.textContent=Math.floor(left/60)+":"+String(left%60).padStart(2,"0");tEl.classList.toggle("end",left<=0)};
 document.getElementById("tstart").onclick=e=>{unlock();hideB();if(tm){clearInterval(tm);tm=null;left=300;showT();e.target.textContent="5-Minuten-Uhr starten";return}
   left=300;showT();e.target.textContent="Uhr zurücksetzen";tm=setInterval(()=>{if(left>0){left--;showT();if(left===0)finish()}},1000)};
-setCharge(charge);
+/* Startbildschirm: Milchglas, Los-Knopf, Countdown 3 – 2 – 1 */
+const sbox=document.getElementById("sbox");
+const startHTML=`<div class="fx"></div><div class="st">Gleich geht's los!</div><div class="sub">Stift und Papier bereit?</div><button id="los">Los geht's!</button>`;
+function tick(f){if(!soundOn||!ac)return;try{bell(ac.currentTime+.02,f,.4,.2)}catch(e){}}
+function lockPage(){if(tm)document.getElementById("tstart").click();document.querySelectorAll(".card.show").forEach(c=>c.classList.remove("show"));document.body.classList.add("locked");sbox.innerHTML=startHTML;document.getElementById("los").onclick=startSeq}
+function startSeq(){unlock();let n=3;const show=()=>{sbox.innerHTML=`<div class="cd">${n>0?n:"Los!"}</div>`;tick(n>0?660:990)};show();
+  const iv=setInterval(()=>{n--;if(n>=0)show();else{clearInterval(iv);document.body.classList.remove("locked");if(!tm)document.getElementById("tstart").click()}},1000)}
+document.getElementById("relock").onclick=lockPage;
+lockPage();
+refresh();
 </script>
 </body>
 </html>
