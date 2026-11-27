@@ -1,0 +1,405 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hefter-Eintrag · Zusammengesetzte Figuren</title><style>
+
+:root{--g:#00805F;--gl:#D3F2E5;--blau:#1565C0;--or:#C2410C;--gr:#2E7D32}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#000;font-family:Arial,"Liberation Sans",Helvetica,sans-serif}
+.page{font-size:var(--fs);line-height:1.35;position:relative}
+.title{background:var(--g);color:#fff;font-weight:bold;font-size:1.45em;padding:.35em .7em;border-radius:3px;display:flex;justify-content:space-between;align-items:center;gap:.5em}
+.title .lh1{font-size:.62em;background:#fff;color:var(--g);border-radius:20px;padding:.15em .7em;white-space:nowrap}
+.zn{font-weight:bold;font-size:.95em;padding:.3em .1em .45em}
+.box{border:2px solid var(--g);border-radius:4px;margin:0 0 .55em;break-inside:avoid}
+.box>h3{background:var(--gl);margin:0;padding:.2em .6em;font-size:1em;border-bottom:2px solid var(--g);display:flex;justify-content:space-between;align-items:center;gap:.5em}
+.box .in{padding:.35em .6em .4em}
+.box p{margin:.25em 0}
+.f{display:inline-block;vertical-align:baseline;border:0;border-bottom:1.5px solid #222;height:1.45em;min-width:1em;margin:0 .12em;padding:0 .1em;font:inherit;text-align:center;background:transparent;border-radius:0;color:#1565C0;font-weight:bold;outline:none}
+.f.lsg{color:#C62828}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55em}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55em}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45em}
+.grid2.gw{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+.grid6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.3em}
+.card{border:1.5px solid var(--g);border-radius:6px;padding:.3em .5em .45em}
+.card h4{margin:0 0 .3em;font-size:1em;color:var(--g);border-bottom:1.5px solid var(--gl);padding-bottom:.15em}
+.formel{margin-top:.4em;padding:.35em .5em;background:#f2f2f2;border-radius:5px;font-weight:bold;text-align:center;line-height:1.9}
+.formel.big{font-size:1.15em}
+.fz{margin-top:.45em;border:1.5px dashed var(--g);border-radius:6px;padding:.3em .6em;text-align:center;font-weight:bold;background:#fffdf0;font-size:.95em}
+.klein{font-size:.85em;color:#333}
+.bsp{display:flex;gap:.6em;align-items:center}
+.bsp>div:last-child{flex:1;min-width:0}
+.bsp.col{flex-direction:column;align-items:stretch}.bsp.col>.fig{align-self:center}
+.mini .fig:not(.real) svg{max-height:4.6em;width:auto!important}
+
+.begr{font-size:.85em}
+.auf .zl{white-space:normal}
+.mini{text-align:center}.mini .nr{font-weight:bold;font-size:.85em}
+.zl{margin:.28em 0;white-space:nowrap}
+.card .zl{white-space:normal}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .12em;line-height:1.05;font-size:.92em}
+.fr .nu{border-bottom:1.5px solid currentColor;padding:0 .15em}.fr .de{padding:0 .15em}
+.tb{border-collapse:collapse;width:100%}
+.tb th,.tb td{border:1px solid #000;padding:.15em .45em;text-align:center}
+.tb th{background:#F2F2F2}
+.fig{display:flex;justify-content:center}
+.ab{color:var(--blau);font-weight:bold}.hh{color:var(--or);font-weight:bold}
+.foot{text-align:right;font-style:italic;color:#555;font-size:.75em;margin-top:.3em}
+.lsgbtn{font:inherit;font-size:.8em;font-weight:bold;background:#C62828;color:#fff;border:0;border-radius:6px;padding:.25em .7em;cursor:pointer}
+svg .lsgsvg{display:none}.box.zeigt svg .lsgsvg{display:inline}
+svg .mbh{display:none}body.mbh-an svg .mbh{display:inline}
+.mbhbtn{font:inherit;font-size:.75em;border:1.5px solid var(--or);color:var(--or);background:#fff;border-radius:6px;padding:.1em .5em;cursor:pointer;margin-top:.2em}
+.entd{border:2px dashed #00897B;border-radius:8px;padding:.4em .6em;margin:.2em 0 .55em;background:#F3FBF9}
+.entd h3{margin:0 0 .3em;font-size:1em;color:#00695C}
+.entd .ctl{display:flex;flex-wrap:wrap;gap:.4em 1.2em;align-items:center;margin:.3em 0}
+.entd label{white-space:nowrap}.entd input[type=range]{width:9em;vertical-align:middle}
+.entd .out{font-weight:bold;font-size:1.05em}
+.entd svg{touch-action:none}.entd svg text{pointer-events:none}
+.ink{position:absolute;left:0;top:0;z-index:5;pointer-events:none}
+body.pen .ink{pointer-events:auto;cursor:crosshair}
+@media screen{
+ :root{--fs:19px}
+ .bar{position:sticky;top:0;z-index:10;background:#fff;border-bottom:2px solid #ddd;padding:8px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+ .bar button{font:inherit;font-size:16px;border:2px solid var(--g);background:#fff;color:#000;border-radius:8px;padding:8px 16px;cursor:pointer}
+ .bar .tab.on{background:var(--g);color:#fff;font-weight:bold}
+ .bar .sp{flex:1}
+ .bar button.warn{background:#C62828;border-color:#C62828;color:#fff;font-weight:bold}
+ .bar .pens{display:flex;gap:4px;align-items:center}
+ .bar .pens button{padding:6px 10px;min-width:2.4em}
+ .bar .pens button.on{box-shadow:0 0 0 3px #FDD835}
+ .wrap{max-width:1050px;margin:0 auto;padding:14px 18px 40px}
+ .page{display:none}
+ input.f:focus{background:#FFFDE7;box-shadow:0 0 0 2px #FDD835}
+ @media (max-width:760px){.grid2,.grid3,.grid4{grid-template-columns:1fr 1fr!important}.grid2.gw{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+.grid6{grid-template-columns:repeat(3,1fr)!important}.zl{white-space:normal}}
+}
+@page{size:A4;margin:1.0cm 1.5cm 0.9cm 2.5cm}
+@page :left{margin-left:1.5cm;margin-right:2.5cm}
+@page :right{margin-left:2.5cm;margin-right:1.5cm}
+@media print{
+ :root{--fs:13.2px}
+ #z1{--fs:12.6px} #z2{--fs:12.2px}
+ #z1 .mini .fig:not(.real) svg{max-height:1.5cm} #z1 .grid3 .mini .fig svg{max-height:2.1cm;width:auto!important}
+ #z1 .card .fig svg{max-height:2.1cm;width:auto!important}
+ .bar,.entd,.lsgbtn,.mbhbtn,.ink,.videoctl{display:none!important}
+ .wrap{padding:0;max-width:none}
+ .box{margin-bottom:.5em}
+ .zl{margin:.14em 0} .box p{margin:.15em 0} .box .in{padding:.25em .5em .3em}
+ .page{display:block!important;break-after:page;page-break-after:always;padding-top:3px}
+ .page:last-of-type{break-after:auto;page-break-after:auto}
+ .f{color:#000}
+ .mini .fig:not(.real) svg{max-height:1.9cm}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+.p1{color:#1565C0;font-weight:bold}.p2{color:#C2410C;font-weight:bold}.p3{color:#2E7D32;font-weight:bold}
+.stp{margin:.2em 0 .2em 1.2em;padding:0}.stp li{margin:.15em 0}
+.jt .bsp{border-top:1px dashed #bbb;padding-top:.3em}
+.jt .grid2>.bsp:nth-child(-n+2){border-top:0;padding-top:0}
+@media print{#z1,#z2,#z3{--fs:12.4px} #z1{--fs:12px} .fig svg{height:2.7cm!important;width:auto!important;max-width:none!important} .card .fig svg{height:2.2cm!important} .card .grid2 .fig svg{height:2cm!important} .jt .fig svg{height:2.4cm!important} .fig{flex:none}}
+sub{font-size:.68em}
+.jt .bsp{border-top:0!important;padding-top:0!important}.jt .grid2>div{border-top:1px dashed #bbb;padding-top:.3em}.jt .grid2>div:nth-child(-n+2){border-top:0;padding-top:0}
+</style></head><body>
+<div class="bar"><button class="tab" data-p="z1">Z1 · Umfang</button><button class="tab" data-p="z2">Z2 · Zerlegen</button><button class="tab" data-p="z3">Z3 · Ergänzen</button>
+<span class="pens" title="Stifte zum Zeichnen auf der Seite"><button data-pen="#000" style="color:#000">✎</button><button data-pen="#1565C0" style="color:#1565C0">✎</button><button data-pen="#C2410C" style="color:#C2410C">✎</button><button data-pen="#2E7D32" style="color:#2E7D32">✎</button><button id="lineal" title="Gerade Linien (rasten waagerecht/senkrecht ein)">📏</button><button id="radier" title="Radierer">⌫</button><button id="penoff" title="Stift aus">✋</button></span>
+<span class="sp"></span><button id="clr1">Seite leeren</button><button id="clrA">Alles löschen</button></div>
+<div class="wrap">
+
+<!-- ===================== Z1 UMFANG ===================== -->
+<section class="page" id="z1"><div class="title">Zusammengesetzte Figuren – der Umfang</div>
+<div class="zn">Z1 · Ich kann den Umfang zusammengesetzter Figuren berechnen.</div>
+<div class="box"><h3>Merke</h3><div class="in"><div class="grid2">
+ <div class="card"><h4>Einmal rundherum</h4><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[6,0],[6,2],[3,2],[3,5],[0,5]],"w":120,"start":0,"cut":[[[3,0],[3,2]]]}'></div><div>
+  <p>Der Umfang ist die Länge des ganzen <input class="f" data-l="Randes" aria-label="Lücke">.</p>
+  <p>Ich addiere alle <input class="f" data-l="Außenseiten" aria-label="Lücke">.</p>
+  <p>Innere Trennlinien zählen <input class="f" data-l="nicht" aria-label="Lücke">.</p></div></div>
+  <div class="fz">Tipp: Startpunkt markieren und jede Seite beim Addieren abhaken.</div></div>
+ <div class="card"><h4>Fehlende Seiten durch Überlegen</h4><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[6,0],[6,2],[3,2],[3,5],[0,5]],"w":120,"lab":{"0":"6 m","2":"?","4":"3 m"}}'></div><div>
+  <p>Gegenüberliegende Seiten sind zusammen <input class="f" data-l="gleich lang" aria-label="Lücke">.</p>
+  <p class="zl">unten 6 m = oben 3 m + <input class="f" data-l="3 m" aria-label="Lücke"></p></div></div>
+  <div class="formel">u = Summe aller Außenseiten</div></div>
+</div></div></div>
+
+<div class="box"><h3>Musterbeispiel</h3><div class="in"><div class="grid2">
+ <div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[6,0],[6,2],[3,2],[3,5],[0,5]],"w":139,"start":0,"lab":{"0":"6 m","1":"?","2":"?","3":"3 m","4":"3 m","5":"5 m"}}'></div><div>
+  <p class="zl"><b>① Leons Zimmer</b></p>
+  <p class="zl">rechts: 5 m − 3 m = <input class="f" data-l="2 m" aria-label="Lücke"></p>
+  <p class="zl">Stufe: 6 m − 3 m = <input class="f" data-l="3 m" aria-label="Lücke"></p>
+  <p class="zl">u = 6 m + <input class="f" data-l="2 m" aria-label="Lücke"> + <input class="f" data-l="3 m" aria-label="Lücke"> + 3 m</p>
+  <p class="zl">&nbsp;&nbsp;&nbsp;&nbsp;+ 3 m + 5 m = <input class="f" data-l="22 m" aria-label="Lücke"></p></div></div>
+ <div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[8,0],[8,4],[5,4],[5,6],[0,6]],"w":118,"start":0,"lab":{"0":"8 cm","1":"4 cm","2":"?","3":"?","4":"5 cm","5":"6 cm"}}'></div><div>
+  <p class="zl"><b>② Erst überlegen, dann addieren</b></p>
+  <p class="zl">waagerecht: 8 cm − 5 cm = <input class="f" data-l="3 cm" aria-label="Lücke"></p>
+  <p class="zl">senkrecht: 6 cm − 4 cm = <input class="f" data-l="2 cm" aria-label="Lücke"></p>
+  <p class="zl">u = 8 cm + 4 cm + <input class="f" data-l="3 cm" aria-label="Lücke"> + <input class="f" data-l="2 cm" aria-label="Lücke"></p>
+  <p class="zl">&nbsp;&nbsp;&nbsp;&nbsp;+ 5 cm + 6 cm = <input class="f" data-l="28 cm" aria-label="Lücke"></p></div></div>
+</div></div></div>
+
+<div class="box jt"><h3>Jetzt ihr</h3><div class="in"><div class="grid2">
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[2,0],[5,0],[5,4],[7,4],[7,6],[0,6],[0,4],[2,4]],"w":106,"lab":{"0":"3 m","1":"4 m","2":"2 m","3":"2 m","4":"7 m","5":"2 m","6":"2 m","7":"4 m"}}'></div><div>
+  <p class="zl"><b>a) T-Form</b></p>
+  
+  <p class="zl">u = <input class="f" data-lsg="26 m" aria-label="Lücke"></p></div></div><p class="zl">Rechnung: u = <input class="f" data-lsg="3 m + 2 · 4 m + 4 · 2 m + 7 m" aria-label="Lücke"></p></div>
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[6,0],[6,2],[4,2],[4,4],[2,4],[2,6],[0,6]],"w":103,"lab":{"0":"6 cm","1":"2 cm","2":"2 cm","7":"6 cm"}}'></div><div>
+  <p class="zl"><b>b) Treppe</b><br><span class="klein">(alle Stufen gleich)</span></p>
+  
+  <p class="zl">u = <input class="f" data-lsg="24 cm" aria-label="Lücke"></p></div></div><p class="zl">Rechnung: u = <input class="f" data-lsg="6 cm + 6 · 2 cm + 6 cm" aria-label="Lücke"></p></div>
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[4,0],[4,3],[2,4.5],[0,3]],"w":84,"cut":[[[0,3],[4,3]]],"lab":{"0":"4 m","1":"3 m","2":"2,5 m","3":"2,5 m","4":"3 m"}}'></div><div>
+  <p class="zl"><b>c) Haus</b> <span class="klein">(Trennlinie gestrichelt)</span></p>
+  
+  <p class="zl">u = <input class="f" data-lsg="15 m" aria-label="Lücke"></p></div></div><p class="zl">Rechnung: u = <input class="f" data-lsg="4 m + 2 · 3 m + 2 · 2,5 m" aria-label="Lücke"></p></div>
+ <div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[12,0],[12,3],[5,3],[5,8],[0,8]],"w":114,"lab":{"0":"1,2 m","1":"30 cm","2":"?","3":"?","4":"50 cm","5":"80 cm"}}'></div><div>
+  <p class="zl"><b>d) Gemischte Einheiten</b></p>
+  <p class="zl">1,2 m = <input class="f" data-lsg="120 cm" aria-label="Lücke"></p>
+  <p class="zl">fehlend: <input class="f" data-lsg="70 cm" aria-label="Lücke"> und <input class="f" data-lsg="50 cm" aria-label="Lücke"></p>
+  <p class="zl">u = <input class="f" data-lsg="400 cm" aria-label="Lücke"> = <input class="f" data-lsg="4 m" aria-label="Lücke"></p></div></div>
+</div></div></div>
+<div class="entd"><h3>🔍 Entdecker: Schneide aus dem Rechteck eine Ecke aus.</h3><div class="ctl"><label>Breite der Ecke <input type="range" id="e1w" min="0" max="7" step="1" value="3"> <b id="e1wv"></b></label><label>Höhe der Ecke <input type="range" id="e1h" min="0" max="5" step="1" value="2"> <b id="e1hv"></b></label></div><div id="ent1"></div><div class="ctl"><span class="out" id="ent1o"></span></div></div>
+<p class="foot">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</p></section>
+
+<!-- ===================== Z2 ZERLEGEN ===================== -->
+<section class="page" id="z2"><div class="title">Zusammengesetzte Figuren – Flächeninhalt durch Zerlegen</div>
+<div class="zn">Z2 · Ich kann den Flächeninhalt zusammengesetzter Figuren durch Zerlegen berechnen.</div>
+<div class="box"><h3>Merke</h3><div class="in"><div class="grid2">
+ <div class="card"><h4>Zerlegen</h4><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[7,0],[7,2],[4,2],[4,4],[0,4]],"w":120,"lab":0,"parts":[{"pts":[[0,0],[4,0],[4,4],[0,4]],"c":1,"n":"①"},{"pts":[[4,0],[7,0],[7,2],[4,2]],"c":2,"n":"②"}],"cut":[[[4,0],[4,2]]]}'></div><div>
+  <ol class="stp"><li>In bekannte <input class="f" data-l="Teilfiguren" aria-label="Lücke"> zerlegen.</li>
+  <li>Jede Teilfläche <input class="f" data-l="berechnen" aria-label="Lücke">.</li>
+  <li>Die Teilflächen <input class="f" data-l="addieren" aria-label="Lücke">.</li></ol></div></div>
+  <div class="formel big">A = A<sub class="p1">①</sub> + A<sub class="p2">②</sub></div></div>
+ <div class="card"><h4>Zwei Wege – ein Ergebnis</h4><div class="grid2"><div class="fig" data-o='{"pts":[[0,0],[7,0],[7,2],[4,2],[4,4],[0,4]],"w":92,"lab":0,"parts":[{"pts":[[0,0],[4,0],[4,4],[0,4]],"c":1,"n":"①"},{"pts":[[4,0],[7,0],[7,2],[4,2]],"c":2,"n":"②"}],"cut":[[[4,0],[4,2]]]}'></div><div class="fig" data-o='{"pts":[[0,0],[7,0],[7,2],[4,2],[4,4],[0,4]],"w":92,"lab":0,"parts":[{"pts":[[0,0],[7,0],[7,2],[0,2]],"c":1,"n":"①"},{"pts":[[0,2],[4,2],[4,4],[0,4]],"c":2,"n":"②"}],"cut":[[[0,2],[4,2]]]}'></div></div>
+  <div class="fz">Egal, wie ich zerlege: Das Ergebnis ist <input class="f" data-l="gleich" aria-label="Lücke">.</div></div>
+</div></div></div>
+
+<div class="box"><h3>Musterbeispiel</h3><div class="in"><div class="grid2">
+ <div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[7,0],[7,2],[4,2],[4,4],[0,4]],"w":139,"lab":{"0":"7 m","1":"2 m","2":"?","3":"","4":"4 m","5":"4 m"},"parts":[{"pts":[[0,0],[4,0],[4,4],[0,4]],"c":1,"n":"①"},{"pts":[[4,0],[7,0],[7,2],[4,2]],"c":2,"n":"②"}],"cut":[[[4,0],[4,2]]]}'></div><div>
+  <p class="zl"><b>① Ayas Zimmer</b></p>
+  <p class="zl">fehlend: 7 m − 4 m = <input class="f" data-l="3 m" aria-label="Lücke"></p>
+  <p class="zl">A<sub class="p1">①</sub> = <input class="f" data-l="4 m" aria-label="Lücke"> · <input class="f" data-l="4 m" aria-label="Lücke"> = <input class="f" data-l="16 m²" aria-label="Lücke"></p>
+  <p class="zl">A<sub class="p2">②</sub> = <input class="f" data-l="3 m" aria-label="Lücke"> · <input class="f" data-l="2 m" aria-label="Lücke"> = <input class="f" data-l="6 m²" aria-label="Lücke"></p>
+  <p class="zl">A = 16 m² + 6 m² = <input class="f" data-l="22 m²" aria-label="Lücke"></p></div></div>
+ <div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[6,0],[6,4],[3,7],[0,4]],"w":107,"lab":{"0":"6 cm","1":"4 cm","2":"","3":"","4":""},"parts":[{"pts":[[0,0],[6,0],[6,4],[0,4]],"c":1,"n":"①"},{"pts":[[0,4],[6,4],[3,7]],"c":2,"n":"②","np":[4.3,4.9]}],"cut":[[[0,4],[6,4]]],"dims":[{"a":[3,4],"b":[3,7],"t":"3 cm","ra":1}]}'></div><div>
+  <p class="zl"><b>② Haus</b></p>
+  <p class="zl">A<sub class="p1">①</sub> = 6 cm · 4 cm = <input class="f" data-l="24 cm²" aria-label="Lücke"></p>
+  <p class="zl">A<sub class="p2">②</sub> = <span class="fr"><span class="nu">1</span><span class="de">2</span></span> · <input class="f" data-l="6 cm" aria-label="Lücke"> · <input class="f" data-l="3 cm" aria-label="Lücke"> = <input class="f" data-l="9 cm²" aria-label="Lücke"></p>
+  <p class="zl">A = 24 cm² + 9 cm² = <input class="f" data-l="33 cm²" aria-label="Lücke"></p></div></div>
+</div></div></div>
+
+<div class="box jt"><h3>Jetzt ihr</h3><div class="in"><p class="klein" style="margin:0 0 .2em">Zeichne zuerst die Trennlinie ein und nummeriere die Teilfiguren.</p><div class="grid2">
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[5,0],[5,3],[2,3],[2,6],[0,6]],"w":87,"lab":{"0":"5 m","1":"3 m","2":"","3":"","4":"2 m","5":"6 m"},"lcut":[[[0,3],[2,3]]]}'></div><div>
+  <p class="zl"><b>a) L-Form</b></p>
+  <p class="zl">A = <input class="f" data-lsg="21 m²" aria-label="Lücke"></p></div></div>
+  <p class="zl">A<sub class="p1">①</sub> = <input class="f" data-lsg="5 m · 3 m = 15 m²" aria-label="Lücke"></p>
+  <p class="zl">A<sub class="p2">②</sub> = <input class="f" data-lsg="2 m · 3 m = 6 m²" aria-label="Lücke"></p></div>
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[8,0],[8,3],[6,5],[2,5],[0,3]],"w":106,"lab":{"0":"8 cm","1":"3 cm","2":"","3":"4 cm","4":"","5":""},"dims":[{"a":[4,3],"b":[4,5],"t":"2 cm","ra":1}],"lcut":[[[0,3],[8,3]]]}'></div><div>
+  <p class="zl"><b>b) Rechteck und Trapez</b></p>
+  <p class="zl">A = <input class="f" data-lsg="36 cm²" aria-label="Lücke"></p></div></div>
+  <p class="zl">A<sub class="p1">①</sub> = <input class="f" data-lsg="8 cm · 3 cm = 24 cm²" aria-label="Lücke"></p>
+  <p class="zl">A<sub class="p2">②</sub> = <input class="f" data-lsg="½ · (8 cm + 4 cm) · 2 cm = 12 cm²" aria-label="Lücke"></p></div>
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[0,1],[4,1],[4,0],[7,2],[4,4],[4,3],[0,3]],"w":106,"lab":{"0":"4 cm","1":"","2":"","3":"","4":"","5":"","6":"2 cm"},"dims":[{"a":[4,2],"b":[7,2],"t":"3 cm","ra":1},{"a":[7.6,0],"b":[7.6,4],"t":"4 cm","ext":1}],"lcut":[[[4,1],[4,3]]]}'></div><div>
+  <p class="zl"><b>c) Pfeil</b></p>
+  <p class="zl">A = <input class="f" data-lsg="14 cm²" aria-label="Lücke"></p></div></div>
+  <p class="zl">A<sub class="p1">①</sub> = <input class="f" data-lsg="4 cm · 2 cm = 8 cm²" aria-label="Lücke"></p>
+  <p class="zl">A<sub class="p2">②</sub> = <input class="f" data-lsg="½ · 4 cm · 3 cm = 6 cm²" aria-label="Lücke"></p></div>
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[9,0],[9,2],[6,2],[6,4],[3,4],[3,6],[0,6]],"w":103,"lab":{"0":"9 m","1":"2 m","6":"3 m","7":"6 m"},"lcut":[[[3,0],[3,4]],[[6,0],[6,2]]]}'></div><div>
+  <p class="zl"><b>d) Treppe aus drei Teilen</b><br><span class="klein">(alle Stufen gleich)</span></p>
+  <p class="zl">A = <input class="f" data-lsg="36 m²" aria-label="Lücke"></p></div></div>
+  <p class="zl">A<sub class="p1">①</sub> = <input class="f" data-lsg="3 m · 6 m = 18 m²" aria-label="Lücke"></p>
+  <p class="zl">A<sub class="p2">②</sub> = <input class="f" data-lsg="3 m · 4 m = 12 m²" aria-label="Lücke"></p>
+  <p class="zl">A<sub class="p3">③</sub> = <input class="f" data-lsg="3 m · 2 m = 6 m²" aria-label="Lücke"></p></div>
+</div></div></div>
+
+<div class="box"><h3>Auflösung: Welches Zimmer hat die meiste Bodenfläche?</h3><div class="in"><div class="auf">
+ <p class="zl"><b>Leon:</b> 3 m · 5 m + 3 m · 2 m = <input class="f" data-lsg="21 m²" aria-label="Lücke"></p>
+ <p class="zl"><b>Mia:</b> 5 m · 3 m + 1 m · 2 m = <input class="f" data-lsg="17 m²" aria-label="Lücke"></p>
+ <p class="zl"><b>Aya:</b> 4 m · 4 m + 3 m · 2 m = <input class="f" data-lsg="22 m²" aria-label="Lücke"></p></div>
+ <p>Die meiste Bodenfläche hat <input class="f" data-lsg="Aya" aria-label="Lücke">. Falle: Die größten Außenmaße allein entscheiden nicht!</p>
+</div></div>
+<div class="entd"><h3>🔍 Entdecker: Verändere die Figur und wechsle die Trennlinie.</h3><div class="ctl"><label>obere Breite <input type="range" id="e2t" min="1" max="6" step="1" value="4"> <b id="e2tv"></b></label><label><input type="radio" name="e2z" value="s" checked> senkrecht zerlegen</label><label><input type="radio" name="e2z" value="w"> waagerecht zerlegen</label></div><div id="ent2"></div><div class="ctl"><span class="out" id="ent2o"></span></div></div>
+<p class="foot">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</p></section>
+
+<!-- ===================== Z3 ERGÄNZEN ===================== -->
+<section class="page" id="z3"><div class="title">Zusammengesetzte Figuren – Flächeninhalt durch Ergänzen</div>
+<div class="zn">Z3 · Ich kann den Flächeninhalt zusammengesetzter Figuren durch Ergänzen berechnen.</div>
+<div class="box"><h3>Merke</h3><div class="in"><div class="grid2">
+ <div class="card"><h4>Ergänzen</h4><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[6,0],[6,2],[3,2],[3,5],[0,5]],"w":112,"lab":0,"comp":[[3,2],[6,2],[6,5],[3,5]]}'></div><div>
+  <ol class="stp"><li>Zu einem großen <input class="f" data-l="Rechteck" aria-label="Lücke"> ergänzen.</li>
+  <li>Großes Rechteck und <input class="f" data-l="fehlendes Stück" aria-label="Lücke"> berechnen.</li>
+  <li>Das fehlende Stück <input class="f" data-l="subtrahieren" aria-label="Lücke">.</li></ol></div></div>
+  <div class="formel big">A = A<sub>groß</sub> − A<sub>Stück</sub></div></div>
+ <div class="card"><h4>Wann lohnt sich Ergänzen?</h4><div class="grid2"><div class="fig" data-o='{"pts":[[0,0],[7,0],[7,3.8],[5.5,3.8],[5.5,5],[0,5]],"w":84,"lab":0,"comp":[[5.5,3.8],[7,3.8],[7,5],[5.5,5]]}'></div><div class="fig" data-o='{"pts":[[0,0],[7,0],[7,5],[0,5]],"w":84,"lab":0,"holes":[[[2,1.5],[5,1.5],[5,3.5],[2,3.5]]]}'></div></div>
+  <p class="zl">… wenn nur ein kleines Stück <input class="f" data-l="fehlt" aria-label="Lücke">.</p>
+  <p class="zl">… wenn die Figur ein <input class="f" data-l="Loch" aria-label="Lücke"> hat.</p></div>
+</div></div></div>
+
+<div class="box"><h3>Musterbeispiel</h3><div class="in"><div class="grid2">
+ <div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[6,0],[6,2],[3,2],[3,5],[0,5]],"w":139,"lab":{"0":"6 m","1":"","2":"","3":"3 m","4":"3 m","5":"5 m"},"comp":[[3,2],[6,2],[6,5],[3,5]]}'></div><div>
+  <p class="zl"><b>① Leons Zimmer</b></p>
+  <p class="zl">A<sub>groß</sub> = <input class="f" data-l="6 m" aria-label="Lücke"> · <input class="f" data-l="5 m" aria-label="Lücke"> = <input class="f" data-l="30 m²" aria-label="Lücke"></p>
+  <p class="zl">A<sub>Stück</sub> = <input class="f" data-l="3 m" aria-label="Lücke"> · <input class="f" data-l="3 m" aria-label="Lücke"> = <input class="f" data-l="9 m²" aria-label="Lücke"></p>
+  <p class="zl">A = 30 m² − 9 m² = <input class="f" data-l="21 m²" aria-label="Lücke"></p>
+  <p class="klein">Zerlegen ergibt dasselbe: 3 m · 5 m + 3 m · 2 m = 21 m²</p></div></div>
+ <div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[30,0],[30,20],[0,20]],"w":100,"lab":{"0":"30 cm","1":"20 cm","2":"","3":""},"holes":[[[5,5],[25,5],[25,15],[5,15]]],"htxt":["20 cm breit","10 cm hoch"]}'></div><div>
+  <p class="zl"><b>② Bilderrahmen</b></p>
+  <p class="zl">A<sub>groß</sub> = 30 cm · 20 cm = <input class="f" data-l="600 cm²" aria-label="Lücke"></p>
+  <p class="zl">A<sub>Loch</sub> = 20 cm · 10 cm = <input class="f" data-l="200 cm²" aria-label="Lücke"></p>
+  <p class="zl">A = 600 cm² − 200 cm² = <input class="f" data-l="400 cm²" aria-label="Lücke"></p></div></div>
+</div></div></div>
+
+<div class="box jt"><h3>Jetzt ihr</h3><div class="in"><p class="klein" style="margin:0 0 .2em">Ergänze die Figur gestrichelt zu einem Rechteck.</p><div class="grid2">
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[8,0],[8,5],[6,5],[4,3],[2,5],[0,5]],"w":106,"lab":{"0":"8 cm","1":"5 cm","2":"","3":"","4":"","5":"","6":""},"dims":[{"a":[2,5.5],"b":[6,5.5],"t":"4 cm","ext":1},{"a":[4,3],"b":[4,5],"t":"2 cm","dash":1}],"lcomp":[[2,5],[6,5],[4,3]]}'></div><div>
+  <p class="zl"><b>a) Rechteck mit Kerbe</b></p>
+  <p class="zl">A = <input class="f" data-lsg="36 cm²" aria-label="Lücke"></p></div></div>
+  <p class="zl">A<sub>groß</sub> = <input class="f" data-lsg="8 cm · 5 cm = 40 cm²" aria-label="Lücke"></p>
+  <p class="zl">A<sub>Stück</sub> = <input class="f" data-lsg="½ · 4 cm · 2 cm = 4 cm²" aria-label="Lücke"></p></div>
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[7,0],[7,5],[5,5],[5,2],[2,2],[2,5],[0,5]],"w":103,"lab":{"0":"7 m","1":"5 m","3":"3 m"},"dims":[{"a":[2,5.6],"b":[5,5.6],"t":"3 m","ext":1}],"lcomp":[[2,2],[5,2],[5,5],[2,5]]}'></div><div>
+  <p class="zl"><b>b) U-Form</b></p>
+  <p class="zl">A = <input class="f" data-lsg="26 m²" aria-label="Lücke"></p></div></div>
+  <p class="zl">A<sub>groß</sub> = <input class="f" data-lsg="7 m · 5 m = 35 m²" aria-label="Lücke"></p>
+  <p class="zl">A<sub>Stück</sub> = <input class="f" data-lsg="3 m · 3 m = 9 m²" aria-label="Lücke"></p></div>
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[25,0],[25,20],[0,20]],"w":103,"lab":{"0":"25 cm","1":"20 cm","2":"","3":""},"holes":[[[5,5],[20,5],[20,15],[5,15]]],"htxt":["15 cm breit","10 cm hoch"]}'></div><div>
+  <p class="zl"><b>c) Fotorahmen</b></p>
+  <p class="zl">A = <input class="f" data-lsg="350 cm²" aria-label="Lücke"></p></div></div>
+  <p class="zl">A<sub>groß</sub> = <input class="f" data-lsg="25 cm · 20 cm = 500 cm²" aria-label="Lücke"></p>
+  <p class="zl">A<sub>Loch</sub> = <input class="f" data-lsg="15 cm · 10 cm = 150 cm²" aria-label="Lücke"></p></div>
+ <div><div class="bsp"><div class="fig" data-o='{"pts":[[0,0],[10,0],[10,5],[8,5],[8,6],[0,6]],"w":110,"lab":{"0":"10 cm","1":"5 cm","2":"2 cm","4":"8 cm","5":"6 cm"},"lcomp":[[8,5],[10,5],[10,6],[8,6]]}'></div><div>
+  <p class="zl"><b>d) Zerlegen oder Ergänzen?</b></p>
+  <p class="zl">schneller: <input class="f" data-lsg="Ergänzen" aria-label="Lücke"></p></div></div>
+  <p class="zl">Ergänzen: <input class="f" data-lsg="60 cm² − 2 cm² = 58 cm²" aria-label="Lücke"></p>
+  <p class="zl">Zerlegen: <input class="f" data-lsg="48 cm² + 10 cm² = 58 cm²" aria-label="Lücke"></p></div>
+</div></div></div>
+<div class="entd"><h3>🔍 Entdecker: Verändere das Loch im Rechteck.</h3><div class="ctl"><label>Lochbreite <input type="range" id="e3w" min="0" max="7" step="1" value="4"> <b id="e3wv"></b></label><label>Lochhöhe <input type="range" id="e3h" min="0" max="5" step="1" value="2"> <b id="e3hv"></b></label></div><div id="ent3"></div><div class="ctl"><span class="out" id="ent3o"></span></div></div>
+<p class="foot">Erstellt von Marion Klugmann (November 2026) mit freundlicher Unterstützung von Claude.</p></section>
+</div>
+<script>
+const BL="#1565C0",OR="#C2410C",GR="#2E7D32",RT="#C62828";
+const FILL={0:"#eef4fb",1:"#DCEBFB",2:"#FFE3D3",3:"#DFF1E0"},NCOL={1:BL,2:OR,3:GR};
+const fmt=v=>(Math.round(v*100)/100).toString().replace(".",",");
+function tx(x,y,s,fs,o){o=o||{};return '<text x="'+x.toFixed(2)+'" y="'+y.toFixed(2)+'" font-size="'+fs.toFixed(2)+'" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" fill="'+(o.fill||"#000")+'"'+(o.b?' font-weight="700"':'')+(o.halo?' stroke="#fff" stroke-width="'+(fs*.25).toFixed(2)+'" paint-order="stroke"':'')+'>'+String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</text>';}
+const U=(x,y)=>{const l=Math.hypot(x,y)||1;return[x/l,y/l]};
+function ra(p,u,v,r,sw,col){const a=[p[0]+r*u[0],p[1]+r*u[1]],b=[p[0]+r*v[0],p[1]+r*v[1]],cr=u[0]*v[1]-u[1]*v[0],bi=U(u[0]+v[0],u[1]+v[1]);
+ return '<path d="M'+a[0].toFixed(2)+' '+a[1].toFixed(2)+' A'+r+' '+r+' 0 0 '+(cr>0?1:0)+' '+b[0].toFixed(2)+' '+b[1].toFixed(2)+'" fill="none" stroke="'+col+'" stroke-width="'+sw+'"/><circle cx="'+(p[0]+r*.5*bi[0]).toFixed(2)+'" cy="'+(p[1]+r*.5*bi[1]).toFixed(2)+'" r="'+(sw*1.1).toFixed(2)+'" fill="'+col+'"/>';}
+const area=P=>{let s=0;P.forEach((p,i)=>{const q=P[(i+1)%P.length];s+=p[0]*q[1]-q[0]*p[1]});return s/2};
+const cen=P=>{const n=P.length;return[P.reduce((a,p)=>a+p[0],0)/n,P.reduce((a,p)=>a+p[1],0)/n]};
+/* Polygon-Figur: o.pts (Einheiten), o.lab {Kantenindex:Text} oder 0, parts, cut, lcut, comp, lcomp, holes, hlab, dims, start */
+function polySvg(o){
+ const P=o.pts,all=P.concat(...(o.dims||[]).map(d=>[d.a,d.b]));
+ const xs=all.map(p=>p[0]),ys=all.map(p=>p[1]),minx=Math.min(...xs),maxx=Math.max(...xs),miny=Math.min(...ys),maxy=Math.max(...ys);
+ const span=Math.max(maxx-minx,maxy-miny),k=100/span;           /* größte Ausdehnung = 100 */
+ const w=o.w||160,fs=13.5*100/w,sw=fs*.13,labs=Object.values(o.lab||{}).concat(Object.values(o.hlab||{}),(o.dims||[]).map(d=>d.t)),ml=Math.max(1,...labs.map(x=>x.length)),pad=fs*(1.3+ml*.32);
+ const S=p=>[(p[0]-minx)*k+pad,(maxy-p[1])*k+pad];
+ const W=(maxx-minx)*k+2*pad,H=(maxy-miny)*k+2*pad;
+ let s='<svg viewBox="0 0 '+W.toFixed(1)+' '+H.toFixed(1)+'" style="width:'+(w*W/100/19).toFixed(2)+'em;max-width:100%;height:auto;overflow:visible">';
+ const poly=(Q,f,st,extra)=>'<polygon points="'+Q.map(S).map(p=>p.map(v=>v.toFixed(2)).join(",")).join(" ")+'" fill="'+f+'" stroke="'+(st||"none")+'"'+(extra||"")+'/>';
+ const line=(a,b,col,wd,dash,cls)=>{const A=S(a),B=S(b);return '<line'+(cls?' class="'+cls+'"':'')+' x1="'+A[0].toFixed(2)+'" y1="'+A[1].toFixed(2)+'" x2="'+B[0].toFixed(2)+'" y2="'+B[1].toFixed(2)+'" stroke="'+col+'" stroke-width="'+wd.toFixed(2)+'"'+(dash?' stroke-dasharray="'+(wd*3).toFixed(1)+' '+(wd*2).toFixed(1)+'"':'')+' stroke-linecap="round"/>';};
+ const dashed=' stroke-width="'+(sw*.9).toFixed(2)+'" stroke-dasharray="'+(sw*3).toFixed(1)+' '+(sw*2).toFixed(1)+'"';
+ if(o.comp)s+=poly(o.comp,"#ececec","#777",dashed);
+ if(o.lcomp)s+='<g class="lsgsvg">'+poly(o.lcomp,"#fde8e8",RT,dashed)+'</g>';
+ s+=poly(P,FILL[0]);
+ (o.parts||[]).forEach(q=>{s+=poly(q.pts,FILL[q.c]);});
+ (o.holes||[]).forEach(h=>{s+=poly(h,"#fff","#000",' stroke-width="'+sw.toFixed(2)+'"');});
+ (o.cut||[]).forEach(c=>s+=line(c[0],c[1],"#333",sw*.9,1));
+ (o.lcut||[]).forEach(c=>s+='<g class="lsgsvg">'+line(c[0],c[1],RT,sw*1.1,1)+'</g>');
+ s+=poly(P,"none","#000",' stroke-width="'+(sw*1.15).toFixed(2)+'" stroke-linejoin="round"');
+ (o.parts||[]).forEach(q=>{const c=S(q.np||cen(q.pts));s+=tx(c[0],c[1],q.n,fs*1.15,{fill:NCOL[q.c],b:1});});
+ /* Kantenbeschriftung außen */
+ const ccw=area(P)>0;
+ function kanten(Q,lab,innen){const ccw=area(Q)>0;Q.forEach((A0,i)=>{const t=lab[i];if(!t)return;const B0=Q[(i+1)%Q.length],A=S(A0),B=S(B0),M=[(A[0]+B[0])/2,(A[1]+B[1])/2];
+  const d=U(B0[0]-A0[0],B0[1]-A0[1]);let n=ccw?[d[1],-d[0]]:[-d[1],d[0]];if(innen)n=[-n[0],-n[1]];const nS=[n[0],-n[1]];
+  const off=fs*.75+Math.abs(nS[0])*t.length*fs*.27;s+=tx(M[0]+off*nS[0],M[1]+off*nS[1],t,fs,{b:t==="?",fill:t==="?"?RT:"#000"});});}
+ if(o.lab!==0&&o.lab)kanten(P,o.lab,false);
+ if(o.hlab&&o.holes)kanten(o.holes[0],o.hlab,true);
+ if(o.htxt&&o.holes){const c=S(cen(o.holes[0]));o.htxt.forEach((z,j)=>s+=tx(c[0],c[1]+(j-(o.htxt.length-1)/2)*fs*.85,z,fs*.7));}
+ (o.dims||[]).forEach(d=>{const col=d.ext?"#333":OR;s+=line(d.a,d.b,col,sw*(d.ext?.8:1.1),!d.ext);
+  if(d.ext){const A=S(d.a),B=S(d.b),u=U(B[0]-A[0],B[1]-A[1]),n=[-u[1],u[0]],L=fs*.35;[A,B].forEach(p=>s+='<line x1="'+(p[0]-L*n[0]).toFixed(2)+'" y1="'+(p[1]-L*n[1]).toFixed(2)+'" x2="'+(p[0]+L*n[0]).toFixed(2)+'" y2="'+(p[1]+L*n[1]).toFixed(2)+'" stroke="#333" stroke-width="'+(sw*.8).toFixed(2)+'"/>');}
+  if(d.ra){const A=S(d.a),B=S(d.b),u=U(B[0]-A[0],B[1]-A[1]);s+=ra(A,u,[u[1],-u[0]],fs*.7,sw*.8,OR);}
+  const A=S(d.a),B=S(d.b),M=[(A[0]+B[0])/2,(A[1]+B[1])/2],u=U(B[0]-A[0],B[1]-A[1]),n=[-u[1],u[0]];
+  const off=fs*.5+Math.abs(n[0])*d.t.length*fs*.27;s+=tx(M[0]+off*(d.ext?1:-1)*n[0]*(d.ext&&Math.abs(n[1])>.5?-1:1),M[1]+off*n[1]*(d.ext?-1:1),d.t,fs,{fill:d.ext?"#000":OR,b:!d.ext,halo:1});});
+ if(o.start!=null){const p=S(P[o.start]);s+='<circle cx="'+p[0].toFixed(2)+'" cy="'+p[1].toFixed(2)+'" r="'+(fs*.38).toFixed(2)+'" fill="'+GR+'" stroke="#fff" stroke-width="'+(sw*.6).toFixed(2)+'"/>'+tx(p[0]-fs*.9,p[1]+fs*.55,"Start",fs*.75,{fill:GR,b:1});}
+ return s+'</svg>';
+}
+document.querySelectorAll(".fig[data-o]").forEach(d=>{d.innerHTML=polySvg(JSON.parse(d.dataset.o));});
+/* Feldbreiten: passen immer zum vorgesehenen Inhalt */
+document.querySelectorAll("input.f").forEach(i=>{const t=i.dataset.l||i.dataset.lsg||"";const need=Math.max(2.3,t.length*.52+.8);
+ if(!i.style.width||parseFloat(i.style.width)<need)i.style.width=need.toFixed(2)+"em";});
+
+/* ---------- Reiter ---------- */
+const pages=[...document.querySelectorAll(".page")],tabs=[...document.querySelectorAll(".tab")];
+function cur(){return pages.find(p=>p.style.display==="block")}
+function show(id){pages.forEach(p=>p.style.display=p.id===id?"block":"none");tabs.forEach(t=>t.classList.toggle("on",t.dataset.p===id));
+ try{history.replaceState(null,"","#"+id)}catch(e){};window.scrollTo(0,0);setTimeout(()=>ink.resize(cur()),30);}
+tabs.forEach(t=>t.onclick=()=>show(t.dataset.p));
+document.addEventListener("keydown",e=>{if(e.key!=="Enter"||!e.target.matches("input.f"))return;e.preventDefault();
+ const l=[...cur().querySelectorAll("input.f:not([readonly])")],i=l.indexOf(e.target);(l[i+1]||e.target).focus();if(!l[i+1])e.target.blur()});
+
+/* ---------- Lösungsknöpfe (Jetzt ihr) ---------- */
+document.querySelectorAll(".box").forEach(b=>{if(!b.querySelector("input.f[data-lsg]"))return;const h=b.querySelector("h3");
+ const btn=document.createElement("button");btn.type="button";btn.className="lsgbtn";btn.textContent="Lösung zeigen";h.appendChild(btn);
+ btn.onclick=()=>{const an=!b.classList.contains("zeigt");b.classList.toggle("zeigt",an);btn.textContent=an?"Lösung ausblenden":"Lösung zeigen";
+  b.querySelectorAll("input.f[data-lsg]").forEach(i=>{if(an){i.dataset.alt=i.value;i.dataset.w=i.style.width;i.value=i.dataset.lsg;i.readOnly=true;i.classList.add("lsg");
+    const need=i.dataset.lsg.length*.6+.6;if(parseFloat(i.style.width)<need)i.style.width=need+"em";}
+   else{i.value=i.dataset.alt||"";i.style.width=i.dataset.w;i.readOnly=false;i.classList.remove("lsg");}});};});
+document.querySelectorAll(".mbhbtn").forEach(b=>b.onclick=()=>{const an=document.body.classList.toggle("mbh-an");document.querySelectorAll(".mbhbtn").forEach(x=>x.textContent=an?"h ausblenden":"h zeigen");});
+
+/* ---------- Stifte ---------- */
+const ink=(()=>{const st={};let farbe=null,lineal=false,radier=false,cv=null,akt=null;
+ function cvOf(p){let c=p.querySelector("canvas.ink");if(!c){c=document.createElement("canvas");c.className="ink";p.appendChild(c);bind(c,p);}return c;}
+ function resize(p){if(!p)return;const c=cvOf(p),W=p.clientWidth,H=p.scrollHeight,d=Math.min(2,window.devicePixelRatio||1);c.width=W*d;c.height=H*d;c.style.width=W+"px";c.style.height=H+"px";draw(p);}
+ function draw(p){const c=cvOf(p),x=c.getContext("2d"),W=p.clientWidth,d=c.width/W;x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,c.width,c.height);x.lineCap="round";x.lineJoin="round";
+  (st[p.id]||[]).forEach(s=>{x.strokeStyle=s.c;x.lineWidth=3;x.beginPath();s.p.forEach((q,i)=>{const X=q[0]*W,Y=q[1]*W;i?x.lineTo(X,Y):x.moveTo(X,Y)});x.stroke();});}
+ function pos(c,e,p){const r=c.getBoundingClientRect(),W=p.clientWidth;return[(e.clientX-r.left)/W,(e.clientY-r.top)/W];}
+ function bind(c,p){
+  c.addEventListener("pointerdown",e=>{if(!farbe&&!radier)return;e.preventDefault();c.setPointerCapture(e.pointerId);const q=pos(c,e,p);
+   if(radier){loesche(p,q);akt={r:1};return;}akt={c:farbe,p:[q,q.slice()],l:lineal};(st[p.id]=st[p.id]||[]).push(akt);draw(p);});
+  c.addEventListener("pointermove",e=>{if(!akt)return;const q=pos(c,e,p);if(akt.r){loesche(p,q);return;}
+   if(akt.l){const a=akt.p[0];let dx=q[0]-a[0],dy=q[1]-a[1],w=Math.abs(Math.atan2(dy,dx)*180/Math.PI);if(w<7||w>173)q[1]=a[1];else if(Math.abs(w-90)<7)q[0]=a[0];akt.p[1]=q;}
+   else akt.p.push(q);draw(p);});
+  const end=()=>{akt=null};c.addEventListener("pointerup",end);c.addEventListener("pointercancel",end);}
+ function loesche(p,q){const L=st[p.id]||[],n=L.length;st[p.id]=L.filter(s=>!s.p.some((a,i)=>{const b=s.p[i+1]||a,dx=b[0]-a[0],dy=b[1]-a[1],l=dx*dx+dy*dy||1e-9;let t=((q[0]-a[0])*dx+(q[1]-a[1])*dy)/l;t=Math.max(0,Math.min(1,t));return Math.hypot(a[0]+t*dx-q[0],a[1]+t*dy-q[1])<0.012;}));if(st[p.id].length!==n)draw(p);}
+ function modus(){document.body.classList.toggle("pen",!!(farbe||radier));document.querySelectorAll("[data-pen]").forEach(b=>b.classList.toggle("on",b.dataset.pen===farbe&&!radier));
+  document.getElementById("lineal").classList.toggle("on",lineal);document.getElementById("radier").classList.toggle("on",radier);}
+ document.querySelectorAll("[data-pen]").forEach(b=>b.onclick=()=>{farbe=b.dataset.pen;radier=false;modus();});
+ document.getElementById("lineal").onclick=()=>{lineal=!lineal;if(!farbe)farbe="#000";radier=false;modus();};
+ document.getElementById("radier").onclick=()=>{radier=!radier;modus();};
+ document.getElementById("penoff").onclick=()=>{farbe=null;radier=false;modus();};
+ window.addEventListener("resize",()=>resize(cur()));
+ return{resize,clear:p=>{st[p.id]=[];draw(p);}};})();
+
+function clearPage(p){p.querySelectorAll("input.f").forEach(i=>{if(!i.readOnly)i.value="";});ink.clear(p);}
+function armed(btn,action){const l=btn.textContent;btn.onclick=()=>{if(btn.dataset.a){clearTimeout(btn._t);delete btn.dataset.a;btn.textContent=l;btn.classList.remove("warn");action()}
+ else{btn.dataset.a=1;btn.textContent="Sicher? Nochmal tippen";btn.classList.add("warn");btn._t=setTimeout(()=>{delete btn.dataset.a;btn.textContent=l;btn.classList.remove("warn")},3500)}}}
+armed(document.getElementById("clr1"),()=>clearPage(cur()));
+armed(document.getElementById("clrA"),()=>pages.forEach(clearPage));
+
+
+/* ---------- Entdecker ---------- */
+function rechteckFig(W0,H0,poly,extra){const sc=34,pad=34,X=x=>pad+x*sc,Y=y=>pad+(H0-y)*sc;
+ let s='<svg viewBox="0 0 '+(W0*sc+2*pad)+' '+(H0*sc+2*pad)+'" style="width:100%;max-width:340px;height:auto">';
+ s+='<rect x="'+X(0)+'" y="'+Y(H0)+'" width="'+W0*sc+'" height="'+H0*sc+'" fill="#f4f4f4" stroke="#999" stroke-width="2" stroke-dasharray="7 5"/>';
+ s+='<polygon points="'+poly.map(p=>X(p[0])+","+Y(p[1])).join(" ")+'" fill="#DCEBFB" stroke="#000" stroke-width="3" fill-rule="evenodd"/>';
+ return s+(extra?extra(X,Y,sc):"")+'</svg>';}
+(()=>{const g=id=>document.getElementById(id);
+ function d(){const w=+g("e1w").value,h=+g("e1h").value;g("e1wv").textContent=w+" cm";g("e1hv").textContent=h+" cm";
+  const P=(w&&h)?[[0,0],[8,0],[8,6-h],[8-w,6-h],[8-w,6],[0,6]]:[[0,0],[8,0],[8,6],[0,6]];
+  g("ent1").innerHTML=rechteckFig(8,6,P);
+  g("ent1o").innerHTML="Umfang: u = <span style='color:#00695C'>28 cm</span> (bleibt gleich!) &nbsp;|&nbsp; Fläche: A = 48 cm² − "+(w*h)+" cm² = "+(48-w*h)+" cm²";}
+ ["e1w","e1h"].forEach(id=>g(id).addEventListener("input",d));d();})();
+(()=>{const g=id=>document.getElementById(id);
+ function d(){const t=+g("e2t").value,sv=document.querySelector('input[name=e2z]:checked').value==="s";g("e2tv").textContent=t+" m";
+  const P=[[0,0],[7,0],[7,2],[t,2],[t,4],[0,4]],sc=34,pad=34,X=x=>pad+x*sc,Y=y=>pad+(4-y)*sc;
+  const A1=sv?[[0,0],[t,0],[t,4],[0,4]]:[[0,0],[7,0],[7,2],[0,2]],A2=sv?[[t,0],[7,0],[7,2],[t,2]]:[[0,2],[t,2],[t,4],[0,4]];
+  const pol=(Q,f)=>'<polygon points="'+Q.map(p=>X(p[0])+","+Y(p[1])).join(" ")+'" fill="'+f+'"/>';
+  let s='<svg viewBox="0 0 '+(7*sc+2*pad)+' '+(4*sc+2*pad)+'" style="width:100%;max-width:340px;height:auto">'+(t<7?pol(A2,"#FFE3D3"):"")+pol(A1,"#DCEBFB");
+  s+='<polygon points="'+P.map(p=>X(p[0])+","+Y(p[1])).join(" ")+'" fill="none" stroke="#000" stroke-width="3"/>';
+  s+=sv?'<line x1="'+X(t)+'" y1="'+Y(0)+'" x2="'+X(t)+'" y2="'+Y(2)+'" stroke="#333" stroke-width="2.5" stroke-dasharray="7 5"/>':'<line x1="'+X(0)+'" y1="'+Y(2)+'" x2="'+X(t)+'" y2="'+Y(2)+'" stroke="#333" stroke-width="2.5" stroke-dasharray="7 5"/>';
+  const c=Q=>cen(Q);s+=tx(X(c(A1)[0]),Y(c(A1)[1]),"①",22,{fill:BL,b:1});if(t<7)s+=tx(X(c(A2)[0]),Y(c(A2)[1]),"②",22,{fill:OR,b:1});
+  g("ent2").innerHTML=s+'</svg>';
+  const a1=sv?t*4:14,a2=sv?(7-t)*2:t*2;
+  g("ent2o").innerHTML="A<sub>①</sub> = "+a1+" m² &nbsp; A<sub>②</sub> = "+a2+" m² &nbsp;→&nbsp; <span style='color:#00695C'>A = "+(a1+a2)+" m²</span>";}
+ ["e2t"].forEach(id=>g(id).addEventListener("input",d));document.querySelectorAll('input[name=e2z]').forEach(r=>r.addEventListener("change",d));d();})();
+(()=>{const g=id=>document.getElementById(id);
+ function d(){const w=+g("e3w").value,h=+g("e3h").value;g("e3wv").textContent=w+" cm";g("e3hv").textContent=h+" cm";
+  const x0=(8-w)/2,y0=(6-h)/2;
+  g("ent3").innerHTML=rechteckFig(8,6,[[0,0],[8,0],[8,6],[0,6]],(X,Y,sc)=>w&&h?'<rect x="'+X(x0)+'" y="'+Y(y0+h)+'" width="'+w*sc+'" height="'+h*sc+'" fill="#fff" stroke="#000" stroke-width="3"/>':"");
+  g("ent3o").innerHTML="A = 8 cm · 6 cm − "+w+" cm · "+h+" cm = 48 cm² − "+(w*h)+" cm² = <span style='color:#00695C'>"+(48-w*h)+" cm²</span>";}
+ ["e3w","e3h"].forEach(id=>g(id).addEventListener("input",d));d();})();
+
+const h0=location.hash.slice(1);show(["z1","z2","z3"].includes(h0)?h0:"z1");
+</script>
+</body></html>
