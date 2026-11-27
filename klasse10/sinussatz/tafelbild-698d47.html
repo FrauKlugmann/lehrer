@@ -131,4 +131,25 @@ function armed(btn,action){const l=btn.textContent;btn.onclick=()=>{if(btn.datas
 armed(document.getElementById("clr1"),()=>clearPage(cur()));
 armed(document.getElementById("clrA"),()=>pages.forEach(clearPage));
 const h0=location.hash.slice(1);show(["z1","z2","z4"].includes(h0)?h0:"z1");
-</script></body></html>
+</script><style id="lsg-style">
+.box>h3.lsg-h{display:flex;align-items:center;justify-content:space-between;gap:.6em}
+.lsg-btn{font:inherit;font-size:.8em;font-weight:bold;border:2px solid #C62828;background:#fff;color:#C62828;border-radius:8px;padding:.15em .8em;cursor:pointer}
+.lsg-btn.an{background:#C62828;color:#fff}
+input.f.lsg-an{color:#C62828!important}
+@media print{.lsg-btn{display:none!important}}
+</style>
+<script id="lsg-script">
+/* Lösungsbutton für jeden „Jetzt ihr“-Bereich: blendet die Lösung ein und wieder aus (Einträge der Schüler bleiben erhalten). */
+const LOESUNG={"z1": ["k", "κ", "l", "λ", "m", "μ", "d", "δ", "e", "ε", "f", "φ"], "z2": ["40", "75", "65", "6", "65", "40", "8,5", "7", "110", "10", "0,6578", "41", "110", "41", "29"], "z4": ["9", "7", "110", "29,60", "4", "7", "35", "8,03"]};
+document.querySelectorAll(".page").forEach(p=>{const L=LOESUNG[p.id];if(!L)return;
+  const h=[...p.querySelectorAll(".box>h3")].find(x=>x.textContent.trim()==="Jetzt ihr");if(!h)return;
+  const box=h.parentElement,inp=[...box.querySelectorAll("input.f")];
+  h.classList.add("lsg-h");const b=document.createElement("button");b.type="button";b.className="lsg-btn";b.textContent="Lösung zeigen";h.appendChild(b);
+  let an=false;
+  b.addEventListener("click",()=>{an=!an;b.classList.toggle("an",an);b.textContent=an?"Lösung ausblenden":"Lösung zeigen";
+    inp.forEach((i,k)=>{if(an){i.dataset.alt=i.value;i.dataset.bw=i.style.width;i.value=L[k]??"";i.classList.add("lsg-an");
+        const w=parseFloat(i.style.width)||1.6,n=i.value.length*0.62+0.5;if(n>w)i.style.width=n.toFixed(2)+"em";i.readOnly=true;}
+      else{i.value=i.dataset.alt||"";i.style.width=i.dataset.bw;i.classList.remove("lsg-an");i.readOnly=false;}});});
+});
+</script>
+</body></html>
